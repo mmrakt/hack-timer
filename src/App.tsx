@@ -6,6 +6,7 @@ import ChartIcon from "./components/svg/Chart";
 import PauseIcon from "./components/svg/Pause";
 import PlayIcon from "./components/svg/Play";
 import Digit from "./components/Degit";
+import "./styles/globals.css";
 
 type IProps = {
   expiryTimestamp: Date;

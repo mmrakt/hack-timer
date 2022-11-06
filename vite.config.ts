@@ -8,19 +8,8 @@ const manifest = defineManifest({
   version: "0.0.1",
   description: "discription",
   action: {
-    default_icon: "./assets/icon-512.png",
-    default_popup: "./dist/popup/index.html",
+    default_popup: "index.html",
   },
-  // background: {
-  //   service_worker: "./dist/background/index.html",
-  // },
-  permissions: ["tabs", "storage", "activeTab", "http://*/", "https://*/"],
-  content_scripts: [
-    {
-      matches: ["http://*/*", "https://*/*"],
-      js: ["./dist/contentScripts/index.global.js"],
-    },
-  ],
 });
 
 export default defineConfig({
