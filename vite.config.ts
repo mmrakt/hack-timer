@@ -10,6 +10,19 @@ const manifest = defineManifest({
   action: {
     default_popup: "index.html",
   },
+  background: {
+    service_worker: "src/background/main.ts",
+    type: "module",
+  },
+  permissions: ["storage"],
+  commands: {
+    toggle_timer_status: {
+      suggested_key: {
+        default: "Ctrl+Shift+1",
+      },
+      description: "toggle timer status",
+    },
+  },
 });
 
 export default defineConfig({
