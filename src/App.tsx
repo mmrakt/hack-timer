@@ -17,14 +17,12 @@ type IProps = {
   ) => void;
 };
 
-const Timer: React.FC<IProps> = ({
-  reminingSeconds,
-  phase,
-  isRunning,
-  onRestartNextPhase,
-}) => {
+const Timer: React.FC<IProps> = (props) => {
   const [isDisplayPage, setIsDisplayPage] = useState<PageType>("timer");
-  const { seconds, minutes } = Time.getTimeFromSeconds(reminingSeconds);
+  const [seconds, setSeconds] = useState<number>(props.reminingSeconds);
+  const [isRunning, setIsRunning] = useState<boolean>(props.isRunning);
+  const { seconds: displaySeconds, minutes: displayMinutes } =
+    Time.getTimeFromSeconds(seconds);
 
   const onDisplayHistory = () => {
     setIsDisplayPage("history");
@@ -35,24 +33,37 @@ const Timer: React.FC<IProps> = ({
   };
 
   useEffect(() => {
-    async () => {
-      // const text = minutes + ":" + seconds;
-      // const color = phase === "focus" ? "#bb0000" : "#11aa11";
-      // await chrome.browserAction.setBadgeText({ text });
-      // await chrome.browserAction.setBadgeBackgroundColor({ color });
-    };
-  }, [minutes, seconds, phase]);
+    chrome.runtime.onMessage.addListener(
+      ({ message, secs }: { message: string; secs: number }) => {
+        if (message === "countDown") {
+          setSeconds(secs);
+        }
+      }
+    );
+    // const text = minutes + ":" + seconds;
+    // const color = phase === "focus" ? "#bb0000" : "#11aa11";
+    // await chrome.browserAction.setBadgeText({ text });
+    // await chrome.browserAction.setBadgeBackgroundColor({ color });
+  }, []);
 
   const restart = () => {};
-  const pause = () => {};
-  const resume = () => {};
+  const pause = () => {
+    chrome.runtime.sendMessage("toggleTimerStatus", async () => {
+      setIsRunning(false);
+    });
+  };
+  const resume = () => {
+    chrome.runtime.sendMessage("toggleTimerStatus", async () => {
+      setIsRunning(true);
+    });
+  };
 
   switch (isDisplayPage) {
     case "timer":
       return (
         <div className="text-center">
           <div className="flex justify-end gap-3">
-            <button onClick={() => onRestartNextPhase(restart)}>
+            <button onClick={() => props.onRestartNextPhase(restart)}>
               Finish focus
             </button>
             <button onClick={onDisplayHistory}>
@@ -60,8 +71,8 @@ const Timer: React.FC<IProps> = ({
             </button>
           </div>
           <div className="text-8xl">
-            <Digit value={minutes} />:
-            <Digit value={seconds} />
+            <Digit value={displayMinutes} />:
+            <Digit value={displaySeconds} />
           </div>
           <div className="flex justify-center mt-5">
             {isRunning ? (

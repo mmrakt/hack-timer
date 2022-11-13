@@ -55,7 +55,9 @@ const handleTimer = async () => {
     async ({ reminingSeconds, phase, isRunning, pomodoros }) => {
       isRunning = isRunning ? false : true;
       try {
-        await chrome.storage.sync.set({ isRunning });
+        await chrome.storage.sync.set({
+          isRunning,
+        });
         toggleInterval(isRunning);
       } catch (e) {
         console.error(e);
@@ -93,6 +95,10 @@ const handleCountDown = () => {
 const countDown = async (reminingSeconds: number) => {
   try {
     await chrome.storage.sync.set({ reminingSeconds: reminingSeconds - 1 });
+    await chrome.runtime.sendMessage({
+      message: "countDown",
+      secs: reminingSeconds,
+    });
   } catch (e) {
     console.error(e);
   }
