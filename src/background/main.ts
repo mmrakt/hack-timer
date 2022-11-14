@@ -11,9 +11,6 @@ chrome.runtime.onInstalled.addListener(async () => {
     isRunning: false,
     pomodoros: 0,
   });
-  await chrome.storage.sync.get(null, (v) => {
-    console.log(v);
-  });
 });
 
 // shortcut key event
@@ -41,6 +38,10 @@ chrome.runtime.onMessage.addListener(
         handleTimer();
         sendResponse();
         break;
+      case "finish":
+        chrome.storage.sync.get(["phase", "pomodoros"], async (result) => {
+          await finish(result.phase, result.pomodoros);
+        });
     }
     return true;
   }
@@ -85,7 +86,7 @@ const handleCountDown = () => {
       }
 
       if (reminingSeconds === 0) {
-        await finished(phase, pomodoros);
+        await finish(phase, pomodoros);
       }
     }
   );
@@ -105,31 +106,34 @@ const countDown = async (reminingSeconds: number) => {
 };
 
 // カウントダウンを終了する
-const finished = async (phase: Phase, pomodoros: number) => {
-  const isFinisheSession = pomodoros === 4 ? true : false;
-  const nextPhase =
-    phase === "focus"
-      ? isFinisheSession
-        ? "longBreak"
-        : "shortBreak"
-      : "focus";
-  let nextReminingSeconds = 0;
-  switch (nextPhase) {
-    case "focus":
-      nextReminingSeconds = 1500;
-      break;
-    case "shortBreak":
-      nextReminingSeconds = 300;
-      break;
-    case "longBreak":
-      nextReminingSeconds = 1800;
+const finish = async (currentPhase: Phase, pomodoros: number) => {
+  let reminingSeconds = 0;
+  let nextPhase: Phase = "focus";
+  let nextPomodoroCount = pomodoros;
+  if (currentPhase === "focus") {
+    if (pomodoros === 3) {
+      reminingSeconds = 1800;
+      nextPomodoroCount = 0;
+      nextPhase = "longBreak";
+    } else {
+      reminingSeconds = 300;
+      nextPomodoroCount++;
+      nextPhase = "shortBreak";
+    }
+  } else {
+    reminingSeconds = 1500;
   }
   try {
     await chrome.storage.sync.set({
-      reminingSeconds: nextReminingSeconds,
+      reminingSeconds: reminingSeconds,
       phase: nextPhase,
-      pomodoros: isFinisheSession ? 0 : pomodoros + 1,
+      pomodoros: nextPomodoroCount,
       isRunning: false,
+    });
+    await chrome.runtime.sendMessage({
+      message: "finish",
+      secs: reminingSeconds,
+      phase: nextPhase,
     });
     toggleInterval(false);
   } catch (e) {

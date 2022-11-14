@@ -21,6 +21,7 @@ const Timer: React.FC<IProps> = (props) => {
   const [isDisplayPage, setIsDisplayPage] = useState<PageType>("timer");
   const [seconds, setSeconds] = useState<number>(props.reminingSeconds);
   const [isRunning, setIsRunning] = useState<boolean>(props.isRunning);
+  const [phase, setPhase] = useState<Phase>(props.phase);
   const { seconds: displaySeconds, minutes: displayMinutes } =
     Time.getTimeFromSeconds(seconds);
 
@@ -34,9 +35,12 @@ const Timer: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener(
-      ({ message, secs }: { message: string; secs: number }) => {
-        if (message === "countDown") {
+      ({ message, secs }: { message: string; secs: number; phase: Phase }) => {
+        setSeconds(secs);
+        if (message === "finish") {
           setSeconds(secs);
+          setPhase(phase);
+          setIsRunning(false);
         }
       }
     );
@@ -46,7 +50,9 @@ const Timer: React.FC<IProps> = (props) => {
     // await chrome.browserAction.setBadgeBackgroundColor({ color });
   }, []);
 
-  const restart = () => {};
+  const finish = () => {
+    chrome.runtime.sendMessage("finish", async () => {});
+  };
   const pause = () => {
     chrome.runtime.sendMessage("toggleTimerStatus", async () => {
       setIsRunning(false);
@@ -63,9 +69,7 @@ const Timer: React.FC<IProps> = (props) => {
       return (
         <div className="text-center">
           <div className="flex justify-end gap-3">
-            <button onClick={() => props.onRestartNextPhase(restart)}>
-              Finish focus
-            </button>
+            <button onClick={finish}>Finish focus</button>
             <button onClick={onDisplayHistory}>
               <ChartIcon />
             </button>
@@ -143,7 +147,6 @@ const App: React.FC = () => {
         reminingSeconds={reminingSeconds}
         phase={currentPhase}
         isRunning={isRunning}
-        onRestartNextPhase={handleRestartNextPhase}
       />
     </div>
   );

@@ -23,4 +23,4 @@ export type StorageKey =
   | "isRunning"
   | "pomodoros";
 
-export type PopupMessage = "mounted" | "toggleTimerStatus";
+export type PopupMessage = "mounted" | "toggleTimerStatus" | "finish";
