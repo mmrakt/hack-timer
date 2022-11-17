@@ -1,6 +1,6 @@
 type IProps = {
-  handleClick: () => void
-}
+  handleClick: () => void;
+};
 
 const ArrowLeft: React.FC<IProps> = ({ handleClick }) => {
   return (
@@ -11,7 +11,7 @@ const ArrowLeft: React.FC<IProps> = ({ handleClick }) => {
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
-        className="w-6 h-6"
+        className="w-6 h-6 hover:text-gray-300"
       >
         <path
           strokeLinecap="round"
@@ -20,7 +20,7 @@ const ArrowLeft: React.FC<IProps> = ({ handleClick }) => {
         />
       </svg>
     </button>
-  )
-}
+  );
+};
 
-export default ArrowLeft
+export default ArrowLeft;

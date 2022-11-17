@@ -12,9 +12,6 @@ type IProps = {
   reminingSeconds: number;
   phase: Phase;
   isRunning: boolean;
-  onRestartNextPhase: (
-    restart: (newExpiryTimestamp: Date, autoStart?: boolean | undefined) => void
-  ) => void;
 };
 
 const Timer: React.FC<IProps> = (props) => {
@@ -67,18 +64,23 @@ const Timer: React.FC<IProps> = (props) => {
   switch (isDisplayPage) {
     case "timer":
       return (
-        <div className="text-center">
-          <div className="flex justify-end gap-3">
-            <button onClick={finish}>Finish focus</button>
-            <button onClick={onDisplayHistory}>
+        <div className="w-48">
+          <div className="flex gap-3">
+            <button
+              className="text-lg bg-gray-700 px-2 py-1 rounded-md hover:bg-gray-600"
+              onClick={finish}
+            >
+              Finish
+            </button>
+            <button className="ml-auto" onClick={onDisplayHistory}>
               <ChartIcon />
             </button>
           </div>
-          <div className="text-8xl">
+          <div className="mt-3 text-6xl w-36 mx-auto">
             <Digit value={displayMinutes} />:
             <Digit value={displaySeconds} />
           </div>
-          <div className="flex justify-center mt-5">
+          <div className="flex justify-center mt-3">
             {isRunning ? (
               <button onClick={pause}>
                 <PauseIcon />
@@ -113,36 +115,10 @@ const App: React.FC = () => {
     });
   }, []);
 
-  const handleRestartNextPhase = async (
-    restart: (newExpiryTimestamp: Date, autoStart?: boolean | undefined) => void
-  ) => {
-    // let nextPhase: Phase = "focus";
-    // if (currentPhase === "focus") {
-    //   setFocusCount(focusCount + 1);
-    //   if (focusCount + 1 === 4) {
-    //     setCurrentPhase("longBreak");
-    //     nextPhase = "longBreak";
-    //   } else {
-    //     setCurrentPhase("shortBreak");
-    //     nextPhase = "shortBreak";
-    //   }
-    // }
-    // if (currentPhase === "shortBreak") {
-    //   setCurrentPhase("focus");
-    //   nextPhase = "focus";
-    // }
-    // if (currentPhase === "longBreak") {
-    //   setFocusCount(0);
-    //   setCurrentPhase("focus");
-    //   nextPhase = "focus";
-    // }
-    // restart(createExpire(nextPhase));
-  };
-
   if (!reminingSeconds) return <div>...loading</div>;
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-zinc-900 border-2 border-gray-700 rounded-lg">
       <Timer
         reminingSeconds={reminingSeconds}
         phase={currentPhase}

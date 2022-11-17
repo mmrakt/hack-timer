@@ -1,11 +1,11 @@
-import { StorageKey, Phase, PopupMessage } from "../types/index";
-import keepAlive from "./KeepAliveServiceWorker";
+import { Phase, PopupMessage } from "../types/index";
+import keepAlive from "./keepAliveServiceWorker";
 
 let intervalId = 0;
 
 // installed event
 chrome.runtime.onInstalled.addListener(async () => {
-  await chrome.storage.sync.set({
+  await chrome.storage.local.set({
     reminingSeconds: 1500,
     phase: "focus",
     isRunning: false,
@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener(
   (message: PopupMessage, sender, sendResponse) => {
     switch (message) {
       case "mounted":
-        chrome.storage.sync.get(
+        chrome.storage.local.get(
           ["reminingSeconds", "phase", "isRunning", "pomodoros"],
           (result) => {
             sendResponse(result);
@@ -39,7 +39,7 @@ chrome.runtime.onMessage.addListener(
         sendResponse();
         break;
       case "finish":
-        chrome.storage.sync.get(["phase", "pomodoros"], async (result) => {
+        chrome.storage.local.get(["phase", "pomodoros"], async (result) => {
           await finish(result.phase, result.pomodoros);
         });
     }
@@ -51,12 +51,12 @@ chrome.runtime.onMessage.addListener(
 const handleTimer = async () => {
   await keepAlive();
 
-  await chrome.storage.sync.get(
+  await chrome.storage.local.get(
     ["reminingSeconds", "phase", "isRunning", "pomodoros"],
     async ({ reminingSeconds, phase, isRunning, pomodoros }) => {
       isRunning = isRunning ? false : true;
       try {
-        await chrome.storage.sync.set({
+        await chrome.storage.local.set({
           isRunning,
         });
         toggleInterval(isRunning);
@@ -78,7 +78,7 @@ const toggleInterval = (isRunning: boolean) => {
 
 // running時は毎秒実行され、カウントを減らすか終了させるか判定
 const handleCountDown = () => {
-  chrome.storage.sync.get(
+  chrome.storage.local.get(
     ["reminingSeconds", "phase", "pomodoros"],
     async ({ reminingSeconds, phase, pomodoros }) => {
       if (reminingSeconds > 0) {
@@ -95,7 +95,7 @@ const handleCountDown = () => {
 // カウントを減らす
 const countDown = async (reminingSeconds: number) => {
   try {
-    await chrome.storage.sync.set({ reminingSeconds: reminingSeconds - 1 });
+    await chrome.storage.local.set({ reminingSeconds: reminingSeconds - 1 });
     await chrome.runtime.sendMessage({
       message: "countDown",
       secs: reminingSeconds,
@@ -124,7 +124,7 @@ const finish = async (currentPhase: Phase, pomodoros: number) => {
     reminingSeconds = 1500;
   }
   try {
-    await chrome.storage.sync.set({
+    await chrome.storage.local.set({
       reminingSeconds: reminingSeconds,
       phase: nextPhase,
       pomodoros: nextPomodoroCount,
