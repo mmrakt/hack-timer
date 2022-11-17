@@ -41,10 +41,6 @@ const Timer: React.FC<IProps> = (props) => {
         }
       }
     );
-    // const text = minutes + ":" + seconds;
-    // const color = phase === "focus" ? "#bb0000" : "#11aa11";
-    // await chrome.browserAction.setBadgeText({ text });
-    // await chrome.browserAction.setBadgeBackgroundColor({ color });
   }, []);
 
   const finish = () => {
@@ -67,7 +63,7 @@ const Timer: React.FC<IProps> = (props) => {
         <div className="w-48">
           <div className="flex gap-3">
             <button
-              className="text-lg bg-gray-700 px-2 py-1 rounded-md hover:bg-gray-600"
+              className="text-lg border-2 border-gray-200 px-2 py-1 rounded-md  hover:border-gray-300 hover:text-gray-300"
               onClick={finish}
             >
               Finish

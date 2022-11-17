@@ -1,16 +1,21 @@
 import { Phase, PopupMessage } from "../types/index";
 import keepAlive from "./keepAliveServiceWorker";
+import Time from "../utils/Time";
 
 let intervalId = 0;
 
 // installed event
 chrome.runtime.onInstalled.addListener(async () => {
+  const reminingSeconds = 1500;
+  const phase: Phase = "focus";
   await chrome.storage.local.set({
-    reminingSeconds: 1500,
-    phase: "focus",
+    reminingSeconds,
+    phase,
     isRunning: false,
     pomodoros: 0,
   });
+  await updateSecondsOfBadge(reminingSeconds);
+  await updateColorOfBadge(phase);
 });
 
 // shortcut key event
@@ -96,6 +101,7 @@ const handleCountDown = () => {
 const countDown = async (reminingSeconds: number) => {
   try {
     await chrome.storage.local.set({ reminingSeconds: reminingSeconds - 1 });
+    await updateSecondsOfBadge(reminingSeconds - 1);
     await chrome.runtime.sendMessage({
       message: "countDown",
       secs: reminingSeconds,
@@ -103,6 +109,21 @@ const countDown = async (reminingSeconds: number) => {
   } catch (e) {
     console.error(e);
   }
+};
+
+const updateSecondsOfBadge = async (reminingSeconds: number) => {
+  const { seconds, minutes } = Time.getTimeFromSeconds(reminingSeconds);
+  let formatSeconds = String(seconds);
+  if (seconds === 0) {
+    formatSeconds = "00";
+  }
+  const text = minutes + ":" + formatSeconds;
+  await chrome.action.setBadgeText({ text });
+};
+
+const updateColorOfBadge = async (phase: Phase) => {
+  const color = phase === "focus" ? "#0c4a6e" : "#374151";
+  await chrome.action.setBadgeBackgroundColor({ color });
 };
 
 // カウントダウンを終了する
@@ -130,6 +151,8 @@ const finish = async (currentPhase: Phase, pomodoros: number) => {
       pomodoros: nextPomodoroCount,
       isRunning: false,
     });
+    await updateSecondsOfBadge(reminingSeconds);
+    await updateColorOfBadge(nextPhase);
     await chrome.runtime.sendMessage({
       message: "finish",
       secs: reminingSeconds,
