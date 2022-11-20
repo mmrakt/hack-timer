@@ -1,4 +1,9 @@
-import { Phase, PopupMessage } from "../types/index";
+import {
+  Phase,
+  PopupMessage,
+  StorageValue,
+  DailyFocusedCount,
+} from "../types/index";
 import keepAlive from "./keepAliveServiceWorker";
 import Time from "../utils/Time";
 
@@ -12,7 +17,8 @@ chrome.runtime.onInstalled.addListener(async () => {
     reminingSeconds,
     phase,
     isRunning: false,
-    pomodoros: 0,
+    totalFocusedCountInSession: 0,
+    dailyFocusedCounts: [],
   });
   await updateSecondsOfBadge(reminingSeconds);
   await updateColorOfBadge(phase);
@@ -33,7 +39,12 @@ chrome.runtime.onMessage.addListener(
     switch (message) {
       case "mounted":
         chrome.storage.local.get(
-          ["reminingSeconds", "phase", "isRunning", "pomodoros"],
+          [
+            "reminingSeconds",
+            "phase",
+            "isRunning",
+            "totalFocusedCountInSession",
+          ],
           (result) => {
             sendResponse(result);
           }
@@ -44,8 +55,19 @@ chrome.runtime.onMessage.addListener(
         sendResponse();
         break;
       case "finish":
-        chrome.storage.local.get(["phase", "pomodoros"], async (result) => {
-          await finish(result.phase, result.pomodoros);
+        chrome.storage.local.get(
+          ["phase", "totalFocusedCountInSession", "dailyFocusedCounts"],
+          async (result) => {
+            await finish(
+              result.phase,
+              result.totalFocusedCountInSession,
+              result.dailyFocusedCounts
+            );
+          }
+        );
+      case "displayHistory":
+        chrome.storage.local.get(["dailyFocusedCounts"], (result) => {
+          sendResponse(result);
         });
     }
     return true;
@@ -57,8 +79,13 @@ const handleTimer = async () => {
   await keepAlive();
 
   await chrome.storage.local.get(
-    ["reminingSeconds", "phase", "isRunning", "pomodoros"],
-    async ({ reminingSeconds, phase, isRunning, pomodoros }) => {
+    ["reminingSeconds", "phase", "isRunning", "totalFocusedCountInSession"],
+    async ({
+      reminingSeconds,
+      phase,
+      isRunning,
+      totalFocusedCountInSession,
+    }) => {
       isRunning = isRunning ? false : true;
       try {
         await chrome.storage.local.set({
@@ -84,14 +111,24 @@ const toggleInterval = (isRunning: boolean) => {
 // running時は毎秒実行され、カウントを減らすか終了させるか判定
 const handleCountDown = () => {
   chrome.storage.local.get(
-    ["reminingSeconds", "phase", "pomodoros"],
-    async ({ reminingSeconds, phase, pomodoros }) => {
+    [
+      "reminingSeconds",
+      "phase",
+      "totalFocusedCountInSession",
+      "dailyFocusedCounts",
+    ],
+    async ({
+      reminingSeconds,
+      phase,
+      totalFocusedCountInSession,
+      dailyFocusedCounts,
+    }) => {
       if (reminingSeconds > 0) {
         await countDown(reminingSeconds);
       }
 
       if (reminingSeconds === 0) {
-        await finish(phase, pomodoros);
+        await finish(phase, totalFocusedCountInSession, dailyFocusedCounts);
       }
     }
   );
@@ -126,21 +163,25 @@ const updateColorOfBadge = async (phase: Phase) => {
   await chrome.action.setBadgeBackgroundColor({ color });
 };
 
-// カウントダウンを終了する
-const finish = async (currentPhase: Phase, pomodoros: number) => {
+const finish = async (
+  currentPhase: Phase,
+  totalFocusedCountInSession: number,
+  dailyFocusedCounts: DailyFocusedCount[]
+) => {
   let reminingSeconds = 0;
   let nextPhase: Phase = "focus";
-  let nextPomodoroCount = pomodoros;
+  let nextTotalFocusedCountInSession = totalFocusedCountInSession;
   if (currentPhase === "focus") {
-    if (pomodoros === 3) {
+    if (totalFocusedCountInSession === 3) {
       reminingSeconds = 1800;
-      nextPomodoroCount = 0;
+      nextTotalFocusedCountInSession = 0;
       nextPhase = "longBreak";
     } else {
       reminingSeconds = 300;
-      nextPomodoroCount++;
+      nextTotalFocusedCountInSession++;
       nextPhase = "shortBreak";
     }
+    dailyFocusedCounts = addTodayFocusedCount(dailyFocusedCounts);
   } else {
     reminingSeconds = 1500;
   }
@@ -148,8 +189,9 @@ const finish = async (currentPhase: Phase, pomodoros: number) => {
     await chrome.storage.local.set({
       reminingSeconds: reminingSeconds,
       phase: nextPhase,
-      pomodoros: nextPomodoroCount,
+      totalFocusedCountInSession: nextTotalFocusedCountInSession,
       isRunning: false,
+      dailyFocusedCounts,
     });
     await updateSecondsOfBadge(reminingSeconds);
     await updateColorOfBadge(nextPhase);
@@ -162,4 +204,30 @@ const finish = async (currentPhase: Phase, pomodoros: number) => {
   } catch (e) {
     console.error(e);
   }
+};
+
+const addTodayFocusedCount = (
+  dailyFocusedCounts: { date: string; count: number }[]
+) => {
+  let isAlreadyFocusedToay = false;
+  const today = formatDate(new Date());
+  for (const dailyFocusedCount of dailyFocusedCounts) {
+    if (dailyFocusedCount.date === today) {
+      dailyFocusedCount.count++;
+      isAlreadyFocusedToay = true;
+      break;
+    }
+  }
+  if (!isAlreadyFocusedToay) {
+    dailyFocusedCounts.push({
+      date: today,
+      count: 1,
+    });
+  }
+
+  return dailyFocusedCounts;
+};
+
+const formatDate = (d: any) => {
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 };

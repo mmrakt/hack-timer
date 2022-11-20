@@ -32,7 +32,15 @@ const Timer: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener(
-      ({ message, secs }: { message: string; secs: number; phase: Phase }) => {
+      ({
+        message,
+        secs,
+        phase,
+      }: {
+        message: string;
+        secs: number;
+        phase: Phase;
+      }) => {
         setSeconds(secs);
         if (message === "finish") {
           setSeconds(secs);
@@ -99,14 +107,15 @@ const Timer: React.FC<IProps> = (props) => {
 const App: React.FC = () => {
   const [reminingSeconds, setReminingSeconds] = useState<number | null>(null);
   const [currentPhase, setCurrentPhase] = useState<Phase>("focus");
-  const [pomodoros, setPomorodos] = useState<number>(0);
+  const [totalFocusedCountInSession, settotalFocusedCountInSession] =
+    useState<number>(0);
   const [isRunning, setIsRunning] = useState<boolean>(false);
 
   useEffect(() => {
     chrome.runtime.sendMessage("mounted", async (result: StorageValue) => {
       setReminingSeconds(result.reminingSeconds);
       setCurrentPhase(result.phase);
-      setPomorodos(result.pomodoros);
+      settotalFocusedCountInSession(result.totalFocusedCountInSession);
       setIsRunning(result.isRunning);
     });
   }, []);
