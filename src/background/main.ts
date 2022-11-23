@@ -1,11 +1,7 @@
-import {
-  Phase,
-  PopupMessage,
-  StorageValue,
-  DailyFocusedCount,
-} from "../types/index";
+import { Phase, PopupMessage, DailyFocusedCount } from "../types/index";
 import keepAlive from "./keepAliveServiceWorker";
 import Time from "../utils/Time";
+import dayjs from "dayjs";
 
 let intervalId = 0;
 
@@ -181,7 +177,7 @@ const finish = async (
       nextTotalFocusedCountInSession++;
       nextPhase = "shortBreak";
     }
-    dailyFocusedCounts = addTodayFocusedCount(dailyFocusedCounts);
+    dailyFocusedCounts = addDailyFocusedCount(dailyFocusedCounts);
   } else {
     reminingSeconds = 1500;
   }
@@ -206,28 +202,27 @@ const finish = async (
   }
 };
 
-const addTodayFocusedCount = (
-  dailyFocusedCounts: { date: string; count: number }[]
-) => {
-  let isAlreadyFocusedToay = false;
-  const today = formatDate(new Date());
-  for (const dailyFocusedCount of dailyFocusedCounts) {
-    if (dailyFocusedCount.date === today) {
-      dailyFocusedCount.count++;
-      isAlreadyFocusedToay = true;
-      break;
-    }
+const addDailyFocusedCount = (dailyFocusedCounts: DailyFocusedCount[]) => {
+  const today = dayjs();
+  const year = today.year();
+  const month = today.month();
+  const day = today.date();
+
+  const lastFocusedDate = dailyFocusedCounts.slice(-1)[0];
+  if (
+    lastFocusedDate.year === year &&
+    lastFocusedDate.month === month &&
+    lastFocusedDate.day === day
+  ) {
+    dailyFocusedCounts.slice(-1)[0].count++;
+    return dailyFocusedCounts;
   }
-  if (!isAlreadyFocusedToay) {
-    dailyFocusedCounts.push({
-      date: today,
-      count: 1,
-    });
-  }
+  dailyFocusedCounts.push({
+    year,
+    month,
+    day,
+    count: 1,
+  });
 
   return dailyFocusedCounts;
-};
-
-const formatDate = (d: any) => {
-  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 };
