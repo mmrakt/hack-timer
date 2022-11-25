@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import ArrowLeft from "../../components/svg/ArrowLeft";
 import { DisplayTerm, DailyFocusedCount, DataSet } from "../../types/index";
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from "recharts";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from "recharts";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { testData } from "../../testDate";
 import dayjs from "dayjs";
@@ -47,7 +54,6 @@ const History: React.FC<IProps> = ({ handleDisplayTimer }) => {
     const daysOfThisYear = dailyFocusedCounts.filter(
       (obj) => obj.year === today.year()
     );
-    // 月毎の合計実施数
     let monthlyTotalFocused: DailyFocusedCount[] = [];
     monthlyTotalFocused = daysOfThisYear.reduce((result, current) => {
       const element = result.find((p) => p.month === current.month);
@@ -93,17 +99,15 @@ const History: React.FC<IProps> = ({ handleDisplayTimer }) => {
     const paddedDays: DataSet = [];
     const numberDaysOfWeek = 7;
     const today = dayjs();
-    // 年と月が一致
     const lastMonth = dailyFocusedCounts.filter(
       (obj) => obj.year === today.year() && obj.month === today.month() + 1
     );
     const lastDaysOfMonth = lastMonth.map((obj) => {
       return obj.day;
     });
-    const day = today.day(); // 水曜は3
+    const day = today.day();
     for (let i = 1; i <= numberDaysOfWeek; i++) {
       const targetDate = today.subtract(day - i, "d").date();
-      // 現在の曜日より以前（当日分含む）
       if (i <= day) {
         const index = lastDaysOfMonth.indexOf(targetDate);
         if (index !== -1) {
@@ -156,15 +160,15 @@ const History: React.FC<IProps> = ({ handleDisplayTimer }) => {
 
   return (
     <>
-      <div className="flex display-start">
+      <div className="flex display-start mt-3 mx-3">
         <ArrowLeft handleClick={handleDisplayTimer} />
       </div>
-      <div className="flex bg-zinc-800 border-zinc-600 border-[1px] rounded-lg p-1">
+      <div className="mt-3 w-5/6 mx-auto flex bg-zinc-800 border-zinc-600 border-[1px] rounded-lg p-1">
         {terms.map((term) => (
           <button
             className={`${
               displayTerm === term ? "bg-zinc-700" : ""
-            } p-2 rounded-md flex-grow`}
+            } px-2 py-1 rounded-md flex-grow`}
             onClick={() => {
               setDisplayTerm(term);
             }}
@@ -180,12 +184,25 @@ const History: React.FC<IProps> = ({ handleDisplayTimer }) => {
       {!displayData.length ? (
         <LoadingSpinner />
       ) : (
-        <div className="mt-5 mx-auto">
-          <LineChart width={300} height={200} data={displayData}>
-            <Line type="monotone" dataKey="count" stroke="#8884d8" />
-            <CartesianGrid stroke="#ccc" />
+        <div className="my-5">
+          <LineChart
+            width={300}
+            height={200}
+            data={displayData}
+            margin={{ top: 0, left: 0, bottom: 0, right: 40 }}
+          >
+            <Line
+              type="monotone"
+              dataKey="count"
+              stroke="#8884d8"
+              dot={false}
+              activeDot={{ strokeWidth: 1 }}
+              isAnimationActive={false}
+            />
+            <CartesianGrid stroke="#ccc" strokeDasharray="1 1" />
             <XAxis dataKey="name" />
             <YAxis />
+            <Tooltip />
           </LineChart>
         </div>
       )}

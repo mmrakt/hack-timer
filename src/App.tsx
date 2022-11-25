@@ -68,7 +68,7 @@ const Timer: React.FC<IProps> = (props) => {
   switch (isDisplayPage) {
     case "timer":
       return (
-        <div className="w-48">
+        <div className="w-48 m-6">
           <div className="flex gap-3">
             <button
               className="text-lg border-2 border-gray-200 px-2 py-1 rounded-md  hover:border-gray-300 hover:text-gray-300"
@@ -123,7 +123,7 @@ const App: React.FC = () => {
   if (!reminingSeconds) return <div>...loading</div>;
 
   return (
-    <div className="p-6 bg-zinc-900 border-2 border-gray-700 rounded-lg">
+    <div className="bg-zinc-900 border-2 border-gray-700 text-zinc-100">
       <Timer
         reminingSeconds={reminingSeconds}
         phase={currentPhase}
