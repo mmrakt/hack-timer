@@ -23,7 +23,7 @@ chrome.runtime.onInstalled.addListener(async () => {
 // shortcut key event
 chrome.commands.onCommand.addListener(async (command) => {
   switch (command) {
-    case "toggleTimerStatus":
+    case "toggle_timer_status":
       await handleTimer();
       break;
   }
@@ -147,7 +147,7 @@ const countDown = async (reminingSeconds: number) => {
 const updateSecondsOfBadge = async (reminingSeconds: number) => {
   const { seconds, minutes } = Time.getTimeFromSeconds(reminingSeconds);
   let formatSeconds = String(seconds);
-  if (seconds === 0) {
+  if (formatSeconds.substring(0, 1) === "0") {
     formatSeconds = "00";
   }
   const text = minutes + ":" + formatSeconds;

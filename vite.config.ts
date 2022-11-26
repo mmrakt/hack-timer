@@ -18,9 +18,9 @@ const manifest = defineManifest({
   commands: {
     toggle_timer_status: {
       suggested_key: {
-        default: "Ctrl+Shift+1",
+        default: "MacCtrl+Shift+T",
       },
-      description: "toggle timer status",
+      description: "Toggle Pause/Resume",
     },
   },
 });
