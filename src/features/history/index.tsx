@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import ArrowLeft from "../../components/svg/ArrowLeft";
 import { DisplayTerm, DailyFocusedCount, DataSet } from "../../types/index";
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { testData } from "../../testDate";
@@ -16,6 +17,18 @@ import dayjs from "dayjs";
 type IProps = {
   handleDisplayTimer: () => void;
 };
+
+const pStyle = {
+  color: "#f4f4f4",
+};
+
+const divStyle = {
+  background: "#181818",
+  opacity: 0.9,
+  fontWeight: "bold",
+  border: "solid 1px #353a45",
+};
+
 const History: React.FC<IProps> = ({ handleDisplayTimer }) => {
   const [displayData, setDisplayData] = useState<DataSet>([]);
   const [displayTerm, setDisplayTerm] = useState<DisplayTerm>("week");
@@ -79,14 +92,14 @@ const History: React.FC<IProps> = ({ handleDisplayTimer }) => {
         const index = focusedMonths.indexOf(i);
         if (index !== -1) {
           paddedMonths.push({
-            name: monthlyTotalFocused[index].month,
+            name: String(monthlyTotalFocused[index].month),
             count: monthlyTotalFocused[index].count,
           });
           continue;
         }
       }
       paddedMonths.push({
-        name: i,
+        name: String(i),
         count: 0,
       });
     }
@@ -112,14 +125,14 @@ const History: React.FC<IProps> = ({ handleDisplayTimer }) => {
         const index = lastDaysOfMonth.indexOf(targetDate);
         if (index !== -1) {
           paddedDays.push({
-            name: lastMonth[index].day,
+            name: String(lastMonth[index].day),
             count: lastMonth[index].count,
           });
           continue;
         }
       }
       paddedDays.push({
-        name: today.add(i - day, "day").date(),
+        name: String(today.add(i - day, "day").date()),
         count: 0,
       });
     }
@@ -144,20 +157,22 @@ const History: React.FC<IProps> = ({ handleDisplayTimer }) => {
         const index = lastDaysOfMonth.indexOf(i);
         if (index !== -1) {
           paddedDays.push({
-            name: lastMonth[index].day,
+            name:
+              String(today.month() + 1) + "/" + String(lastMonth[index].day),
             count: lastMonth[index].count,
           });
           continue;
         }
       }
       paddedDays.push({
-        name: i,
+        name: String(today.month() + 1) + "/" + String(i),
         count: 0,
       });
     }
     return paddedDays;
   };
 
+  console.log(displayData);
   return (
     <>
       <div className="flex display-start mt-3 mx-3">
@@ -185,25 +200,28 @@ const History: React.FC<IProps> = ({ handleDisplayTimer }) => {
         <LoadingSpinner />
       ) : (
         <div className="my-5">
-          <LineChart
-            width={300}
-            height={200}
-            data={displayData}
-            margin={{ top: 0, left: 0, bottom: 0, right: 40 }}
-          >
-            <Line
-              type="monotone"
-              dataKey="count"
-              stroke="#8884d8"
-              dot={false}
-              activeDot={{ strokeWidth: 1 }}
-              isAnimationActive={false}
-            />
-            <CartesianGrid stroke="#ccc" strokeDasharray="1 1" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-          </LineChart>
+          <ResponsiveContainer width={500} height={200}>
+            <BarChart
+              data={displayData}
+              margin={{ top: 0, left: 0, bottom: 0, right: 40 }}
+            >
+              <CartesianGrid stroke="#353a45" strokeDasharray="3 3" />
+              <XAxis dataKey="name" label="name" />
+              <YAxis />
+              <Bar
+                type="monotone"
+                dataKey="count"
+                stroke="#8884d8"
+                fill="#8884d8"
+                isAnimationActive={false}
+              />
+              <Tooltip
+                cursor={{ fill: "transparent" }}
+                contentStyle={divStyle}
+                labelStyle={pStyle}
+              />
+            </BarChart>
+          </ResponsiveContainer>
         </div>
       )}
     </>
