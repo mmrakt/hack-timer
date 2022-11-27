@@ -2,6 +2,12 @@ export type Response = {
   id: string;
 };
 
+export type ReminingSeconds = {
+  focus: 1500;
+  shortBreak: 300;
+  longBreak: 1800;
+};
+
 export type Phase = "focus" | "shortBreak" | "longBreak";
 
 export type PageType = "timer" | "history" | "setting";
@@ -23,7 +29,12 @@ export type StorageValue = {
 
 export type StorageKey = keyof StorageValue;
 
-export type PopupMessage =
+export type FromServiceWorkerMessge =
+  | "countDown"
+  | "toggleTimerStatus"
+  | "finish";
+
+export type FromPopupMessge =
   | "mounted"
   | "toggleTimerStatus"
   | "finish"

@@ -1,13 +1,14 @@
-import { Phase, PopupMessage, DailyFocusedCount } from "../types/index";
+import { Phase, FromPopupMessge, DailyFocusedCount } from "../types/index";
 import keepAlive from "./keepAliveServiceWorker";
 import Time from "../utils/Time";
 import dayjs from "dayjs";
+import { REMINING_SECONDS } from "../consts/index";
 
 let intervalId = 0;
 
 // installed event
 chrome.runtime.onInstalled.addListener(async () => {
-  const reminingSeconds = 1500;
+  const reminingSeconds = REMINING_SECONDS["focus"];
   const phase: Phase = "focus";
   await chrome.storage.local.set({
     reminingSeconds,
@@ -24,27 +25,19 @@ chrome.runtime.onInstalled.addListener(async () => {
 chrome.commands.onCommand.addListener(async (command) => {
   switch (command) {
     case "toggle_timer_status":
-      await handleTimer();
+      await handleTimer(true);
       break;
   }
 });
 
 // popup event
 chrome.runtime.onMessage.addListener(
-  (message: PopupMessage, sender, sendResponse) => {
+  (message: FromPopupMessge, sender, sendResponse) => {
     switch (message) {
       case "mounted":
-        chrome.storage.local.get(
-          [
-            "reminingSeconds",
-            "phase",
-            "isRunning",
-            "totalFocusedCountInSession",
-          ],
-          (result) => {
-            sendResponse(result);
-          }
-        );
+        chrome.storage.local.get(["reminingSeconds", "isRunning"], (result) => {
+          sendResponse(result);
+        });
         break;
       case "toggleTimerStatus":
         handleTimer();
@@ -71,7 +64,7 @@ chrome.runtime.onMessage.addListener(
 );
 
 // ステータスの切り替えとインターバルの管理
-const handleTimer = async () => {
+const handleTimer = async (needSendMessage = false) => {
   await keepAlive();
 
   await chrome.storage.local.get(
@@ -82,12 +75,19 @@ const handleTimer = async () => {
       isRunning,
       totalFocusedCountInSession,
     }) => {
-      isRunning = isRunning ? false : true;
+      const toggledTimerStatus = isRunning ? false : true;
       try {
         await chrome.storage.local.set({
-          isRunning,
+          isRunning: toggledTimerStatus,
         });
-        toggleInterval(isRunning);
+
+        toggleInterval(toggledTimerStatus);
+        if (needSendMessage) {
+          await chrome.runtime.sendMessage({
+            message: "toggleTimerStatus",
+            toggledTimerStatus,
+          });
+        }
       } catch (e) {
         console.error(e);
       }
@@ -137,7 +137,7 @@ const countDown = async (reminingSeconds: number) => {
     await updateSecondsOfBadge(reminingSeconds - 1);
     await chrome.runtime.sendMessage({
       message: "countDown",
-      secs: reminingSeconds,
+      secs: reminingSeconds - 1,
     });
   } catch (e) {
     console.error(e);
@@ -169,17 +169,17 @@ const finish = async (
   let nextTotalFocusedCountInSession = totalFocusedCountInSession;
   if (currentPhase === "focus") {
     if (totalFocusedCountInSession === 3) {
-      reminingSeconds = 1800;
+      reminingSeconds = REMINING_SECONDS["longBreak"];
       nextTotalFocusedCountInSession = 0;
       nextPhase = "longBreak";
     } else {
-      reminingSeconds = 300;
+      reminingSeconds = REMINING_SECONDS["shortBreak"];
       nextTotalFocusedCountInSession++;
       nextPhase = "shortBreak";
     }
     dailyFocusedCounts = addDailyFocusedCount(dailyFocusedCounts);
   } else {
-    reminingSeconds = 1500;
+    reminingSeconds = REMINING_SECONDS["focus"];
   }
   try {
     await chrome.storage.local.set({
@@ -208,14 +208,16 @@ const addDailyFocusedCount = (dailyFocusedCounts: DailyFocusedCount[]) => {
   const month = today.month();
   const day = today.date();
 
-  const lastFocusedDate = dailyFocusedCounts.slice(-1)[0];
-  if (
-    lastFocusedDate.year === year &&
-    lastFocusedDate.month === month &&
-    lastFocusedDate.day === day
-  ) {
-    dailyFocusedCounts.slice(-1)[0].count++;
-    return dailyFocusedCounts;
+  const lastFocusedDate = dailyFocusedCounts.slice(-1);
+  if (lastFocusedDate.length) {
+    if (
+      lastFocusedDate[0].year === year &&
+      lastFocusedDate[0].month === month &&
+      lastFocusedDate[0].day === day
+    ) {
+      dailyFocusedCounts.slice(-1)[0].count++;
+      return dailyFocusedCounts;
+    }
   }
   dailyFocusedCounts.push({
     year,

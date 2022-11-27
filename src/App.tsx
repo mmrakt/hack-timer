@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import History from "./features/history/index";
-import { Phase, PageType, StorageValue } from "./types/index";
+import {
+  Phase,
+  PageType,
+  StorageValue,
+  FromServiceWorkerMessge,
+} from "./types/index";
 import ChartIcon from "./components/svg/Chart";
 import PauseIcon from "./components/svg/Pause";
 import PlayIcon from "./components/svg/Play";
@@ -10,7 +15,6 @@ import Time from "./utils/Time";
 
 type IProps = {
   reminingSeconds: number;
-  phase: Phase;
   isRunning: boolean;
 };
 
@@ -18,7 +22,6 @@ const Timer: React.FC<IProps> = (props) => {
   const [isDisplayPage, setIsDisplayPage] = useState<PageType>("timer");
   const [seconds, setSeconds] = useState<number>(props.reminingSeconds);
   const [isRunning, setIsRunning] = useState<boolean>(props.isRunning);
-  const [phase, setPhase] = useState<Phase>(props.phase);
   const { seconds: displaySeconds, minutes: displayMinutes } =
     Time.getTimeFromSeconds(seconds);
 
@@ -35,17 +38,19 @@ const Timer: React.FC<IProps> = (props) => {
       ({
         message,
         secs,
-        phase,
+        toggledTimerStatus,
       }: {
-        message: string;
+        message: FromServiceWorkerMessge;
         secs: number;
-        phase: Phase;
+        toggledTimerStatus: boolean;
       }) => {
-        setSeconds(secs);
-        if (message === "finish") {
+        if (message === "countDown") {
           setSeconds(secs);
-          setPhase(phase);
+        } else if (message === "finish") {
+          setSeconds(secs);
           setIsRunning(false);
+        } else if (message === "toggleTimerStatus") {
+          setIsRunning(toggledTimerStatus);
         }
       }
     );
@@ -106,16 +111,11 @@ const Timer: React.FC<IProps> = (props) => {
 
 const App: React.FC = () => {
   const [reminingSeconds, setReminingSeconds] = useState<number | null>(null);
-  const [currentPhase, setCurrentPhase] = useState<Phase>("focus");
-  const [totalFocusedCountInSession, settotalFocusedCountInSession] =
-    useState<number>(0);
   const [isRunning, setIsRunning] = useState<boolean>(false);
 
   useEffect(() => {
     chrome.runtime.sendMessage("mounted", async (result: StorageValue) => {
       setReminingSeconds(result.reminingSeconds);
-      setCurrentPhase(result.phase);
-      settotalFocusedCountInSession(result.totalFocusedCountInSession);
       setIsRunning(result.isRunning);
     });
   }, []);
@@ -124,11 +124,7 @@ const App: React.FC = () => {
 
   return (
     <div className="bg-zinc-900 border-2 border-gray-700 text-zinc-100">
-      <Timer
-        reminingSeconds={reminingSeconds}
-        phase={currentPhase}
-        isRunning={isRunning}
-      />
+      <Timer reminingSeconds={reminingSeconds} isRunning={isRunning} />
     </div>
   );
 };
