@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-import History from "./features/history/index";
+import History from "./History";
 import {
   Phase,
   PageType,
   StorageValue,
   FromServiceWorkerMessge,
-} from "./types/index";
-import ChartIcon from "./components/svg/Chart";
-import PauseIcon from "./components/svg/Pause";
-import PlayIcon from "./components/svg/Play";
-import Digit from "./components/Degit";
+} from "../types/index";
+import ChartIcon from "../components/svg/Chart";
+import PauseIcon from "../components/svg/Pause";
+import PlayIcon from "../components/svg/Play";
+import Digit from "../components/Degit";
 import "./styles/globals.css";
-import Time from "./utils/Time";
+import Time from "../utils/Time";
 
 type IProps = {
   reminingSeconds: number;
@@ -109,7 +109,7 @@ const Timer: React.FC<IProps> = (props) => {
   }
 };
 
-const App: React.FC = () => {
+const Popup: React.FC = () => {
   const [reminingSeconds, setReminingSeconds] = useState<number | null>(null);
   const [isRunning, setIsRunning] = useState<boolean>(false);
 
@@ -129,4 +129,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default Popup;

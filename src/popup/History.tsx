@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import ArrowLeft from "../../components/svg/ArrowLeft";
-import { DisplayTerm, DailyFocusedCount, DataSet } from "../../types/index";
+import ArrowLeft from "../components/svg/ArrowLeft";
+import { DisplayTerm, DailyFocusedCount, DataSet } from "../types/index";
 import {
   BarChart,
   Bar,
@@ -10,8 +10,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import LoadingSpinner from "../../components/LoadingSpinner";
-import { testData } from "../../testDate";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { testData } from "../utils/testDate";
 import dayjs from "dayjs";
 
 type IProps = {
