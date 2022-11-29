@@ -8,7 +8,7 @@ const manifest = defineManifest({
   version: "0.0.1",
   description: "discription",
   action: {
-    default_popup: "index.html",
+    default_popup: "popup.html",
   },
   background: {
     service_worker: "src/background/main.ts",
@@ -23,8 +23,18 @@ const manifest = defineManifest({
       description: "Toggle Pause/Resume",
     },
   },
+  options_page: "options.html",
 });
 
 export default defineConfig({
+  build: {
+    emptyOutDir: true,
+    outDir: "build",
+    rollupOptions: {
+      output: {
+        chunkFileNames: "assets/chunk-[hash].js",
+      },
+    },
+  },
   plugins: [react(), crx({ manifest })],
 });
