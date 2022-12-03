@@ -50,7 +50,8 @@ chrome.runtime.onMessage.addListener(
             await finish(
               result.phase,
               result.totalFocusedCountInSession,
-              result.dailyFocusedCounts
+              result.dailyFocusedCounts,
+              false
             );
           }
         );
@@ -162,7 +163,8 @@ const updateColorOfBadge = async (phase: Phase) => {
 const finish = async (
   currentPhase: Phase,
   totalFocusedCountInSession: number,
-  dailyFocusedCounts: DailyFocusedCount[]
+  dailyFocusedCounts: DailyFocusedCount[],
+  isAuto = true
 ) => {
   let reminingSeconds = 0;
   let nextPhase: Phase = "focus";
@@ -196,6 +198,10 @@ const finish = async (
       secs: reminingSeconds,
       phase: nextPhase,
     });
+
+    if (isAuto) {
+      await createTab();
+    }
     toggleInterval(false);
   } catch (e) {
     console.error(e);
@@ -227,4 +233,11 @@ const addDailyFocusedCount = (dailyFocusedCounts: DailyFocusedCount[]) => {
   });
 
   return dailyFocusedCounts;
+};
+
+const createTab = async () => {
+  console.log("here");
+  await chrome.tabs.create({
+    url: "options.html",
+  });
 };
