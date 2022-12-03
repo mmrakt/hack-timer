@@ -60,12 +60,12 @@ const Timer: React.FC<IProps> = (props) => {
     chrome.runtime.sendMessage("finish", async () => {});
   };
   const pause = () => {
-    chrome.runtime.sendMessage("toggleTimerStatus", async () => {
+    chrome.runtime.sendMessage("pauseTimer", async () => {
       setIsRunning(false);
     });
   };
   const resume = () => {
-    chrome.runtime.sendMessage("toggleTimerStatus", async () => {
+    chrome.runtime.sendMessage("resumeTimer", async () => {
       setIsRunning(true);
     });
   };

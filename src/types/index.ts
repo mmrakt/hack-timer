@@ -36,7 +36,8 @@ export type FromServiceWorkerMessge =
 
 export type FromPopupMessge =
   | "mounted"
-  | "toggleTimerStatus"
+  | "resumeTimer"
+  | "pauseTimer"
   | "finish"
   | "displayHistory";
 

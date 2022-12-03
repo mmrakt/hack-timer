@@ -39,8 +39,12 @@ chrome.runtime.onMessage.addListener(
           sendResponse(result);
         });
         break;
-      case "toggleTimerStatus":
-        handleTimer();
+      case "resumeTimer":
+        resumeTimer();
+        sendResponse();
+        break;
+      case "pauseTimer":
+        pauseTimer();
         sendResponse();
         break;
       case "finish":
@@ -70,23 +74,17 @@ const handleTimer = async (needSendMessage = false) => {
 
   await chrome.storage.local.get(
     ["reminingSeconds", "phase", "isRunning", "totalFocusedCountInSession"],
-    async ({
-      reminingSeconds,
-      phase,
-      isRunning,
-      totalFocusedCountInSession,
-    }) => {
-      const toggledTimerStatus = isRunning ? false : true;
+    async ({ isRunning }) => {
       try {
-        await chrome.storage.local.set({
-          isRunning: toggledTimerStatus,
-        });
-
-        toggleInterval(toggledTimerStatus);
+        if (isRunning) {
+          pauseTimer();
+        } else {
+          resumeTimer();
+        }
         if (needSendMessage) {
           await chrome.runtime.sendMessage({
             message: "toggleTimerStatus",
-            toggledTimerStatus,
+            toggledTimerStatus: !isRunning,
           });
         }
       } catch (e) {
@@ -94,6 +92,16 @@ const handleTimer = async (needSendMessage = false) => {
       }
     }
   );
+};
+
+const resumeTimer = () => {
+  chrome.storage.local.set({ isRunning: true });
+  toggleInterval(true);
+};
+
+const pauseTimer = () => {
+  chrome.storage.local.set({ isRunning: false });
+  toggleInterval(false);
 };
 
 const toggleInterval = (isRunning: boolean) => {
@@ -199,7 +207,7 @@ const finish = async (
       phase: nextPhase,
     });
 
-    if (isAuto) {
+    if (isAuto && currentPhase === "focus") {
       await createTab();
     }
     toggleInterval(false);
@@ -236,7 +244,6 @@ const addDailyFocusedCount = (dailyFocusedCounts: DailyFocusedCount[]) => {
 };
 
 const createTab = async () => {
-  console.log("here");
   await chrome.tabs.create({
     url: "options.html",
   });
