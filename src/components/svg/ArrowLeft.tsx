@@ -1,6 +1,6 @@
-type IProps = {
-  handleClick: () => void;
-};
+interface IProps {
+  handleClick: () => void
+}
 
 const ArrowLeft: React.FC<IProps> = ({ handleClick }) => {
   return (
@@ -20,7 +20,7 @@ const ArrowLeft: React.FC<IProps> = ({ handleClick }) => {
         />
       </svg>
     </button>
-  );
-};
+  )
+}
 
-export default ArrowLeft;
+export default ArrowLeft

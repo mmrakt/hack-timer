@@ -1,22 +1,22 @@
-let lifeline: chrome.runtime.Port | null;
+let lifeline: chrome.runtime.Port | null
 
 chrome.runtime.onConnect.addListener((port) => {
-  if (port.name === "keepAlive") {
-    lifeline = port;
-    setTimeout(keepAliveForced, 60000);
-    port.onDisconnect.addListener(keepAliveForced);
+  if (port.name === 'keepAlive') {
+    lifeline = port
+    setTimeout(keepAliveForced, 60000)
+    port.onDisconnect.addListener(keepAliveForced)
   }
-});
+})
 
-function keepAliveForced() {
-  lifeline?.disconnect();
-  lifeline = null;
-  keepAlive();
+const keepAliveForced = async (): Promise<void> => {
+  lifeline?.disconnect()
+  lifeline = null
+  await keepAlive()
 }
 
-const keepAlive = async () => {
-  if (lifeline) return;
-  chrome.runtime.connect({ name: "keepAlive" });
-};
+const keepAlive = async (): Promise<void> => {
+  if (lifeline != null) return
+  chrome.runtime.connect({ name: 'keepAlive' })
+}
 
-export default keepAlive;
+export default keepAlive

@@ -1,22 +1,16 @@
-import React from "react";
-import "../styles/globals.css";
+import React from 'react'
+import '../styles/globals.css'
 
 const Options: React.FC = () => {
-  const onStartBreak = async () => {
-    await chrome.runtime.sendMessage("resumeTimer", () => {});
-    let queryOptions = { active: true, lastFocusedWindow: true };
-    await chrome.tabs.query(queryOptions).then(([tab]) => {
+  const onStartBreak = async (): Promise<void> => {
+    await chrome.runtime.sendMessage('resumeTimer', () => {})
+    const queryOptions = { active: true, lastFocusedWindow: true }
+    await chrome.tabs.query(queryOptions).then(async ([tab]) => {
       if (tab.id) {
-        chrome.tabs.remove(tab.id);
+        await chrome.tabs.remove(tab.id)
       }
-    });
-  };
-
-  const getCurrentTabId = async () => {
-    let queryOptions = { active: true, lastFocusedWindow: true };
-    let [tab] = await chrome.tabs.query(queryOptions);
-    return tab.id;
-  };
+    })
+  }
 
   return (
     <div className="text-zinc-100 p-20">
@@ -32,7 +26,7 @@ const Options: React.FC = () => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Options;
+export default Options

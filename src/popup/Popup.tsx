@@ -1,77 +1,72 @@
-import { useState, useEffect } from "react";
-import History from "./History";
-import {
-  Phase,
-  PageType,
-  StorageValue,
-  FromServiceWorkerMessge,
-} from "../types/index";
-import ChartIcon from "../components/svg/Chart";
-import PauseIcon from "../components/svg/Pause";
-import PlayIcon from "../components/svg/Play";
-import Digit from "../components/Degit";
-import "../styles/globals.css";
-import Time from "../utils/Time";
+import { useState, useEffect } from 'react'
+import History from './History'
+import { PageType, StorageValue, FromServiceWorkerMessge } from '../types/index'
+import ChartIcon from '../components/svg/Chart'
+import PauseIcon from '../components/svg/Pause'
+import PlayIcon from '../components/svg/Play'
+import Digit from '../components/Degit'
+import '../styles/globals.css'
+import { getTimeFromSeconds } from '../utils/Time'
 
-type IProps = {
-  reminingSeconds: number;
-  isRunning: boolean;
-};
+interface IProps {
+  reminingSeconds: number
+  isRunning: boolean
+}
 
 const Timer: React.FC<IProps> = (props) => {
-  const [isDisplayPage, setIsDisplayPage] = useState<PageType>("timer");
-  const [seconds, setSeconds] = useState<number>(props.reminingSeconds);
-  const [isRunning, setIsRunning] = useState<boolean>(props.isRunning);
+  const [isDisplayPage, setIsDisplayPage] = useState<PageType>('timer')
+  const [seconds, setSeconds] = useState<number>(props.reminingSeconds)
+  const [isRunning, setIsRunning] = useState<boolean>(props.isRunning)
   const { seconds: displaySeconds, minutes: displayMinutes } =
-    Time.getTimeFromSeconds(seconds);
+    getTimeFromSeconds(seconds)
 
-  const onDisplayHistory = () => {
-    setIsDisplayPage("history");
-  };
+  const onDisplayHistory = (): void => {
+    setIsDisplayPage('history')
+  }
 
-  const onDisplayTimer = () => {
-    setIsDisplayPage("timer");
-  };
+  const onDisplayTimer = (): void => {
+    setIsDisplayPage('timer')
+  }
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener(
       ({
         message,
         secs,
-        toggledTimerStatus,
+        toggledTimerStatus
       }: {
-        message: FromServiceWorkerMessge;
-        secs: number;
-        toggledTimerStatus: boolean;
+        message: FromServiceWorkerMessge
+        secs: number
+        toggledTimerStatus: boolean
       }) => {
-        if (message === "countDown") {
-          setSeconds(secs);
-        } else if (message === "finish") {
-          setSeconds(secs);
-          setIsRunning(false);
-        } else if (message === "toggleTimerStatus") {
-          setIsRunning(toggledTimerStatus);
+        if (message === 'countDown') {
+          setSeconds(secs)
+        } else if (message === 'finish') {
+          setSeconds(secs)
+          setIsRunning(false)
+        } else if (message === 'toggleTimerStatus') {
+          setIsRunning(toggledTimerStatus)
         }
       }
-    );
-  }, []);
+    )
+  }, [])
 
-  const finish = () => {
-    chrome.runtime.sendMessage("finish", async () => {});
-  };
-  const pause = () => {
-    chrome.runtime.sendMessage("pauseTimer", async () => {
-      setIsRunning(false);
-    });
-  };
-  const resume = () => {
-    chrome.runtime.sendMessage("resumeTimer", async () => {
-      setIsRunning(true);
-    });
-  };
+  const finish = (): void => {
+    chrome.runtime.sendMessage('finish', async () => {})
+  }
+  const pause = (): void => {
+    chrome.runtime.sendMessage('pauseTimer', async () => {
+      setIsRunning(false)
+    })
+  }
+  const resume = (): void => {
+    chrome.runtime.sendMessage('resumeTimer', async () => {
+      setIsRunning(true)
+    })
+  }
 
   switch (isDisplayPage) {
-    case "timer":
+    case 'timer':
       return (
         <div className="w-48 m-6">
           <div className="flex gap-3">
@@ -101,32 +96,32 @@ const Timer: React.FC<IProps> = (props) => {
             )}
           </div>
         </div>
-      );
-    case "history":
-      return <History handleDisplayTimer={onDisplayTimer} />;
-    case "setting":
-      return <>setting</>;
+      )
+    case 'history':
+      return <History handleDisplayTimer={onDisplayTimer} />
+    case 'setting':
+      return <>setting</>
   }
-};
+}
 
 const Popup: React.FC = () => {
-  const [reminingSeconds, setReminingSeconds] = useState<number | null>(null);
-  const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [reminingSeconds, setReminingSeconds] = useState<number | null>(null)
+  const [isRunning, setIsRunning] = useState<boolean>(false)
 
   useEffect(() => {
-    chrome.runtime.sendMessage("mounted", async (result: StorageValue) => {
-      setReminingSeconds(result.reminingSeconds);
-      setIsRunning(result.isRunning);
-    });
-  }, []);
+    chrome.runtime.sendMessage('mounted', async (result: StorageValue) => {
+      setReminingSeconds(result.reminingSeconds)
+      setIsRunning(result.isRunning)
+    })
+  }, [])
 
-  if (!reminingSeconds) return <div>...loading</div>;
+  if (!reminingSeconds) return <div>...loading</div>
 
   return (
     <div className="bg-zinc-900 border-2 border-gray-700 text-zinc-100">
       <Timer reminingSeconds={reminingSeconds} isRunning={isRunning} />
     </div>
-  );
-};
+  )
+}
 
-export default Popup;
+export default Popup
