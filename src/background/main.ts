@@ -205,16 +205,17 @@ const finish = async (
     })
     await updateSecondsOfBadge(reminingSeconds)
     await updateColorOfBadge(nextPhase)
+
+    if (isAuto && currentPhase === 'focus') {
+      createTab()
+    }
+    toggleInterval(false)
+    // popup非表示時はここで止まってしまうため最後に実行する
     await chrome.runtime.sendMessage({
       message: 'finish',
       secs: reminingSeconds,
       phase: nextPhase
     })
-
-    if (isAuto && currentPhase === 'focus') {
-      await createTab()
-    }
-    toggleInterval(false)
   } catch (e) {
     console.error(e)
   }
@@ -249,8 +250,8 @@ const addDailyFocusedCount = (
   return dailyFocusedCounts
 }
 
-const createTab = async (): Promise<void> => {
-  await chrome.tabs.create({
+const createTab = (): void => {
+  chrome.tabs.create({
     url: 'options.html'
   })
 }
