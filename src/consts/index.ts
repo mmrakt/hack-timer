@@ -1,9 +1,9 @@
 import { Phase } from '../types'
 
 export const REMINING_SECONDS: {
-  [T in Phase]: number;
+  [T in Phase]: number
 } = {
-  focus: 5,
+  focus: 10,
   shortBreak: 6,
   longBreak: 1800
 }

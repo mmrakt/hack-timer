@@ -17,6 +17,7 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': 0,
     '@typescript-eslint/strict-boolean-expressions': 0,
     '@typescript-eslint/indent': 0,
+    '@typescript-eslint/no-floating-promises': 0,
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'multiline-ternary': 0

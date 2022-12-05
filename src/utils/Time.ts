@@ -14,4 +14,10 @@ const getTimeFromSeconds = (
   }
 }
 
-export { getTimeFromSeconds }
+const formatDisplayTime = (seconds: number, minutes: number): string => {
+  const formatSeconds = seconds >= 10 ? String(seconds) : '0' + String(seconds)
+  const formatMinutes = minutes >= 10 ? String(minutes) : '0' + String(minutes)
+  return `${formatMinutes}:${formatSeconds}`
+}
+
+export { getTimeFromSeconds, formatDisplayTime }

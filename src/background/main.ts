@@ -1,5 +1,5 @@
 import { Phase, FromPopupMessge, DailyFocusedCount } from '../types/index'
-import { getTimeFromSeconds } from '../utils/Time'
+import { formatDisplayTime, getTimeFromSeconds } from '../utils/Time'
 import dayjs from 'dayjs'
 import {
   REMINING_SECONDS,
@@ -37,7 +37,7 @@ chrome.commands.onCommand.addListener(async (command) => {
 
 // popup event
 chrome.runtime.onMessage.addListener(
-  async (message: FromPopupMessge, sender, sendResponse) => {
+  (message: FromPopupMessge, sender, sendResponse) => {
     switch (message) {
       case 'mounted':
         chrome.storage.local.get(['reminingSeconds', 'isRunning'], (result) => {
@@ -45,18 +45,18 @@ chrome.runtime.onMessage.addListener(
         })
         break
       case 'resumeTimer':
-        await resumeTimer()
+        resumeTimer()
         sendResponse()
         break
       case 'pauseTimer':
-        await pauseTimer()
+        pauseTimer()
         sendResponse()
         break
       case 'finish':
         chrome.storage.local.get(
           ['phase', 'totalFocusedCountInSession', 'dailyFocusedCounts'],
           async (result) => {
-            await finish(
+            finish(
               result.phase,
               result.totalFocusedCountInSession,
               result.dailyFocusedCounts,
@@ -162,12 +162,9 @@ const countDown = async (reminingSeconds: number): Promise<void> => {
 
 const updateSecondsOfBadge = async (reminingSeconds: number): Promise<void> => {
   const { seconds, minutes } = getTimeFromSeconds(reminingSeconds)
-  let formatSeconds = String(seconds)
-  if (formatSeconds.substring(0, 1) === '0') {
-    formatSeconds = '00'
-  }
-  const text = `${minutes}:${formatSeconds}`
-  await chrome.action.setBadgeText({ text })
+  await chrome.action.setBadgeText({
+    text: formatDisplayTime(seconds, minutes)
+  })
 }
 
 const updateColorOfBadge = async (phase: Phase): Promise<void> => {

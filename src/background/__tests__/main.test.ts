@@ -36,7 +36,7 @@ describe('service worker', () => {
       secs: expected.reminingSeconds,
       phase: expected.phase
     }
-    const expectedBadgeText = '0:6'
+    const expectedBadgeText = '00:06'
     const expectedBadgeBackgroundColor = BREAK_BADGE_COLOR_CODE
 
     await finish('focus', 0, [])
@@ -73,7 +73,7 @@ describe('service worker', () => {
       secs: expected.reminingSeconds,
       phase: expected.phase
     }
-    const expectedBadgeText = '0:5'
+    const expectedBadgeText = '00:10'
     const expectedBadgeBackgroundColor = FOCUS_BADGE_COLOR_CODE
 
     await finish('shortBreak', 1, [

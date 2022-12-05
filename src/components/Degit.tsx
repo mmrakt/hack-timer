@@ -1,6 +1,6 @@
-const Digit: React.FC<{ value: number }> = ({ value }) => {
-  const leftDigit = value >= 10 ? value.toString()[0] : '0'
-  const rightDigit = value >= 10 ? value.toString()[1] : value.toString()
+const Digit: React.FC<{ count: number }> = ({ count }) => {
+  const leftDigit = count >= 10 ? count.toString()[0] : '0'
+  const rightDigit = count >= 10 ? count.toString()[1] : count.toString()
   return (
     <>
       <span className="">{leftDigit}</span>

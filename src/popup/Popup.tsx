@@ -81,8 +81,8 @@ const Timer: React.FC<IProps> = (props) => {
             </button>
           </div>
           <div className="mt-3 text-6xl w-36 mx-auto">
-            <Digit value={displayMinutes} />:
-            <Digit value={displaySeconds} />
+            <Digit count={displayMinutes} />:
+            <Digit count={displaySeconds} />
           </div>
           <div className="flex justify-center mt-3">
             {isRunning ? (
