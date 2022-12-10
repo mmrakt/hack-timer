@@ -22,5 +22,5 @@ module.exports = {
     'react/prop-types': 'off',
     'multiline-ternary': 0
   },
-  ignorePatterns: ['src/vite-env.d.ts', 'jest.config.ts']
+  ignorePatterns: ['src/vite-env.d.ts', 'jest.config.ts', 'vite.config.ts']
 }

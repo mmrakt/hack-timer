@@ -47,13 +47,12 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && yarn test"
     }
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "eslint --ext .ts,.tsx ./src/",
-      "yarn test"
+      "eslint --ext .ts,.tsx ./src/"
     ]
   }
 }
