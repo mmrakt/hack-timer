@@ -16,6 +16,31 @@ describe('service worker', () => {
   afterEach(() => {
     MockDate.reset()
   })
+  it('resume', async () => {
+    const listenerSpy = jest.fn()
+    const sendResponseSpy = jest.fn()
+    const message = 'resume'
+
+    chrome.runtime.onMessage.addListener(listenerSpy)
+    chrome.runtime.onMessage.callListeners(message, {}, sendResponseSpy)
+
+    expect(listenerSpy).toBeCalledWith(message, {}, sendResponseSpy)
+    expect(chrome.storage.local.set).toBeCalledWith({ isRunning: true })
+    expect(chrome.tabs.query).toBeCalled()
+  })
+
+  it.only('pause', async () => {
+    const listenerSpy = jest.fn()
+    const sendResponseSpy = jest.fn()
+    const message = 'pause'
+
+    chrome.runtime.onMessage.addListener(listenerSpy)
+    chrome.runtime.onMessage.callListeners(message, {}, sendResponseSpy)
+
+    expect(listenerSpy).toBeCalledWith(message, {}, sendResponseSpy)
+    expect(chrome.storage.local.set).toBeCalledWith({ isRunning: false })
+  })
+
   it('finish first focus', async () => {
     const expected = {
       reminingSeconds: REMINING_SECONDS.shortBreak,

@@ -5,7 +5,8 @@ import {
   REMINING_SECONDS,
   FOCUS_COUNT_UNTIL_LONG_BREAK,
   FOCUS_BADGE_COLOR_CODE,
-  BREAK_BADGE_COLOR_CODE
+  BREAK_BADGE_COLOR_CODE,
+  START_BREAK_HTML_PATH
 } from '../consts/index'
 import keepAlive from './KeepAliveServiceWorker'
 
@@ -258,16 +259,13 @@ const createTab = (): void => {
 }
 
 const closeTabs = async (): Promise<void> => {
-  await chrome.tabs.query(
-    { url: 'chrome-extension://*/start-break.html' },
-    async (result) => {
-      result.forEach(async (tab) => {
-        if (tab.id) {
-          await chrome.tabs.remove(tab.id)
-        }
-      })
-    }
-  )
+  await chrome.tabs.query({ url: START_BREAK_HTML_PATH }, async (result) => {
+    result.forEach(async (tab) => {
+      if (tab.id) {
+        await chrome.tabs.remove(tab.id)
+      }
+    })
+  })
 }
 
 export { finish }
