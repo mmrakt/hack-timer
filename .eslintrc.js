@@ -18,9 +18,15 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 0,
     '@typescript-eslint/indent': 0,
     '@typescript-eslint/no-floating-promises': 0,
+    '@typescript-eslint/no-unused-vars': 1,
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'multiline-ternary': 0
   },
-  ignorePatterns: ['src/vite-env.d.ts', 'jest.config.ts', 'vite.config.ts']
+  ignorePatterns: [
+    'src/vite-env.d.ts',
+    'jest.config.ts',
+    'jest.setup.ts',
+    'vite.config.ts'
+  ]
 }

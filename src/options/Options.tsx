@@ -1,16 +1,30 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../styles/globals.css'
 
 const Options: React.FC = () => {
   const onStartBreak = async (): Promise<void> => {
-    await chrome.runtime.sendMessage('resumeTimer', () => {})
+    await chrome.runtime.sendMessage('resumeTimer')
     const queryOptions = { active: true, lastFocusedWindow: true }
-    await chrome.tabs.query(queryOptions).then(async ([tab]) => {
-      if (tab.id) {
-        await chrome.tabs.remove(tab.id)
+    await chrome.tabs.query(queryOptions, async ([result]) => {
+      if (result.id) {
+        await chrome.tabs.remove(result.id)
       }
     })
   }
+
+  const onKeyDown = (e: KeyboardEvent): void => {
+    if (e.key === 'Enter') {
+      onStartBreak()
+    }
+  }
+
+  useEffect(() => {
+    document.body.addEventListener('keydown', onKeyDown)
+
+    return () => {
+      document.body.removeEventListener('keydown', onKeyDown)
+    }
+  }, [])
 
   return (
     <div className="text-zinc-100 p-20">
