@@ -35,9 +35,9 @@ export type FromServiceWorkerMessge =
   | 'finish'
 
 export type FromPopupMessge =
-  | 'mounted'
-  | 'resumeTimer'
-  | 'pauseTimer'
+  | 'displayPopup'
+  | 'resume'
+  | 'pause'
   | 'finish'
   | 'displayHistory'
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import '../styles/globals.css'
 
-const Options: React.FC = () => {
+const StartBreak: React.FC = () => {
   const onStartBreak = async (): Promise<void> => {
     await chrome.runtime.sendMessage('resumeTimer')
     const queryOptions = { active: true, lastFocusedWindow: true }
@@ -43,4 +43,4 @@ const Options: React.FC = () => {
   )
 }
 
-export default Options
+export default StartBreak

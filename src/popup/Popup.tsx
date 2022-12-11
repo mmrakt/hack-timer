@@ -55,12 +55,12 @@ const Timer: React.FC<IProps> = (props) => {
     chrome.runtime.sendMessage('finish', async () => {})
   }
   const pause = (): void => {
-    chrome.runtime.sendMessage('pauseTimer', async () => {
+    chrome.runtime.sendMessage('pause', async () => {
       setIsRunning(false)
     })
   }
   const resume = (): void => {
-    chrome.runtime.sendMessage('resumeTimer', async () => {
+    chrome.runtime.sendMessage('resume', async () => {
       setIsRunning(true)
     })
   }
@@ -109,7 +109,7 @@ const Popup: React.FC = () => {
   const [isRunning, setIsRunning] = useState<boolean>(false)
 
   useEffect(() => {
-    chrome.runtime.sendMessage('mounted', async (result: StorageValue) => {
+    chrome.runtime.sendMessage('displayPopup', async (result: StorageValue) => {
       setReminingSeconds(result.reminingSeconds)
       setIsRunning(result.isRunning)
     })

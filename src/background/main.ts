@@ -39,16 +39,17 @@ chrome.commands.onCommand.addListener(async (command) => {
 chrome.runtime.onMessage.addListener(
   (message: FromPopupMessge, sender, sendResponse) => {
     switch (message) {
-      case 'mounted':
+      case 'displayPopup':
         chrome.storage.local.get(['reminingSeconds', 'isRunning'], (result) => {
           sendResponse(result)
         })
         break
-      case 'resumeTimer':
+      case 'resume':
         resumeTimer()
+        closeTabs()
         sendResponse()
         break
-      case 'pauseTimer':
+      case 'pause':
         pauseTimer()
         sendResponse()
         break
@@ -252,8 +253,21 @@ const addDailyFocusedCount = (
 
 const createTab = (): void => {
   chrome.tabs.create({
-    url: 'options.html'
+    url: 'start-break.html'
   })
+}
+
+const closeTabs = async (): Promise<void> => {
+  await chrome.tabs.query(
+    { url: 'chrome-extension://*/start-break.html' },
+    async (result) => {
+      result.forEach(async (tab) => {
+        if (tab.id) {
+          await chrome.tabs.remove(tab.id)
+        }
+      })
+    }
+  )
 }
 
 export { finish }
