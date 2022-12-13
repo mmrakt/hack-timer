@@ -3,7 +3,7 @@ import '../styles/globals.css'
 
 const StartBreak: React.FC = () => {
   const onStartBreak = async (): Promise<void> => {
-    await chrome.runtime.sendMessage('resumeTimer')
+    await chrome.runtime.sendMessage('resume')
     const queryOptions = { active: true, lastFocusedWindow: true }
     await chrome.tabs.query(queryOptions, async ([result]) => {
       if (result.id) {

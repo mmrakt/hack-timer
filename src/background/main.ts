@@ -1,4 +1,10 @@
-import { Phase, FromPopupMessge, DailyFocusedCount } from '../types/index'
+import {
+  Phase,
+  FromPopupMessge,
+  DailyFocusedCount,
+  StorageKey,
+  StorageValue
+} from '../types/index'
 import { formatDisplayTime, getTimeFromSeconds } from '../utils/Time'
 import dayjs from 'dayjs'
 import {
@@ -16,7 +22,7 @@ let intervalId = 0
 chrome.runtime.onInstalled.addListener(async () => {
   const reminingSeconds = REMINING_SECONDS.focus
   const phase: Phase = 'focus'
-  await chrome.storage.local.set({
+  setStorage({
     reminingSeconds,
     phase,
     isRunning: false,
@@ -41,8 +47,8 @@ chrome.runtime.onMessage.addListener(
   (message: FromPopupMessge, sender, sendResponse) => {
     switch (message) {
       case 'displayPopup':
-        chrome.storage.local.get(['reminingSeconds', 'isRunning'], (result) => {
-          sendResponse(result)
+        getStorage(['reminingSeconds', 'isRunning']).then((data) => {
+          sendResponse(data)
         })
         break
       case 'resume':
@@ -55,21 +61,22 @@ chrome.runtime.onMessage.addListener(
         sendResponse()
         break
       case 'finish':
-        chrome.storage.local.get(
-          ['phase', 'totalFocusedCountInSession', 'dailyFocusedCounts'],
-          async (result) => {
-            finish(
-              result.phase,
-              result.totalFocusedCountInSession,
-              result.dailyFocusedCounts,
-              false
-            )
-          }
-        )
+        getStorage([
+          'phase',
+          'totalFocusedCountInSession',
+          'dailyFocusedCounts'
+        ]).then((data: StorageValue) => {
+          finish(
+            data.phase,
+            data.totalFocusedCountInSession,
+            data.dailyFocusedCounts,
+            false
+          )
+        })
         break
       case 'displayHistory':
-        chrome.storage.local.get(['dailyFocusedCounts'], (result) => {
-          sendResponse(result)
+        getStorage(['dailyFocusedCounts']).then((data) => {
+          sendResponse(data)
         })
         break
     }
@@ -81,35 +88,37 @@ chrome.runtime.onMessage.addListener(
 const handleTimer = async (needSendMessage = false): Promise<void> => {
   await keepAlive()
 
-  await chrome.storage.local.get(
-    ['reminingSeconds', 'phase', 'isRunning', 'totalFocusedCountInSession'],
-    async ({ isRunning }) => {
-      try {
-        if (isRunning) {
-          await pauseTimer()
-        } else {
-          await resumeTimer()
-        }
-        if (needSendMessage) {
-          await chrome.runtime.sendMessage({
-            message: 'toggleTimerStatus',
-            toggledTimerStatus: !isRunning
-          })
-        }
-      } catch (e) {
-        console.error(e)
+  getStorage([
+    'reminingSeconds',
+    'phase',
+    'isRunning',
+    'totalFocusedCountInSession'
+  ]).then(async (data: StorageValue) => {
+    try {
+      if (data.isRunning) {
+        await pauseTimer()
+      } else {
+        await resumeTimer()
       }
+      if (needSendMessage) {
+        await chrome.runtime.sendMessage({
+          message: 'toggleTimerStatus',
+          toggledTimerStatus: !data.isRunning
+        })
+      }
+    } catch (e) {
+      console.error(e)
     }
-  )
+  })
 }
 
 const resumeTimer = async (): Promise<void> => {
-  await chrome.storage.local.set({ isRunning: true })
+  setStorage({ isRunning: true })
   toggleInterval(true)
 }
 
 const pauseTimer = async (): Promise<void> => {
-  await chrome.storage.local.set({ isRunning: false })
+  setStorage({ isRunning: false })
   toggleInterval(false)
 }
 
@@ -124,34 +133,30 @@ const toggleInterval = (isRunning: boolean): void => {
 
 // running時は毎秒実行され、カウントを減らすか終了させるか判定
 const handleCountDown = (): void => {
-  chrome.storage.local.get(
-    [
-      'reminingSeconds',
-      'phase',
-      'totalFocusedCountInSession',
-      'dailyFocusedCounts'
-    ],
-    async ({
-      reminingSeconds,
-      phase,
-      totalFocusedCountInSession,
-      dailyFocusedCounts
-    }) => {
-      if (reminingSeconds > 0) {
-        await countDown(reminingSeconds)
-      }
-
-      if (reminingSeconds === 0) {
-        await finish(phase, totalFocusedCountInSession, dailyFocusedCounts)
-      }
+  getStorage([
+    'reminingSeconds',
+    'phase',
+    'totalFocusedCountInSession',
+    'dailyFocusedCounts'
+  ]).then(async (data: StorageValue) => {
+    if (data.reminingSeconds > 0) {
+      await countDown(data.reminingSeconds)
     }
-  )
+
+    if (data.reminingSeconds === 0) {
+      await finish(
+        data.phase,
+        data.totalFocusedCountInSession,
+        data.dailyFocusedCounts
+      )
+    }
+  })
 }
 
 // カウントを減らす
 const countDown = async (reminingSeconds: number): Promise<void> => {
   try {
-    await chrome.storage.local.set({ reminingSeconds: reminingSeconds - 1 })
+    setStorage({ reminingSeconds: reminingSeconds - 1 })
     await updateSecondsOfBadge(reminingSeconds - 1)
     await chrome.runtime.sendMessage({
       message: 'countDown',
@@ -198,7 +203,7 @@ const finish = async (
     reminingSeconds = REMINING_SECONDS.focus
   }
   try {
-    await chrome.storage.local.set({
+    setStorage({
       reminingSeconds,
       phase: nextPhase,
       totalFocusedCountInSession,
@@ -265,6 +270,27 @@ const closeTabs = async (): Promise<void> => {
         await chrome.tabs.remove(tab.id)
       }
     })
+  })
+}
+
+// const sendMessage = async (
+//   message: FromPopupMessge,
+//   options?: any
+// ): Promise<void> => {
+//   await chrome.runtime.sendMessage(message, options)
+// }
+
+const getStorage = async (keys: StorageKey[]): Promise<any> => {
+  return await new Promise((resolve) => {
+    chrome.storage.local.get(keys, (data) => {
+      resolve(data)
+    })
+  })
+}
+
+const setStorage = async (value: Partial<StorageValue>): Promise<void> => {
+  await new Promise((resolve) => {
+    chrome.storage.local.set(value)
   })
 }
 
