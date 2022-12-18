@@ -2,7 +2,6 @@ import {
   Phase,
   FromPopupMessge,
   DailyFocusedCount,
-  StorageKey,
   StorageValue
 } from '../types/index'
 import { formatDisplayTime, getTimeFromSeconds } from '../utils/Time'
@@ -15,26 +14,36 @@ import {
   START_BREAK_HTML_PATH
 } from '../consts/index'
 import keepAlive from './KeepAliveServiceWorker'
+import {
+  action,
+  commands,
+  getStorage,
+  runtime,
+  setStorage,
+  tabs
+} from './Chrome'
 
 let intervalId = 0
 
-// installed event
-chrome.runtime.onInstalled.addListener(async () => {
+runtime.onInstalled.addListener(async () => {
   const reminingSeconds = REMINING_SECONDS.focus
   const phase: Phase = 'focus'
-  setStorage({
-    reminingSeconds,
-    phase,
-    isRunning: false,
-    totalFocusedCountInSession: 0,
-    dailyFocusedCounts: []
-  })
+  const buckets = getStorage(['reminingSeconds'])
+  if (!buckets) {
+    setStorage({
+      reminingSeconds,
+      phase,
+      isRunning: false,
+      totalFocusedCountInSession: 0,
+      dailyFocusedCounts: []
+    })
+  }
   await updateSecondsOfBadge(reminingSeconds)
   await updateColorOfBadge(phase)
 })
 
 // shortcut key event
-chrome.commands.onCommand.addListener(async (command) => {
+commands.onCommand.addListener(async (command) => {
   switch (command) {
     case 'toggle_timer_status':
       await handleTimer(true)
@@ -43,7 +52,7 @@ chrome.commands.onCommand.addListener(async (command) => {
 })
 
 // popup event
-chrome.runtime.onMessage.addListener(
+runtime.onMessage.addListener(
   (message: FromPopupMessge, sender, sendResponse) => {
     switch (message) {
       case 'displayPopup':
@@ -101,7 +110,7 @@ const handleTimer = async (needSendMessage = false): Promise<void> => {
         await resumeTimer()
       }
       if (needSendMessage) {
-        await chrome.runtime.sendMessage({
+        await runtime.sendMessage({
           message: 'toggleTimerStatus',
           toggledTimerStatus: !data.isRunning
         })
@@ -158,7 +167,7 @@ const countDown = async (reminingSeconds: number): Promise<void> => {
   try {
     setStorage({ reminingSeconds: reminingSeconds - 1 })
     await updateSecondsOfBadge(reminingSeconds - 1)
-    await chrome.runtime.sendMessage({
+    await runtime.sendMessage({
       message: 'countDown',
       secs: reminingSeconds - 1
     })
@@ -169,7 +178,7 @@ const countDown = async (reminingSeconds: number): Promise<void> => {
 
 const updateSecondsOfBadge = async (reminingSeconds: number): Promise<void> => {
   const { seconds, minutes } = getTimeFromSeconds(reminingSeconds)
-  await chrome.action.setBadgeText({
+  await action.setBadgeText({
     text: formatDisplayTime(seconds, minutes)
   })
 }
@@ -177,7 +186,7 @@ const updateSecondsOfBadge = async (reminingSeconds: number): Promise<void> => {
 const updateColorOfBadge = async (phase: Phase): Promise<void> => {
   const color =
     phase === 'focus' ? FOCUS_BADGE_COLOR_CODE : BREAK_BADGE_COLOR_CODE
-  await chrome.action.setBadgeBackgroundColor({ color })
+  await action.setBadgeBackgroundColor({ color })
 }
 
 const finish = async (
@@ -218,7 +227,7 @@ const finish = async (
     }
     toggleInterval(false)
     // popup非表示時はここで止まってしまうため最後に実行する
-    await chrome.runtime.sendMessage({
+    await runtime.sendMessage({
       message: 'finish',
       secs: reminingSeconds,
       phase: nextPhase
@@ -258,39 +267,18 @@ const addDailyFocusedCount = (
 }
 
 const createTab = (): void => {
-  chrome.tabs.create({
+  tabs.create({
     url: 'start-break.html'
   })
 }
 
 const closeTabs = async (): Promise<void> => {
-  await chrome.tabs.query({ url: START_BREAK_HTML_PATH }, async (result) => {
+  await tabs.query({ url: START_BREAK_HTML_PATH }, async (result) => {
     result.forEach(async (tab) => {
       if (tab.id) {
-        await chrome.tabs.remove(tab.id)
+        await tabs.remove(tab.id)
       }
     })
-  })
-}
-
-// const sendMessage = async (
-//   message: FromPopupMessge,
-//   options?: any
-// ): Promise<void> => {
-//   await chrome.runtime.sendMessage(message, options)
-// }
-
-const getStorage = async (keys: StorageKey[]): Promise<any> => {
-  return await new Promise((resolve) => {
-    chrome.storage.local.get(keys, (data) => {
-      resolve(data)
-    })
-  })
-}
-
-const setStorage = async (value: Partial<StorageValue>): Promise<void> => {
-  await new Promise((resolve) => {
-    chrome.storage.local.set(value)
   })
 }
 

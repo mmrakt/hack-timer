@@ -29,7 +29,7 @@ describe('service worker', () => {
     expect(chrome.tabs.query).toBeCalled()
   })
 
-  it.only('pause', async () => {
+  it('pause', async () => {
     const listenerSpy = jest.fn()
     const sendResponseSpy = jest.fn()
     const message = 'pause'
