@@ -15,31 +15,33 @@ import {
 } from '../consts/index'
 import keepAlive from './KeepAliveServiceWorker'
 import {
-  action,
-  commands,
-  getStorage,
   runtime,
+  getStorage,
   setStorage,
+  commands,
+  action,
   tabs
 } from './Chrome'
 
 let intervalId = 0
 
+const initialStorageValue: StorageValue = {
+  reminingSeconds: REMINING_SECONDS.focus,
+  phase: 'focus',
+  isRunning: false,
+  totalFocusedCountInSession: 0,
+  dailyFocusedCounts: []
+}
+
 runtime.onInstalled.addListener(async () => {
-  const reminingSeconds = REMINING_SECONDS.focus
-  const phase: Phase = 'focus'
-  const buckets = getStorage(['reminingSeconds'])
-  if (!buckets) {
-    setStorage({
-      reminingSeconds,
-      phase,
-      isRunning: false,
-      totalFocusedCountInSession: 0,
-      dailyFocusedCounts: []
-    })
-  }
-  await updateSecondsOfBadge(reminingSeconds)
-  await updateColorOfBadge(phase)
+  getStorage(['reminingSeconds']).then((data) => {
+    if (!data?.reminingSeconds) {
+      setStorage(initialStorageValue)
+    }
+  })
+
+  await updateSecondsOfBadge(initialStorageValue.reminingSeconds)
+  await updateColorOfBadge(initialStorageValue.phase)
 })
 
 // shortcut key event
