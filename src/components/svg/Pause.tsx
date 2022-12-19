@@ -1,4 +1,4 @@
-const PauseIcon: React.FC = () => {
+const Pause: React.FC = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,4 +17,4 @@ const PauseIcon: React.FC = () => {
   )
 }
 
-export default PauseIcon
+export default Pause

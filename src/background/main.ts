@@ -21,7 +21,7 @@ import {
   commands,
   action,
   tabs
-} from './Chrome'
+} from './chrome'
 
 let intervalId = 0
 

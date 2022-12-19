@@ -1,4 +1,4 @@
-const PlayIcon: React.FC = () => {
+const Play: React.FC = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,4 +17,4 @@ const PlayIcon: React.FC = () => {
   )
 }
 
-export default PlayIcon
+export default Play

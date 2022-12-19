@@ -14,10 +14,6 @@ import LoadingSpinner from '../components/LoadingSpinner'
 import { testData } from '../utils/testDate'
 import dayjs from 'dayjs'
 
-interface IProps {
-  handleDisplayTimer: () => void
-}
-
 const pStyle = {
   color: '#f4f4f4'
 }
@@ -29,7 +25,9 @@ const divStyle = {
   border: 'solid 1px #353a45'
 }
 
-const History: React.FC<IProps> = ({ handleDisplayTimer }) => {
+const History: React.FC<{ handleDisplayTimer: () => void }> = ({
+  handleDisplayTimer
+}) => {
   const [displayData, setDisplayData] = useState<DataSet>([])
   const [displayTerm, setDisplayTerm] = useState<DisplayTerm>('week')
   const terms: DisplayTerm[] = ['week', 'month', 'year']
