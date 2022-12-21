@@ -14,6 +14,7 @@ import {
   START_BREAK_HTML_PATH
 } from '../consts/index'
 import keepAlive from './KeepAliveServiceWorker'
+import { testData } from '../utils/testDate'
 import {
   runtime,
   getStorage,
@@ -30,7 +31,7 @@ const initialStorageValue: StorageValue = {
   phase: 'focus',
   isRunning: false,
   totalFocusedCountInSession: 0,
-  dailyFocusedCounts: []
+  dailyFocusedCounts: testData // 開発用
 }
 
 runtime.onInstalled.addListener(async () => {

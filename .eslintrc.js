@@ -19,6 +19,7 @@ module.exports = {
     '@typescript-eslint/indent': 0,
     '@typescript-eslint/no-floating-promises': 0,
     '@typescript-eslint/no-unused-vars': 1,
+    '@typescript-eslint/consistent-type-definitions': 0,
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'multiline-ternary': 0
