@@ -1,21 +1,21 @@
 import {
   BOM_ARRAY,
-  EXPORT_CSV_COLUMN_COUNT,
-  EXPORT_CSV_FILE_NAME
+  HISTORY_CSV_COLUMN_COUNT,
+  HISTORY_CSV_FILE_NAME,
+  HISTORY_CSV_HEADER_ARRAY
 } from '../consts'
 import { DailyFocusedCount } from '../types'
-import { EXPORT_CSV_HEADER_ARRAY } from '../consts/index'
 
 const createBlobData = (dailyFocusedCounts: DailyFocusedCount[]): string => {
-  const header = EXPORT_CSV_HEADER_ARRAY.join(',') + '\n'
+  const header = HISTORY_CSV_HEADER_ARRAY.join(',') + '\n'
 
   let joinedData = ''
   dailyFocusedCounts.forEach((row) => {
     let joinedRow = ''
-    for (let i = 0; i < EXPORT_CSV_COLUMN_COUNT; i++) {
+    for (let i = 0; i < HISTORY_CSV_COLUMN_COUNT; i++) {
       const values = Object.values(row)
       joinedRow += values[i] !== null ? String(values[i]) : ''
-      if (i === EXPORT_CSV_COLUMN_COUNT - 1) {
+      if (i === HISTORY_CSV_COLUMN_COUNT - 1) {
         joinedRow += '\n'
       } else {
         joinedRow += ','
@@ -31,9 +31,23 @@ const downloadCsv = (blobData: string): void => {
   const blob = new Blob([bom, blobData], { type: 'text/csv' })
   const link = document.createElement('a')
   link.href = URL.createObjectURL(blob)
-  console.log(link.href)
-  link.download = EXPORT_CSV_FILE_NAME
+  link.download = HISTORY_CSV_FILE_NAME
   link.click()
 }
 
-export { createBlobData, downloadCsv }
+const readCsv = async (uploadFile: File): Promise<any> => {
+  try {
+    return await new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = async (f) => {
+        const content = f?.target?.result
+        resolve(content)
+      }
+      if (uploadFile) reader.readAsText(uploadFile)
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export { createBlobData, downloadCsv, readCsv }

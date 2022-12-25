@@ -11,6 +11,7 @@ const getStorage = async (keys: StorageKey[]): Promise<any> => {
 }
 
 const setStorage = async (value: Partial<StorageValue>): Promise<void> => {
+  console.log(value)
   await new Promise((resolve) => {
     storage.local.set(value)
   })

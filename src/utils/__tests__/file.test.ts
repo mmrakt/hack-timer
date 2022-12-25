@@ -1,5 +1,5 @@
 import { DailyFocusedCount } from '../../types/index'
-import { createBlobData, downloadCsv } from '../csvExport'
+import { createBlobData, downloadCsv } from '../file'
 import { EXPORT_CSV_FILE_NAME } from '../../consts/index'
 describe('Option page', () => {
   const expectedData =
