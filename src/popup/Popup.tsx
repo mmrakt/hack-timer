@@ -7,7 +7,7 @@ import Play from '../components/svg/Play'
 import Digit from '../components/Degit'
 import '../styles/globals.css'
 import { getTimeFromSeconds } from '../utils/Time'
-import Settings from './Settings'
+import { Settings } from './Settings'
 import Cogwheel from '../components/svg/Cogwheel'
 
 interface IProps {
