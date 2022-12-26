@@ -1,15 +1,14 @@
 // import the original type declarations
-import 'i18next'
-import * as jaTransration from 'locales/ja'
-import * as enTransration from 'locales/en'
+import 'react-i18next'
+import * as ja from 'locales/ja'
+import * as en from 'locales/en'
 
-translation as jaTransration
-declare module 'i18next' {
+declare module 'react-i18next' {
   interface CustomTypeOptions {
     defaultNS: 'ja'
     resources: {
-      ja: typeof jaTransration
-      en: typeof enTransration
+      ja: typeof ja
+      en: typeof en
     }
   }
 }

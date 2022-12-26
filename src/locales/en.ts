@@ -1,5 +1,9 @@
 const translation = {
-  translation: {}
+  settings: {
+    import: {
+      confirm: 'continue?'
+    }
+  }
 }
 
 export { translation }

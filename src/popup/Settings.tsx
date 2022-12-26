@@ -11,6 +11,7 @@ import {
   IMPORT_CSV_BUTTON_TEXT
 } from '../consts/index'
 import SettingButton from '../components/SettingButton'
+import { useTranslation } from 'react-i18next'
 
 const createBlobData = (dailyFocusedCounts: DailyFocusedCount[]): string => {
   const header = HISTORY_CSV_HEADER_ARRAY.join(',') + '\n'
@@ -75,6 +76,7 @@ const createStorageValue = (content: string): DailyFocusedCount[] => {
 const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
   handleDisplayTimer
 }) => {
+  const { t } = useTranslation()
   const handleExport = (): void => {
     getStorage(['dailyFocusedCounts']).then(
       (dailyFocusedCounts: DailyFocusedCount[]) => {
@@ -118,6 +120,7 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
         <ArrowLeft handleClick={handleDisplayTimer} />
       </div>
       <div className="text-lg">
+        {t('settings.import.confirm')}
         <SettingButton
           handleClick={handleExport}
           text={EXPORT_CSV_BUTTON_TEXT}
