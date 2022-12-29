@@ -13,6 +13,9 @@ import {
 import LoadingSpinner from '../components/LoadingSpinner'
 import { testData } from '../utils/testDate'
 import dayjs from 'dayjs'
+import EllipsisHorizontal from '../components/svg/EllipsisHorizontal'
+import Dropdown from '../components/Dropdown'
+import { DropdownMenu } from '../components/history/DropdownMenu'
 
 const pStyle = {
   color: '#f4f4f4'
@@ -170,11 +173,13 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
     return paddedDays
   }
 
-  console.log(displayData)
   return (
     <>
       <div className="flex display-start mt-3 mx-3">
         <ArrowLeft handleClick={handleDisplayTimer} />
+        <span className="ml-auto">
+          <Dropdown target={<EllipsisHorizontal />} menu={<DropdownMenu />} />
+        </span>
       </div>
       <div className="mt-3 w-5/6 mx-auto flex bg-zinc-800 border-zinc-600 border-[1px] rounded-lg p-1">
         {terms.map((term) => (

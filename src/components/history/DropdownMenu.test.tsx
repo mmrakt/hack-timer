@@ -5,11 +5,11 @@ import {
 } from '../../consts/index'
 import { DailyFocusedCount } from '../../types'
 import {
-  Settings,
+  DropdownMenu,
   createBlobData,
-  downloadCsv,
-  createStorageValue
-} from '../Settings'
+  createStorageValue,
+  downloadCsv
+} from './DropdownMenu'
 
 describe('Settings', () => {
   const csvData = 'year,month,day,count\n2022,12,1,10\n2022,12,3,5\n2022,12,4,3'
@@ -44,8 +44,7 @@ describe('Settings', () => {
   })
 
   it('click export button', () => {
-    const mockFn = jest.fn()
-    const renderResult = render(<Settings handleDisplayTimer={mockFn} />)
+    const renderResult = render(<DropdownMenu />)
 
     fireEvent.click(renderResult.getByText(EXPORT_CSV_BUTTON_TEXT))
     expect(chrome.storage.local.get).toBeCalled()

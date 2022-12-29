@@ -1,7 +1,7 @@
 const translation = {
   settings: {
     import: {
-      confirm: 'continue?'
+      confirm: 'Upload history?'
     }
   }
 }
