@@ -21,8 +21,11 @@ import {
   setStorage,
   commands,
   action,
-  tabs
+  tabs,
+  notifications
 } from './chrome'
+import '../utils/i18n'
+import i18next from 'i18next'
 
 let intervalId = 0
 
@@ -226,7 +229,8 @@ const finish = async (
     await updateColorOfBadge(nextPhase)
 
     if (isAuto && currentPhase === 'focus') {
-      createTab()
+      // openNewTab()
+      createNotification()
     }
     toggleInterval(false)
     // popup非表示時はここで止まってしまうため最後に実行する
@@ -269,7 +273,7 @@ const addDailyFocusedCount = (
   return dailyFocusedCounts
 }
 
-const createTab = (): void => {
+const openNewTab = (): void => {
   tabs.create({
     url: 'start-break.html'
   })
@@ -282,6 +286,15 @@ const closeTabs = async (): Promise<void> => {
         await tabs.remove(tab.id)
       }
     })
+  })
+}
+
+const createNotification = async (): Promise<void> => {
+  notifications.create({
+    title: i18next.t('notifications.title'),
+    message: i18next.t('notifications.message'),
+    type: 'basic',
+    iconUrl: 'assets/img/kawauso.webp'
   })
 }
 

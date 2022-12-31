@@ -3,13 +3,11 @@ import { DailyFocusedCount, Phase } from '../types'
 export const REMINING_SECONDS: {
   [T in Phase]: number
 } = {
-  focus: 10,
+  focus: 5,
   shortBreak: 6,
   longBreak: 1800
 }
 
-export const EXPORT_CSV_BUTTON_TEXT = 'Export History'
-export const IMPORT_CSV_BUTTON_TEXT = 'Import History'
 export const FOCUS_COUNT_UNTIL_LONG_BREAK = 4
 
 export const HISTORY_CSV_COLUMN_COUNT = 4

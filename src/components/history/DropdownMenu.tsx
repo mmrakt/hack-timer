@@ -1,11 +1,9 @@
 import { getStorage, setStorage } from '../../background/chrome'
 import {
   BOM_ARRAY,
-  EXPORT_CSV_BUTTON_TEXT,
   HISTORY_CSV_COLUMN_COUNT,
   HISTORY_CSV_FILE_NAME,
-  HISTORY_CSV_HEADER_ARRAY,
-  IMPORT_CSV_BUTTON_TEXT
+  HISTORY_CSV_HEADER_ARRAY
 } from '../../consts'
 import { DailyFocusedCount } from '../../types'
 import { useTranslation } from 'react-i18next'
@@ -92,7 +90,7 @@ const DropdownMenu: React.FC = () => {
         const target = e?.target as HTMLInputElement
         const file = target.files ? target.files[0] : null
         if (file) {
-          const message = t('settings.import.confirm')
+          const message = t('history.import.confirmMessage')
           if (!confirm(message)) {
             return
           }
@@ -111,10 +109,10 @@ const DropdownMenu: React.FC = () => {
   return (
     <>
       <button className={style} onClick={handleExport}>
-        {EXPORT_CSV_BUTTON_TEXT}
+        {t('history.export.buttonText')}
       </button>
       <button className={style} onClick={handleOnChange}>
-        {IMPORT_CSV_BUTTON_TEXT}
+        {t('history.import.buttonText')}
       </button>
     </>
   )

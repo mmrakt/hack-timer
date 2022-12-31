@@ -14,7 +14,7 @@ const manifest = defineManifest({
     service_worker: 'src/background/main.ts',
     type: 'module'
   },
-  permissions: ['storage', 'tabs'],
+  permissions: ['storage', 'tabs', 'notifications'],
   commands: {
     toggle_timer_status: {
       suggested_key: {
@@ -27,6 +27,7 @@ const manifest = defineManifest({
 })
 
 export default defineConfig({
+  publicDir: 'public',
   build: {
     emptyOutDir: true,
     outDir: 'build',

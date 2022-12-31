@@ -33,6 +33,7 @@ export type FromServiceWorkerMessge =
   | 'countDown'
   | 'toggleTimerStatus'
   | 'finish'
+  | 'playTimerSound'
 
 export type FromPopupMessge =
   | 'displayPopup'
