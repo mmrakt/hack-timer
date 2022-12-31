@@ -34,7 +34,14 @@ const initialStorageValue: StorageValue = {
   phase: 'focus',
   isRunning: false,
   totalFocusedCountInSession: 0,
-  dailyFocusedCounts: testData // 開発用
+  dailyFocusedCounts: testData, // 開発用
+  showNewTabNotificationWhenPomodoro: true,
+  showNewTabNotificationWhenBreak: true,
+  showDesktopNotificationWhenPomodoro: false,
+  showDesktopNotificationWhenBreak: false,
+  pomodoroLength: 25,
+  breakLength: 5,
+  longBreakLength: 30
 }
 
 runtime.onInstalled.addListener(async () => {
@@ -210,8 +217,8 @@ const finish = async (
       totalFocusedCountInSession = 0
       nextPhase = 'longBreak'
     } else {
-      reminingSeconds = REMINING_SECONDS.shortBreak
-      nextPhase = 'shortBreak'
+      reminingSeconds = REMINING_SECONDS.break
+      nextPhase = 'break'
     }
     dailyFocusedCounts = addDailyFocusedCount(dailyFocusedCounts)
   } else {
@@ -229,7 +236,7 @@ const finish = async (
     await updateColorOfBadge(nextPhase)
 
     if (isAuto && currentPhase === 'focus') {
-      // openNewTab()
+      openNewTab()
       createNotification()
     }
     toggleInterval(false)

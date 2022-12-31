@@ -43,8 +43,8 @@ describe('service worker', () => {
 
   it('finish first focus', async () => {
     const expected = {
-      reminingSeconds: REMINING_SECONDS.shortBreak,
-      phase: 'shortBreak',
+      reminingSeconds: REMINING_SECONDS.break,
+      phase: 'break',
       totalFocusedCountInSession: 1,
       isRunning: false,
       dailyFocusedCounts: [
@@ -101,7 +101,7 @@ describe('service worker', () => {
     const expectedBadgeText = '00:10'
     const expectedBadgeBackgroundColor = FOCUS_BADGE_COLOR_CODE
 
-    await finish('shortBreak', 1, [
+    await finish('break', 1, [
       {
         year: 2022,
         month: 11,

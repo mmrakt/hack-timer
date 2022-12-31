@@ -4,11 +4,11 @@ export type Response = {
 
 export type ReminingSeconds = {
   focus: 1500
-  shortBreak: 300
+  break: 300
   longBreak: 1800
 }
 
-export type Phase = 'focus' | 'shortBreak' | 'longBreak'
+export type Phase = 'focus' | 'break' | 'longBreak'
 
 export type PageType = 'timer' | 'history' | 'settings'
 
@@ -25,6 +25,13 @@ export type StorageValue = {
   totalFocusedCountInSession: number
   dailyFocusedCounts: DailyFocusedCount[]
   isRunning: boolean
+  showNewTabNotificationWhenPomodoro: boolean
+  showNewTabNotificationWhenBreak: boolean
+  showDesktopNotificationWhenPomodoro: boolean
+  showDesktopNotificationWhenBreak: boolean
+  pomodoroLength: number
+  breakLength: number
+  longBreakLength: number
 }
 
 export type StorageKey = keyof StorageValue
