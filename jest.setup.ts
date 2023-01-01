@@ -13,4 +13,16 @@ global.chrome.action = {
   setTitle: jest.fn(),
   setPopup: jest.fn()
 }
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => {
+    return {
+      t: (str: string): string => str,
+      i18n: {
+        changeLanguage: () => new Promise(() => {})
+      }
+    }
+  }
+}))
+
 export {}

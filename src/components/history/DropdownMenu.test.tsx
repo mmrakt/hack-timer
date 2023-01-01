@@ -1,8 +1,5 @@
 import { render, fireEvent } from '@testing-library/react'
-import {
-  EXPORT_CSV_BUTTON_TEXT,
-  HISTORY_CSV_FILE_NAME
-} from '../../consts/index'
+import { HISTORY_CSV_FILE_NAME } from '../../consts/index'
 import { DailyFocusedCount } from '../../types'
 import {
   DropdownMenu,
@@ -46,7 +43,7 @@ describe('Settings', () => {
   it('click export button', () => {
     const renderResult = render(<DropdownMenu />)
 
-    fireEvent.click(renderResult.getByText(EXPORT_CSV_BUTTON_TEXT))
+    fireEvent.click(renderResult.getByText('history.export.buttonText'))
     expect(chrome.storage.local.get).toBeCalled()
   })
 

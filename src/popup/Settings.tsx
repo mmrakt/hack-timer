@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ArrowLeft from '../components/svg/ArrowLeft'
-import InputNumber from '../components/history/InputSelect'
+import TimerLengthSelect from '../components/history/TimerLengthSelect'
 import InputToggle from '../components/history/InputToggle'
 import { useTranslation } from 'react-i18next'
 import { getStorage } from '../background/chrome'
@@ -75,8 +75,8 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
                 {t('settings.timer.length.pomodoro')}
               </span>
               <span className="ml-auto">
-                <InputNumber
-                  id="focusLength"
+                <TimerLengthSelect
+                  id="pomodoroLength"
                   options={POMODORO_LENGTH_ARRAY}
                   currentValue={pomodoroLength}
                 />
@@ -85,7 +85,7 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
             <div className="flex items-center mt-2 px-1">
               <span className="class">{t('settings.timer.length.break')}</span>
               <span className="ml-auto">
-                <InputNumber
+                <TimerLengthSelect
                   id="breakLength"
                   options={BREAK_LENGTH_ARRAY}
                   currentValue={breakLength}
@@ -97,7 +97,7 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
                 {t('settings.timer.length.longBreak')}
               </span>
               <span className="ml-auto">
-                <InputNumber
+                <TimerLengthSelect
                   id="longBreakLength"
                   options={LONG_BREAK_LENGTH_ARRAY}
                   currentValue={longBreakLength}

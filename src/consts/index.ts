@@ -3,7 +3,7 @@ import { DailyFocusedCount, Phase } from '../types'
 export const REMINING_SECONDS: {
   [T in Phase]: number
 } = {
-  focus: 5,
+  focus: 10,
   break: 6,
   longBreak: 1800
 }
