@@ -21,19 +21,19 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
   const [
     showDesktopNotificationWhenPomodoro,
     setShowDesktopNotificationWhenPomodoro
-  ] = useState<boolean>(true)
+  ] = useState<boolean | null>(null)
   const [
     showDesktopNotificationWhenBreak,
     setShowDesktopNotificationWhenBreak
-  ] = useState<boolean>(true)
+  ] = useState<boolean | null>(null)
   const [
     showNewTabNotificationWhenPomodoro,
     setShowNewTabpNotificationWhenPomodoro
-  ] = useState<boolean>(true)
+  ] = useState<boolean | null>(null)
   const [
     showNewTabpNotificationWhenBreak,
     setShowNewTabpNotificationWhenBreak
-  ] = useState<boolean>(true)
+  ] = useState<boolean | null>(null)
 
   useEffect(() => {
     getStorage([
@@ -116,10 +116,12 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
                 {t('settings.notification.showNewTab.pomodoro')}
               </span>
               <span className="ml-auto">
-                <SettingToggle
-                  id="showNewTabNotificationWhenPomodoro"
-                  currentValue={showNewTabNotificationWhenPomodoro}
-                />
+                {showNewTabNotificationWhenPomodoro !== null && (
+                  <SettingToggle
+                    id="showNewTabNotificationWhenPomodoro"
+                    currentValue={showNewTabNotificationWhenPomodoro}
+                  />
+                )}
               </span>
             </div>
             <div className="flex items-center px-1">
@@ -127,10 +129,12 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
                 {t('settings.notification.desktop.pomodoro')}
               </span>
               <span className="ml-auto">
-                <SettingToggle
-                  id="showDesktopNotificationWhenPomodoro"
-                  currentValue={showDesktopNotificationWhenPomodoro}
-                />
+                {showDesktopNotificationWhenPomodoro !== null && (
+                  <SettingToggle
+                    id="showDesktopNotificationWhenPomodoro"
+                    currentValue={showDesktopNotificationWhenPomodoro}
+                  />
+                )}
               </span>
             </div>
             <div className="flex items-center px-1">
@@ -138,10 +142,12 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
                 {t('settings.notification.showNewTab.break')}
               </span>
               <span className="ml-auto">
-                <SettingToggle
-                  id="showNewTabNotificationWhenBreak"
-                  currentValue={showNewTabpNotificationWhenBreak}
-                />
+                {showNewTabpNotificationWhenBreak !== null && (
+                  <SettingToggle
+                    id="showNewTabNotificationWhenBreak"
+                    currentValue={showNewTabpNotificationWhenBreak}
+                  />
+                )}
               </span>
             </div>
             <div className="flex items-center px-1">
@@ -149,10 +155,12 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
                 {t('settings.notification.desktop.break')}
               </span>
               <span className="ml-auto">
-                <SettingToggle
-                  id="showDesktopNotificationWhenBreak"
-                  currentValue={showDesktopNotificationWhenBreak}
-                />
+                {showDesktopNotificationWhenBreak !== null && (
+                  <SettingToggle
+                    id="showDesktopNotificationWhenBreak"
+                    currentValue={showDesktopNotificationWhenBreak}
+                  />
+                )}
               </span>
             </div>
           </div>
