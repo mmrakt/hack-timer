@@ -6,7 +6,7 @@ import Pause from '../components/svg/Pause'
 import Play from '../components/svg/Play'
 import Digit from '../components/Degit'
 import '../styles/globals.css'
-import { getTimeFromSeconds } from '../utils/Time'
+import { getTimeFromSeconds } from '../utils/timeHelper'
 import Cogwheel from '../components/svg/Cogwheel'
 import Settings from './Settings'
 
@@ -45,9 +45,9 @@ const Timer: React.FC<IProps> = (props) => {
         secs: number
         toggledTimerStatus: boolean
       }) => {
-        if (message === 'countDown') {
+        if (message === 'reduceCount') {
           setSeconds(secs)
-        } else if (message === 'finish') {
+        } else if (message === 'expire') {
           setSeconds(secs)
           setIsRunning(false)
         } else if (message === 'toggleTimerStatus') {
@@ -57,8 +57,8 @@ const Timer: React.FC<IProps> = (props) => {
     )
   }, [])
 
-  const finish = (): void => {
-    chrome.runtime.sendMessage('finish', async () => {})
+  const expire = (): void => {
+    chrome.runtime.sendMessage('expire', async () => {})
   }
   const pause = (): void => {
     chrome.runtime.sendMessage('pause', async () => {
@@ -78,7 +78,7 @@ const Timer: React.FC<IProps> = (props) => {
           <div className="flex">
             <button
               className="text-lg border-2 border-gray-200 px-2 py-1 rounded-md  hover:border-gray-300 hover:text-gray-300"
-              onClick={finish}
+              onClick={expire}
             >
               Finish
             </button>

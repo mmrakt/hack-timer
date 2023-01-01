@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { setStorage } from '../../background/chrome'
+import { setStorage } from '../../utils/chrome'
 
 type IProps = {
   id: 'pomodoroLength' | 'breakLength' | 'longBreakLength'

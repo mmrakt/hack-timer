@@ -1,4 +1,4 @@
-import { DailyFocusedCount, Phase } from '../types'
+import { dailyPomodoro, Phase } from '../types'
 
 export const REMINING_SECONDS: {
   [T in Phase]: number
@@ -8,13 +8,13 @@ export const REMINING_SECONDS: {
   longBreak: 1800
 }
 
-export const FOCUS_COUNT_UNTIL_LONG_BREAK = 4
+export const POMODORO_COUNT_UNTIL_LONG_BREAK = 4
 
 export const HISTORY_CSV_COLUMN_COUNT = 4
 
 export const HISTORY_CSV_FILE_NAME = 'history.csv'
 
-export const HISTORY_CSV_HEADER_ARRAY: Array<keyof DailyFocusedCount> = [
+export const HISTORY_CSV_HEADER_ARRAY: Array<keyof dailyPomodoro> = [
   'year',
   'month',
   'day',

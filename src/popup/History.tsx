@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import ArrowLeft from '../components/svg/ArrowLeft'
-import { DisplayTerm, DailyFocusedCount, DataSet } from '../types/index'
+import { DisplayTerm, dailyPomodoro, DataSet } from '../types/index'
 import {
   BarChart,
   Bar,
@@ -39,11 +39,7 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
     const testValue = testData
     chrome.runtime.sendMessage(
       'displayHistory',
-      ({
-        dailyFocusedCounts: value
-      }: {
-        dailyFocusedCounts: DailyFocusedCount[]
-      }) => {
+      ({ dailyPomodoros: value }: { dailyPomodoros: dailyPomodoro[] }) => {
         if (displayTerm === 'week') {
           const paddedDays = paddingUnfocusedDaysOfWeek(testValue)
           setDisplayData(paddedDays)
@@ -58,17 +54,15 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
     )
   }, [displayTerm])
 
-  const paddingUnfocusedMonths = (
-    dailyFocusedCounts: DailyFocusedCount[]
-  ): DataSet => {
+  const paddingUnfocusedMonths = (dailyPomodoros: dailyPomodoro[]): DataSet => {
     const paddedMonths: DataSet = []
     const numberMonthsOfYear = 12
     const today = dayjs()
     const month = today.month() + 1
-    const daysOfThisYear = dailyFocusedCounts.filter(
+    const daysOfThisYear = dailyPomodoros.filter(
       (obj) => obj.year === today.year()
     )
-    let monthlyTotalFocused: DailyFocusedCount[] = []
+    let monthlyTotalFocused: dailyPomodoro[] = []
     monthlyTotalFocused = daysOfThisYear.reduce((result, current) => {
       const element = result.find((p) => p.month === current.month)
       if (element != null) {
@@ -108,12 +102,12 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
   }
 
   const paddingUnfocusedDaysOfWeek = (
-    dailyFocusedCounts: DailyFocusedCount[]
+    dailyPomodoros: dailyPomodoro[]
   ): DataSet => {
     const paddedDays: DataSet = []
     const numberDaysOfWeek = 7
     const today = dayjs()
-    const lastMonth = dailyFocusedCounts.filter(
+    const lastMonth = dailyPomodoros.filter(
       (obj) => obj.year === today.year() && obj.month === today.month() + 1
     )
     const lastDaysOfMonth = lastMonth.map((obj) => {
@@ -141,12 +135,12 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
   }
 
   const paddingUnfocusedDaysOfMonth = (
-    dailyFocusedCounts: DailyFocusedCount[]
+    dailyPomodoros: dailyPomodoro[]
   ): DataSet => {
     const paddedDays: DataSet = []
     const today = dayjs()
     const endOfDate = today.endOf('month').date()
-    const lastMonth = dailyFocusedCounts.filter(
+    const lastMonth = dailyPomodoros.filter(
       (obj) => obj.year === today.year() && obj.month === today.month() + 1
     )
     const lastDaysOfMonth = lastMonth.map((obj) => {

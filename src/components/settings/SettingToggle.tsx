@@ -1,5 +1,5 @@
 import React from 'react'
-import { setStorage } from '../../background/chrome'
+import { setStorage } from '../../utils/chrome'
 
 type IProps = {
   id:

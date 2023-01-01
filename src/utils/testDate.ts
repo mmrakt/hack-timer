@@ -1,5 +1,5 @@
-import { DailyFocusedCount } from '../types/index'
-export const testData: DailyFocusedCount[] = [
+import { dailyPomodoro } from '../types/index'
+export const testData: dailyPomodoro[] = [
   {
     year: 2022,
     month: 1,

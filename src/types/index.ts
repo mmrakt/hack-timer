@@ -12,7 +12,7 @@ export type Phase = 'focus' | 'break' | 'longBreak'
 
 export type PageType = 'timer' | 'history' | 'settings'
 
-export type DailyFocusedCount = {
+export type dailyPomodoro = {
   year: number
   month: number
   day: number
@@ -22,8 +22,8 @@ export type DailyFocusedCount = {
 export type StorageValue = {
   reminingSeconds: number
   phase: Phase
-  totalFocusedCountInSession: number
-  dailyFocusedCounts: DailyFocusedCount[]
+  totalPomodoroCountsInSession: number
+  dailyPomodoros: dailyPomodoro[]
   isRunning: boolean
   showNewTabNotificationWhenPomodoro: boolean
   showNewTabNotificationWhenBreak: boolean
@@ -37,16 +37,16 @@ export type StorageValue = {
 export type StorageKey = keyof StorageValue
 
 export type FromServiceWorkerMessge =
-  | 'countDown'
+  | 'reduceCount'
   | 'toggleTimerStatus'
-  | 'finish'
+  | 'expire'
   | 'playTimerSound'
 
 export type FromPopupMessge =
   | 'displayPopup'
   | 'resume'
   | 'pause'
-  | 'finish'
+  | 'expire'
   | 'displayHistory'
 
 export type DisplayTerm = 'week' | 'month' | 'year'

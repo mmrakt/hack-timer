@@ -1,14 +1,14 @@
-import { getStorage, setStorage } from '../../background/chrome'
+import { getStorage, setStorage } from '../../utils/chrome'
 import {
   BOM_ARRAY,
   HISTORY_CSV_COLUMN_COUNT,
   HISTORY_CSV_FILE_NAME,
   HISTORY_CSV_HEADER_ARRAY
 } from '../../consts'
-import { DailyFocusedCount } from '../../types'
+import { dailyPomodoro } from '../../types'
 import { useTranslation } from 'react-i18next'
 
-const createStorageValue = (content: string): DailyFocusedCount[] => {
+const createStorageValue = (content: string): dailyPomodoro[] => {
   const csvRows = content.slice(content.indexOf('\n') + 1).split('\n')
   return csvRows.map((row) => {
     // FIXME: refactor
@@ -22,11 +22,11 @@ const createStorageValue = (content: string): DailyFocusedCount[] => {
   })
 }
 
-const createBlobData = (dailyFocusedCounts: DailyFocusedCount[]): string => {
+const createBlobData = (dailyPomodoros: dailyPomodoro[]): string => {
   const header = HISTORY_CSV_HEADER_ARRAY.join(',') + '\n'
 
   let joinedData = ''
-  dailyFocusedCounts.forEach((row) => {
+  dailyPomodoros.forEach((row) => {
     let joinedRow = ''
     for (let i = 0; i < HISTORY_CSV_COLUMN_COUNT; i++) {
       const values = Object.values(row)
@@ -71,8 +71,8 @@ const readCsv = async (uploadFile: File): Promise<any> => {
 const DropdownMenu: React.FC = () => {
   const { t } = useTranslation()
   const handleExport = (): void => {
-    getStorage(['dailyFocusedCounts']).then(({ dailyFocusedCounts }) => {
-      const blobData = createBlobData(dailyFocusedCounts)
+    getStorage(['dailyPomodoros']).then(({ dailyPomodoros }) => {
+      const blobData = createBlobData(dailyPomodoros)
       downloadCsv(blobData)
     })
   }
@@ -97,7 +97,7 @@ const DropdownMenu: React.FC = () => {
           const result = readCsv(file)
           result.then((content) => {
             const value = createStorageValue(content)
-            setStorage({ dailyFocusedCounts: value })
+            setStorage({ dailyPomodoros: value })
           })
         }
       }

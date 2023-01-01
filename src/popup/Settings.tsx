@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import ArrowLeft from '../components/svg/ArrowLeft'
-import TimerLengthSelect from '../components/history/TimerLengthSelect'
-import SettingToggle from '../components/history/SettingToggle'
+import TimerLengthSelect from '../components/settings/TimerLengthSelect'
+import SettingToggle from '../components/settings/SettingToggle'
 import { useTranslation } from 'react-i18next'
-import { getStorage } from '../background/chrome'
+import { getStorage } from '../utils/chrome'
 import { StorageValue } from '../types/index'
 import {
   POMODORO_LENGTH_ARRAY,
