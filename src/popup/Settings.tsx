@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ArrowLeft from '../components/svg/ArrowLeft'
 import TimerLengthSelect from '../components/history/TimerLengthSelect'
-import InputToggle from '../components/history/InputToggle'
+import SettingToggle from '../components/history/SettingToggle'
 import { useTranslation } from 'react-i18next'
 import { getStorage } from '../background/chrome'
 import { StorageValue } from '../types/index'
@@ -116,8 +116,8 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
                 {t('settings.notification.showNewTab.pomodoro')}
               </span>
               <span className="ml-auto">
-                <InputToggle
-                  id="newTabNotificationWhenPomodoro"
+                <SettingToggle
+                  id="showNewTabNotificationWhenPomodoro"
                   currentValue={showNewTabNotificationWhenPomodoro}
                 />
               </span>
@@ -127,8 +127,8 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
                 {t('settings.notification.desktop.pomodoro')}
               </span>
               <span className="ml-auto">
-                <InputToggle
-                  id="desktopNotificationWhenPomodoro"
+                <SettingToggle
+                  id="showDesktopNotificationWhenPomodoro"
                   currentValue={showDesktopNotificationWhenPomodoro}
                 />
               </span>
@@ -138,8 +138,8 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
                 {t('settings.notification.showNewTab.break')}
               </span>
               <span className="ml-auto">
-                <InputToggle
-                  id="newTabNotificationWhenBreak"
+                <SettingToggle
+                  id="showNewTabNotificationWhenBreak"
                   currentValue={showNewTabpNotificationWhenBreak}
                 />
               </span>
@@ -149,8 +149,8 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
                 {t('settings.notification.desktop.break')}
               </span>
               <span className="ml-auto">
-                <InputToggle
-                  id="desktopNotificationWhenBreak"
+                <SettingToggle
+                  id="showDesktopNotificationWhenBreak"
                   currentValue={showDesktopNotificationWhenBreak}
                 />
               </span>
