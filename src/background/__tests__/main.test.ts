@@ -3,8 +3,7 @@ import { chrome } from 'jest-chrome'
 import {
   BREAK_BADGE_COLOR_CODE,
   FOCUS_BADGE_COLOR_CODE,
-  REMINING_SECONDS,
-  POMODORO_COUNT_UNTIL_LONG_BREAK
+  REMINING_SECONDS
 } from '../../consts/index'
 import { expire } from '../Timer'
 
@@ -65,7 +64,7 @@ describe('service worker', () => {
     const expectedBadgeText = '00:06'
     const expectedBadgeBackgroundColor = BREAK_BADGE_COLOR_CODE
 
-    await expire('focus', 0, [])
+    await expire('focus', 0, [], 0)
 
     expect(chrome.storage.local.set).toBeCalledWith(expected)
     // @ts-expect-error
@@ -99,17 +98,22 @@ describe('service worker', () => {
       secs: expected.reminingSeconds,
       phase: expected.phase
     }
-    const expectedBadgeText = '00:10'
+    const expectedBadgeText = '00:05'
     const expectedBadgeBackgroundColor = FOCUS_BADGE_COLOR_CODE
 
-    await expire('break', 1, [
-      {
-        year: 2022,
-        month: 11,
-        day: 1,
-        count: 1
-      }
-    ])
+    await expire(
+      'break',
+      1,
+      [
+        {
+          year: 2022,
+          month: 11,
+          day: 1,
+          count: 1
+        }
+      ],
+      4
+    )
 
     expect(chrome.storage.local.set).toBeCalledWith(expected)
     // @ts-expect-error
@@ -145,14 +149,19 @@ describe('service worker', () => {
     }
     const expectedBadgeText = '30:00'
     const expectedBadgeBackgroundColor = BREAK_BADGE_COLOR_CODE
-    await expire('focus', POMODORO_COUNT_UNTIL_LONG_BREAK - 1, [
-      {
-        year: 2022,
-        month: 11,
-        day: 1,
-        count: 3
-      }
-    ])
+    await expire(
+      'focus',
+      3,
+      [
+        {
+          year: 2022,
+          month: 11,
+          day: 1,
+          count: 3
+        }
+      ],
+      4
+    )
 
     expect(chrome.storage.local.set).toBeCalledWith(expected)
     // @ts-expect-error

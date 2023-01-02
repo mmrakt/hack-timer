@@ -12,7 +12,7 @@ export type Phase = 'focus' | 'break' | 'longBreak'
 
 export type PageType = 'timer' | 'history' | 'settings'
 
-export type dailyPomodoro = {
+export type DailyPomodoro = {
   year: number
   month: number
   day: number
@@ -23,7 +23,7 @@ export type StorageValue = {
   reminingSeconds: number
   phase: Phase
   totalPomodoroCountsInSession: number
-  dailyPomodoros: dailyPomodoro[]
+  dailyPomodoros: DailyPomodoro[]
   isRunning: boolean
   showNewTabNotificationWhenPomodoro: boolean
   showNewTabNotificationWhenBreak: boolean
@@ -32,6 +32,7 @@ export type StorageValue = {
   pomodoroLength: number
   breakLength: number
   longBreakLength: number
+  pomodoroCountUntilLongBreak: number
 }
 
 export type StorageKey = keyof StorageValue

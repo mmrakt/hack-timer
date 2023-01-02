@@ -1,20 +1,19 @@
-import { dailyPomodoro, Phase } from '../types'
+import { DailyPomodoro, Phase } from '../types'
 
+// 開発用
 export const REMINING_SECONDS: {
   [T in Phase]: number
 } = {
-  focus: 10,
+  focus: 5,
   break: 6,
   longBreak: 1800
 }
-
-export const POMODORO_COUNT_UNTIL_LONG_BREAK = 4
 
 export const HISTORY_CSV_COLUMN_COUNT = 4
 
 export const HISTORY_CSV_FILE_NAME = 'history.csv'
 
-export const HISTORY_CSV_HEADER_ARRAY: Array<keyof dailyPomodoro> = [
+export const HISTORY_CSV_HEADER_ARRAY: Array<keyof DailyPomodoro> = [
   'year',
   'month',
   'day',
@@ -37,3 +36,5 @@ export const BREAK_LENGTH_ARRAY = [
 export const LONG_BREAK_LENGTH_ARRAY = [
   5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60
 ]
+
+export const POMODORO_COUNT_UNTIL_LONG_BREAK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]

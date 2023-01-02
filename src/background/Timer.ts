@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
-import { POMODORO_COUNT_UNTIL_LONG_BREAK, REMINING_SECONDS } from '../consts'
-import { StorageValue, Phase, dailyPomodoro } from '../types'
+import { REMINING_SECONDS } from '../consts'
+import { StorageValue, Phase, DailyPomodoro } from '../types'
 import { getStorage, runtime, setStorage } from '../utils/chrome'
 import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
 import { openNewTab } from './Tab'
@@ -47,21 +47,28 @@ const setTickInterval = (isRunning: boolean): void => {
 
 // running時は毎秒実行され、カウントを減らすか終了させるか判定
 const handleCountDown = (): void => {
-  getStorage([
-    'reminingSeconds',
-    'phase',
-    'totalPomodoroCountsInSession',
-    'dailyPomodoros'
-  ]).then(async (data: StorageValue) => {
+  getStorage(['reminingSeconds']).then(async (data: StorageValue) => {
     if (data.reminingSeconds > 0) {
       await reduceCount(data.reminingSeconds)
     }
 
     if (data.reminingSeconds === 0) {
+      const {
+        phase,
+        totalPomodoroCountsInSession,
+        dailyPomodoros,
+        pomodoroCountUntilLongBreak
+      } = await getStorage([
+        'phase',
+        'totalPomodoroCountsInSession',
+        'dailyPomodoros',
+        'pomodoroCountUntilLongBreak'
+      ])
       await expire(
-        data.phase,
-        data.totalPomodoroCountsInSession,
-        data.dailyPomodoros
+        phase,
+        totalPomodoroCountsInSession,
+        dailyPomodoros,
+        pomodoroCountUntilLongBreak
       )
     }
   })
@@ -81,16 +88,17 @@ const reduceCount = async (reminingSeconds: number): Promise<void> => {
 }
 
 const expire = async (
-  currentPhase: Phase,
+  phase: Phase,
   totalPomodoroCountsInSession: number,
-  dailyPomodoros: dailyPomodoro[],
+  dailyPomodoros: DailyPomodoro[],
+  pomodoroCountUntilLongBreak: number,
   isAutoExpire = true
 ): Promise<void> => {
   let reminingSeconds = 0
   let nextPhase: Phase = 'focus'
-  if (currentPhase === 'focus') {
+  if (phase === 'focus') {
     totalPomodoroCountsInSession++
-    if (totalPomodoroCountsInSession === POMODORO_COUNT_UNTIL_LONG_BREAK) {
+    if (totalPomodoroCountsInSession === pomodoroCountUntilLongBreak) {
       reminingSeconds = REMINING_SECONDS.longBreak
       totalPomodoroCountsInSession = 0
       nextPhase = 'longBreak'
@@ -113,42 +121,46 @@ const expire = async (
     await updateSecondsOfBadge(reminingSeconds)
     await updateColorOfBadge(nextPhase)
 
-    const {
-      showDesktopNotificationWhenBreak,
-      showDesktopNotificationWhenPomodoro,
-      showNewTabNotificationWhenBreak,
-      showNewTabNotificationWhenPomodoro
-    } = await getStorage([
+    getStorage([
       'showDesktopNotificationWhenBreak',
       'showDesktopNotificationWhenPomodoro',
       'showNewTabNotificationWhenBreak',
       'showNewTabNotificationWhenPomodoro'
-    ])
-    if (isAutoExpire) {
-      if (currentPhase === 'focus') {
-        if (showDesktopNotificationWhenPomodoro) {
-          createNotification(
-            currentPhase,
-            dailyPomodoros.slice(-1)[0].count,
-            totalPomodoroCountsInSession
-          )
-        }
-        if (showNewTabNotificationWhenPomodoro) {
-          openNewTab()
-        }
-      } else {
-        if (showDesktopNotificationWhenBreak) {
-          createNotification(
-            currentPhase,
-            dailyPomodoros.slice(-1)[0].count,
-            totalPomodoroCountsInSession
-          )
-        }
-        if (showNewTabNotificationWhenBreak) {
-          openNewTab()
+    ]).then((data: StorageValue) => {
+      const {
+        showDesktopNotificationWhenBreak,
+        showDesktopNotificationWhenPomodoro,
+        showNewTabNotificationWhenBreak,
+        showNewTabNotificationWhenPomodoro
+      } = data
+
+      if (isAutoExpire) {
+        if (phase === 'focus') {
+          if (showDesktopNotificationWhenPomodoro) {
+            createNotification(
+              phase,
+              dailyPomodoros.slice(-1)[0].count,
+              totalPomodoroCountsInSession
+            )
+          }
+          if (showNewTabNotificationWhenPomodoro) {
+            openNewTab()
+          }
+        } else {
+          if (showDesktopNotificationWhenBreak) {
+            createNotification(
+              phase,
+              dailyPomodoros.slice(-1)[0].count,
+              totalPomodoroCountsInSession
+            )
+          }
+          if (showNewTabNotificationWhenBreak) {
+            openNewTab()
+          }
         }
       }
-    }
+    })
+
     setTickInterval(false)
     // popup非表示時はここで止まってしまうため最後に実行する
     await runtime.sendMessage({
@@ -162,8 +174,8 @@ const expire = async (
 }
 
 const increaseDailyPomodoro = (
-  dailyPomodoros: dailyPomodoro[]
-): dailyPomodoro[] => {
+  dailyPomodoros: DailyPomodoro[]
+): DailyPomodoro[] => {
   const today = dayjs()
   const year = today.year()
   const month = today.month()

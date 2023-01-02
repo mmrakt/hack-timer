@@ -3,7 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { setStorage } from '../../utils/chrome'
 
 type IProps = {
-  id: 'pomodoroLength' | 'breakLength' | 'longBreakLength'
+  id:
+    | 'pomodoroLength'
+    | 'breakLength'
+    | 'longBreakLength'
+    | 'pomodoroCountUntilLongBreak'
   className?: string
   currentValue: number
   options: number[] | string[]
@@ -31,6 +35,8 @@ const TimerLengthSelect: React.FC<IProps> = ({
       case 'longBreakLength':
         setStorage({ longBreakLength: value })
         break
+      case 'pomodoroCountUntilLongBreak':
+        setStorage({ pomodoroCountUntilLongBreak: value })
     }
   }
   return (
@@ -50,7 +56,13 @@ const TimerLengthSelect: React.FC<IProps> = ({
           </option>
         ))}
       </select>
-      <span className="class">{t('settings.timer.length.unit')}</span>
+      <span className="class">
+        {id === 'pomodoroLength' ||
+        id === 'breakLength' ||
+        id === 'longBreakLength'
+          ? t('settings.timer.length.unit')
+          : t('settings.timer.count.unit')}
+      </span>
     </>
   )
 }

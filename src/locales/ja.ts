@@ -7,6 +7,10 @@ const translation = {
         break: '休憩の長さ',
         longBreak: '長い休憩の長さ',
         unit: '分'
+      },
+      count: {
+        untilLongBreak: '長い休憩までのポモドーロ回数',
+        unit: '回'
       }
     },
     notification: {

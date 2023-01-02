@@ -8,7 +8,8 @@ import { StorageValue } from '../types/index'
 import {
   POMODORO_LENGTH_ARRAY,
   BREAK_LENGTH_ARRAY,
-  LONG_BREAK_LENGTH_ARRAY
+  LONG_BREAK_LENGTH_ARRAY,
+  POMODORO_COUNT_UNTIL_LONG_BREAK
 } from '../consts/index'
 
 const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
@@ -34,6 +35,8 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
     showNewTabpNotificationWhenBreak,
     setShowNewTabpNotificationWhenBreak
   ] = useState<boolean | null>(null)
+  const [pomodoroCountUntilLongBreak, setPomodoroCountUntilLongBreak] =
+    useState<number>(0)
 
   useEffect(() => {
     getStorage([
@@ -43,8 +46,10 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
       'showDesktopNotificationWhenPomodoro',
       'showDesktopNotificationWhenBreak',
       'showNewTabNotificationWhenPomodoro',
-      'showNewTabNotificationWhenBreak'
+      'showNewTabNotificationWhenBreak',
+      'pomodoroCountUntilLongBreak'
     ]).then((value: StorageValue) => {
+      console.log(value)
       setPomodoroLength(value.pomodoroLength)
       setBreakLength(value.breakLength)
       setLongBreakLength(value.longBreakLength)
@@ -58,6 +63,7 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
         value.showNewTabNotificationWhenPomodoro
       )
       setShowNewTabpNotificationWhenBreak(value.showNewTabNotificationWhenBreak)
+      setPomodoroCountUntilLongBreak(value.pomodoroCountUntilLongBreak)
     })
   }, [])
 
@@ -101,6 +107,18 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
                   id="longBreakLength"
                   options={LONG_BREAK_LENGTH_ARRAY}
                   currentValue={longBreakLength}
+                />
+              </span>
+            </div>
+            <div className="flex items-center mt-2 px-1">
+              <span className="class">
+                {t('settings.timer.count.untilLongBreak')}
+              </span>
+              <span className="ml-auto">
+                <TimerLengthSelect
+                  id="pomodoroCountUntilLongBreak"
+                  options={POMODORO_COUNT_UNTIL_LONG_BREAK}
+                  currentValue={pomodoroCountUntilLongBreak}
                 />
               </span>
             </div>

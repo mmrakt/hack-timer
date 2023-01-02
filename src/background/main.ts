@@ -19,7 +19,8 @@ const initialStorageValue: StorageValue = {
   showDesktopNotificationWhenBreak: false,
   pomodoroLength: 25,
   breakLength: 5,
-  longBreakLength: 30
+  longBreakLength: 30,
+  pomodoroCountUntilLongBreak: 4
 }
 
 runtime.onInstalled.addListener(async () => {
@@ -64,12 +65,14 @@ runtime.onMessage.addListener(
         getStorage([
           'phase',
           'totalPomodoroCountsInSession',
-          'dailyPomodoros'
+          'dailyPomodoros',
+          'pomodoroCountUntilLongBreak'
         ]).then((data: StorageValue) => {
           expire(
             data.phase,
             data.totalPomodoroCountsInSession,
             data.dailyPomodoros,
+            data.pomodoroCountUntilLongBreak,
             false
           )
         })
