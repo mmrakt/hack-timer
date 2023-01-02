@@ -23,7 +23,7 @@ const manifest = defineManifest({
       description: 'Toggle Pause/Resume'
     }
   },
-  options_page: 'start-break.html'
+  options_page: 'expire.html'
 })
 
 export default defineConfig({

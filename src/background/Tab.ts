@@ -1,9 +1,10 @@
 import { START_BREAK_HTML_PATH } from '../consts'
 import { tabs } from '../utils/chrome'
+import { EXPIRE_PAGE } from '../consts/index'
 
 const openNewTab = (): void => {
   tabs.create({
-    url: 'start-break.html'
+    url: EXPIRE_PAGE
   })
 }
 

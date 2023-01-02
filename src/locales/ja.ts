@@ -1,4 +1,9 @@
 const translation = {
+  common: {
+    pomodoro: 'ポモドーロ',
+    break: '休憩',
+    longBreak: '長い休憩'
+  },
   settings: {
     timer: {
       title: 'タイマー',
@@ -43,6 +48,11 @@ const translation = {
       title: '休憩が終了しました',
       message: 'ポモドーロ数： %f 回\n長い休憩まで： %s 回'
     }
+  },
+  expire: {
+    title: '%fが終了しました',
+    message: 'ポモドーロ数： %f 回\n長い休憩まで： %s 回',
+    buttonText: '%fを開始'
   }
 }
 

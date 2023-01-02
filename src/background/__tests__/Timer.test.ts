@@ -3,7 +3,7 @@ import { chrome } from 'jest-chrome'
 import {
   BREAK_BADGE_COLOR_CODE,
   FOCUS_BADGE_COLOR_CODE,
-  REMINING_SECONDS
+  DEFAULT_TIMER_LENGTH
 } from '../../consts/index'
 import { expire } from '../Timer'
 
@@ -43,7 +43,7 @@ describe('service worker', () => {
 
   it('finish first focus', async () => {
     const expected = {
-      reminingSeconds: REMINING_SECONDS.break,
+      reminingSeconds: DEFAULT_TIMER_LENGTH.break,
       phase: 'break',
       totalPomodoroCountsInSession: 1,
       isRunning: false,
@@ -80,7 +80,7 @@ describe('service worker', () => {
 
   it('finish first short break', async () => {
     const expected = {
-      reminingSeconds: REMINING_SECONDS.focus,
+      reminingSeconds: DEFAULT_TIMER_LENGTH.focus,
       phase: 'focus',
       totalPomodoroCountsInSession: 1,
       isRunning: false,
@@ -129,7 +129,7 @@ describe('service worker', () => {
 
   it('start long break', async () => {
     const expected = {
-      reminingSeconds: REMINING_SECONDS.longBreak,
+      reminingSeconds: DEFAULT_TIMER_LENGTH.longBreak,
       phase: 'longBreak',
       totalPomodoroCountsInSession: 0,
       isRunning: false,

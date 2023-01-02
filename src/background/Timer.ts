@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
-import { REMINING_SECONDS } from '../consts'
+import { DEFAULT_TIMER_LENGTH } from '../consts'
 import { StorageValue, Phase, DailyPomodoro } from '../types'
 import { getStorage, runtime, setStorage } from '../utils/chrome'
 import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
 import { openNewTab } from './Tab'
-import { createNotification } from './Notification'
+import { createNotificationContent, sendNotification } from './Notification'
 import keepAlive from '../utils/keepAliveServiceWorker'
 
 let intervalId = 0
@@ -99,16 +99,16 @@ const expire = async (
   if (phase === 'focus') {
     totalPomodoroCountsInSession++
     if (totalPomodoroCountsInSession === pomodoroCountUntilLongBreak) {
-      reminingSeconds = REMINING_SECONDS.longBreak
+      reminingSeconds = DEFAULT_TIMER_LENGTH.longBreak
       totalPomodoroCountsInSession = 0
       nextPhase = 'longBreak'
     } else {
-      reminingSeconds = REMINING_SECONDS.break
+      reminingSeconds = DEFAULT_TIMER_LENGTH.break
       nextPhase = 'break'
     }
     dailyPomodoros = increaseDailyPomodoro(dailyPomodoros)
   } else {
-    reminingSeconds = REMINING_SECONDS.focus
+    reminingSeconds = DEFAULT_TIMER_LENGTH.focus
   }
   try {
     setStorage({
@@ -121,46 +121,47 @@ const expire = async (
     await updateSecondsOfBadge(reminingSeconds)
     await updateColorOfBadge(nextPhase)
 
-    getStorage([
-      'showDesktopNotificationWhenBreak',
-      'showDesktopNotificationWhenPomodoro',
-      'showNewTabNotificationWhenBreak',
-      'showNewTabNotificationWhenPomodoro'
-    ]).then((data: StorageValue) => {
-      const {
-        showDesktopNotificationWhenBreak,
-        showDesktopNotificationWhenPomodoro,
-        showNewTabNotificationWhenBreak,
-        showNewTabNotificationWhenPomodoro
-      } = data
+    if (isAutoExpire) {
+      getStorage([
+        'showDesktopNotificationWhenBreak',
+        'showDesktopNotificationWhenPomodoro',
+        'showNewTabNotificationWhenBreak',
+        'showNewTabNotificationWhenPomodoro'
+      ]).then(async (data: StorageValue) => {
+        const {
+          showDesktopNotificationWhenBreak,
+          showDesktopNotificationWhenPomodoro,
+          showNewTabNotificationWhenBreak,
+          showNewTabNotificationWhenPomodoro
+        } = data
 
-      if (isAutoExpire) {
         if (phase === 'focus') {
           if (showDesktopNotificationWhenPomodoro) {
-            createNotification(
+            const [title, message] = await createNotificationContent(
               phase,
               dailyPomodoros.slice(-1)[0].count,
-              totalPomodoroCountsInSession
+              pomodoroCountUntilLongBreak - totalPomodoroCountsInSession
             )
+            sendNotification(title, message)
           }
           if (showNewTabNotificationWhenPomodoro) {
             openNewTab()
           }
         } else {
           if (showDesktopNotificationWhenBreak) {
-            createNotification(
+            const [title, message] = await createNotificationContent(
               phase,
               dailyPomodoros.slice(-1)[0].count,
-              totalPomodoroCountsInSession
+              pomodoroCountUntilLongBreak - totalPomodoroCountsInSession
             )
+            sendNotification(title, message)
           }
           if (showNewTabNotificationWhenBreak) {
             openNewTab()
           }
         }
-      }
-    })
-
+      })
+    }
     setTickInterval(false)
     // popup非表示時はここで止まってしまうため最後に実行する
     await runtime.sendMessage({

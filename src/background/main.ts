@@ -1,37 +1,20 @@
 import { FromPopupMessge, StorageValue } from '../types/index'
-import { REMINING_SECONDS } from '../consts/index'
-import { testData } from '../utils/testDate'
 import { runtime, getStorage, setStorage, commands } from '../utils/chrome'
 import '../utils/i18n'
 import { closeTabs } from './Tab'
 import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
 import { toggleTimerStatus, expire, pauseTimer, resumeTimer } from './Timer'
-
-const initialStorageValue: StorageValue = {
-  reminingSeconds: REMINING_SECONDS.focus,
-  phase: 'focus',
-  isRunning: false,
-  totalPomodoroCountsInSession: 0,
-  dailyPomodoros: testData, // 開発用
-  showNewTabNotificationWhenPomodoro: true,
-  showNewTabNotificationWhenBreak: true,
-  showDesktopNotificationWhenPomodoro: false,
-  showDesktopNotificationWhenBreak: false,
-  pomodoroLength: 25,
-  breakLength: 5,
-  longBreakLength: 30,
-  pomodoroCountUntilLongBreak: 4
-}
+import { DEFAULT_STORAGE_VALUE } from '../consts/index'
 
 runtime.onInstalled.addListener(async () => {
   getStorage(['reminingSeconds']).then((data) => {
     if (!data?.reminingSeconds) {
-      setStorage(initialStorageValue)
+      setStorage(DEFAULT_STORAGE_VALUE)
     }
   })
 
-  await updateSecondsOfBadge(initialStorageValue.reminingSeconds)
-  await updateColorOfBadge(initialStorageValue.phase)
+  await updateSecondsOfBadge(DEFAULT_STORAGE_VALUE.reminingSeconds)
+  await updateColorOfBadge(DEFAULT_STORAGE_VALUE.phase)
 })
 
 // shortcut key event

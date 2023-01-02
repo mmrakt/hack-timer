@@ -1,4 +1,6 @@
+import { DEFAULT_TIMER_LENGTH } from '../consts'
 import { StorageKey, StorageValue } from '../types'
+import { testData } from './testDate'
 
 const { runtime, commands, action, tabs, storage, notifications } = chrome
 

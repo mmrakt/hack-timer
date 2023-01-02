@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import ArrowLeft from '../components/svg/ArrowLeft'
-import { DisplayTerm, dailyPomodoro, DataSet } from '../types/index'
+import { DisplayTerm, DailyPomodoro, DataSet } from '../types/index'
 import {
   BarChart,
   Bar,
@@ -39,7 +39,7 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
     const testValue = testData
     chrome.runtime.sendMessage(
       'displayHistory',
-      ({ dailyPomodoros: value }: { dailyPomodoros: dailyPomodoro[] }) => {
+      ({ dailyPomodoros: value }: { dailyPomodoros: DailyPomodoro[] }) => {
         if (displayTerm === 'week') {
           const paddedDays = paddingUnfocusedDaysOfWeek(testValue)
           setDisplayData(paddedDays)
@@ -54,7 +54,7 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
     )
   }, [displayTerm])
 
-  const paddingUnfocusedMonths = (dailyPomodoros: dailyPomodoro[]): DataSet => {
+  const paddingUnfocusedMonths = (dailyPomodoros: DailyPomodoro[]): DataSet => {
     const paddedMonths: DataSet = []
     const numberMonthsOfYear = 12
     const today = dayjs()
@@ -62,7 +62,7 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
     const daysOfThisYear = dailyPomodoros.filter(
       (obj) => obj.year === today.year()
     )
-    let monthlyTotalFocused: dailyPomodoro[] = []
+    let monthlyTotalFocused: DailyPomodoro[] = []
     monthlyTotalFocused = daysOfThisYear.reduce((result, current) => {
       const element = result.find((p) => p.month === current.month)
       if (element != null) {
@@ -102,7 +102,7 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
   }
 
   const paddingUnfocusedDaysOfWeek = (
-    dailyPomodoros: dailyPomodoro[]
+    dailyPomodoros: DailyPomodoro[]
   ): DataSet => {
     const paddedDays: DataSet = []
     const numberDaysOfWeek = 7
@@ -135,7 +135,7 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
   }
 
   const paddingUnfocusedDaysOfMonth = (
-    dailyPomodoros: dailyPomodoro[]
+    dailyPomodoros: DailyPomodoro[]
   ): DataSet => {
     const paddedDays: DataSet = []
     const today = dayjs()

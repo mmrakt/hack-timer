@@ -1,12 +1,28 @@
-import { DailyPomodoro, Phase } from '../types'
+import { DailyPomodoro, Phase, StorageValue } from '../types'
+import { testData } from '../utils/testDate'
 
-// 開発用
-export const REMINING_SECONDS: {
+export const DEFAULT_TIMER_LENGTH: {
   [T in Phase]: number
 } = {
   focus: 5,
   break: 6,
   longBreak: 1800
+}
+
+export const DEFAULT_STORAGE_VALUE: StorageValue = {
+  reminingSeconds: DEFAULT_TIMER_LENGTH.focus,
+  phase: 'focus',
+  isRunning: false,
+  totalPomodoroCountsInSession: 0,
+  dailyPomodoros: testData, // 開発用
+  showNewTabNotificationWhenPomodoro: true,
+  showNewTabNotificationWhenBreak: true,
+  showDesktopNotificationWhenPomodoro: false,
+  showDesktopNotificationWhenBreak: false,
+  pomodoroLength: 25,
+  breakLength: 5,
+  longBreakLength: 30,
+  pomodoroCountUntilLongBreak: 4
 }
 
 export const HISTORY_CSV_COLUMN_COUNT = 4
@@ -38,3 +54,5 @@ export const LONG_BREAK_LENGTH_ARRAY = [
 ]
 
 export const POMODORO_COUNT_UNTIL_LONG_BREAK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+export const EXPIRE_PAGE = 'expire.html'
