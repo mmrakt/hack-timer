@@ -113,9 +113,41 @@ const expire = async (
     await updateSecondsOfBadge(reminingSeconds)
     await updateColorOfBadge(nextPhase)
 
-    if (isAutoExpire && currentPhase === 'focus') {
-      openNewTab()
-      createNotification()
+    const {
+      showDesktopNotificationWhenBreak,
+      showDesktopNotificationWhenPomodoro,
+      showNewTabNotificationWhenBreak,
+      showNewTabNotificationWhenPomodoro
+    } = await getStorage([
+      'showDesktopNotificationWhenBreak',
+      'showDesktopNotificationWhenPomodoro',
+      'showNewTabNotificationWhenBreak',
+      'showNewTabNotificationWhenPomodoro'
+    ])
+    if (isAutoExpire) {
+      if (currentPhase === 'focus') {
+        if (showDesktopNotificationWhenPomodoro) {
+          createNotification(
+            currentPhase,
+            dailyPomodoros.slice(-1)[0].count,
+            totalPomodoroCountsInSession
+          )
+        }
+        if (showNewTabNotificationWhenPomodoro) {
+          openNewTab()
+        }
+      } else {
+        if (showDesktopNotificationWhenBreak) {
+          createNotification(
+            currentPhase,
+            dailyPomodoros.slice(-1)[0].count,
+            totalPomodoroCountsInSession
+          )
+        }
+        if (showNewTabNotificationWhenBreak) {
+          openNewTab()
+        }
+      }
     }
     setTickInterval(false)
     // popup非表示時はここで止まってしまうため最後に実行する

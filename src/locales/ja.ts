@@ -31,8 +31,14 @@ const translation = {
     }
   },
   notifications: {
-    title: 'ポモドーロが終了しました',
-    message: '現在のポモドーロ数は〇〇です'
+    pomodoro: {
+      title: 'ポモドーロが終了しました',
+      message: 'ポモドーロ数： %f 回\n長い休憩まで： %s 回'
+    },
+    break: {
+      title: '休憩が終了しました',
+      message: 'ポモドーロ数： %f 回\n長い休憩まで： %s 回'
+    }
   }
 }
 
