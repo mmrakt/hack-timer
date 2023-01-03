@@ -49,7 +49,6 @@ const Settings: React.FC<{ handleDisplayTimer: () => void }> = ({
       'showNewTabNotificationWhenBreak',
       'pomodoroCountUntilLongBreak'
     ]).then((value: StorageValue) => {
-      console.log(value)
       setPomodoroLength(value.pomodoroLength)
       setBreakLength(value.breakLength)
       setLongBreakLength(value.longBreakLength)

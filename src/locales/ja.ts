@@ -4,6 +4,10 @@ const translation = {
     break: '休憩',
     longBreak: '長い休憩'
   },
+  popup: {
+    totalPomodoroCount: 'ポモドーロ - %f 回',
+    pomodoroCountUntilLongBreak: '長い休憩まで - %f 回'
+  },
   settings: {
     timer: {
       title: 'タイマー',
@@ -42,16 +46,16 @@ const translation = {
   notifications: {
     pomodoro: {
       title: 'ポモドーロが終了しました',
-      message: 'ポモドーロ数： %f 回\n長い休憩まで： %s 回'
+      message: 'ポモドーロ数 - %f 回\n長い休憩まで - %s 回'
     },
     break: {
       title: '休憩が終了しました',
-      message: 'ポモドーロ数： %f 回\n長い休憩まで： %s 回'
+      message: 'ポモドーロ - %f 回\n長い休憩まで - %s 回'
     }
   },
   expire: {
     title: '%fが終了しました',
-    message: 'ポモドーロ数： %f 回\n長い休憩まで： %s 回',
+    message: 'ポモドーロ数 - %f 回\n長い休憩まで - %s 回',
     buttonText: '%fを開始'
   }
 }

@@ -1,3 +1,4 @@
+import { DailyPomodoro } from '../types/index'
 const getTimeFromSeconds = (
   secs: number
 ): {
@@ -20,4 +21,8 @@ const formatDisplayTime = (seconds: number, minutes: number): string => {
   return `${formatMinutes}:${formatSeconds}`
 }
 
-export { getTimeFromSeconds, formatDisplayTime }
+const extractTodayPomodoroCount = (dailyPomodoros: DailyPomodoro[]): number => {
+  return dailyPomodoros.slice(-1)[0].count
+}
+
+export { getTimeFromSeconds, formatDisplayTime, extractTodayPomodoroCount }

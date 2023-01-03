@@ -6,6 +6,7 @@ import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
 import { openNewTab } from './Tab'
 import { createNotificationContent, sendNotification } from './Notification'
 import keepAlive from '../utils/keepAliveServiceWorker'
+import { extractTodayPomodoroCount } from '../utils/timeHelper'
 
 let intervalId = 0
 
@@ -110,6 +111,7 @@ const expire = async (
   } else {
     reminingSeconds = DEFAULT_TIMER_LENGTH.focus
   }
+  const todayTotalPomodoroCount = extractTodayPomodoroCount(dailyPomodoros)
   try {
     setStorage({
       reminingSeconds,
@@ -139,7 +141,7 @@ const expire = async (
           if (showDesktopNotificationWhenPomodoro) {
             const [title, message] = await createNotificationContent(
               phase,
-              dailyPomodoros.slice(-1)[0].count,
+              todayTotalPomodoroCount,
               pomodoroCountUntilLongBreak - totalPomodoroCountsInSession
             )
             sendNotification(title, message)
@@ -151,7 +153,7 @@ const expire = async (
           if (showDesktopNotificationWhenBreak) {
             const [title, message] = await createNotificationContent(
               phase,
-              dailyPomodoros.slice(-1)[0].count,
+              todayTotalPomodoroCount,
               pomodoroCountUntilLongBreak - totalPomodoroCountsInSession
             )
             sendNotification(title, message)
@@ -167,7 +169,9 @@ const expire = async (
     await runtime.sendMessage({
       message: 'expire',
       secs: reminingSeconds,
-      phase: nextPhase
+      phase: nextPhase,
+      addedTotalPomodoroCount: todayTotalPomodoroCount,
+      addedPomodoroCountUntilLongBreak: totalPomodoroCountsInSession
     })
   } catch (e) {
     console.error(e)

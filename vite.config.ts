@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 
 const manifest = defineManifest({
   manifest_version: 3,
-  name: 'Zone',
+  name: 'hack timer',
   version: '0.0.1',
   description: 'discription',
   action: {
