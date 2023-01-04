@@ -14,6 +14,7 @@ import Cogwheel from '../components/svg/Cogwheel'
 import Settings from './Settings'
 import { getStorage } from '../utils/chrome'
 import { useTranslation } from 'react-i18next'
+import Forward from '../components/svg/Forward'
 
 interface IProps {
   reminingSeconds: number
@@ -104,20 +105,15 @@ const Timer: React.FC<IProps> = (props) => {
       return (
         <div className="w-48 m-6">
           <div className="flex">
+            <img src="assets/img/logo.png" width={40} height={10} alt="" />
             <button
-              className="text-lg border-2 border-gray-200 px-2 py-1 rounded-md  hover:border-gray-300 hover:text-gray-300"
+              className="ml-auto text-lg border-2 border-gray-200 px-1 rounded-md  hover:border-gray-300 hover:text-gray-300"
               onClick={expire}
             >
-              Finish
-            </button>
-            <button className="ml-auto" onClick={onDisplaySettigns}>
-              <Cogwheel />
-            </button>
-            <button className="ml-auto" onClick={onDisplayHistory}>
-              <Chart />
+              <Forward />
             </button>
           </div>
-          <div className="mt-3 text-6xl w-36 mx-auto">
+          <div className="mt-3 text-5xl w-32 mx-auto">
             <Digit count={displayMinutes} />:
             <Digit count={displaySeconds} />
           </div>
@@ -132,9 +128,17 @@ const Timer: React.FC<IProps> = (props) => {
               </button>
             )}
           </div>
-          <div className="class">
+          <div className="text-center text-base mt-3">
             <p className="class">{totalPomodoroCountMessge}</p>
             <p className="class">{untilLongBreakMessage}</p>
+          </div>
+          <div className="flex justify-end gap-3 mt-5">
+            <button className="" onClick={onDisplaySettigns}>
+              <Cogwheel />
+            </button>
+            <button className="" onClick={onDisplayHistory}>
+              <Chart />
+            </button>
           </div>
         </div>
       )
