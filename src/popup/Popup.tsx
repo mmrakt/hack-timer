@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import History from './History'
-import { PageType, StorageValue, FromServiceWorkerMessge } from '../types/index'
+import { PageType, StorageValue, Message } from '../types/index'
 import Chart from '../components/svg/Chart'
 import Pause from '../components/svg/Pause'
 import Play from '../components/svg/Play'
@@ -15,11 +15,13 @@ import Settings from './Settings'
 import { getStorage } from '../utils/chrome'
 import { useTranslation } from 'react-i18next'
 import Forward from '../components/svg/Forward'
+import Circle from '../components/svg/Circle'
 
 interface IProps {
   reminingSeconds: number
   isRunning: boolean
-  totalPomodoroCount: number
+  todayTotalPomodoroCount: number
+  totalPomodoroCountInSession: number
   pomodoroCountUntilLongBreak: number
 }
 
@@ -27,9 +29,10 @@ const Timer: React.FC<IProps> = (props) => {
   const { t } = useTranslation()
   const [isDisplayPage, setIsDisplayPage] = useState<PageType>('timer')
   const [seconds, setSeconds] = useState<number>(props.reminingSeconds)
-  const [totalPomodoroCount, setTotalPomodoroCount] = useState<number>(
-    props.totalPomodoroCount
-  )
+  const [todayTotalPomodoroCount, setTodayTotalPomodoroCount] =
+    useState<number>(props.todayTotalPomodoroCount)
+  const [totalPomodoroCountInSession, setTotalPomodoroCountInSession] =
+    useState<number>(0)
   const [pomodoroCountUntilLongBreak, setPomodoroCountUntilLongBreak] =
     useState<number>(props.pomodoroCountUntilLongBreak)
   const [isRunning, setIsRunning] = useState<boolean>(props.isRunning)
@@ -49,32 +52,21 @@ const Timer: React.FC<IProps> = (props) => {
   }
 
   useEffect(() => {
-    chrome.runtime.onMessage.addListener(
-      ({
-        message,
-        secs,
-        toggledTimerStatus,
-        addedTotalPomodoroCount,
-        addedPomodoroCountUntilLongBreak
-      }: {
-        message: FromServiceWorkerMessge
-        secs: number
-        toggledTimerStatus: boolean
-        addedTotalPomodoroCount: number
-        addedPomodoroCountUntilLongBreak: number
-      }) => {
-        if (message === 'reduceCount') {
-          setSeconds(secs)
-        } else if (message === 'expire') {
-          setSeconds(secs)
-          setIsRunning(false)
-          setTotalPomodoroCount(addedTotalPomodoroCount)
-          setPomodoroCountUntilLongBreak(addedPomodoroCountUntilLongBreak)
-        } else if (message === 'toggleTimerStatus') {
-          setIsRunning(toggledTimerStatus)
-        }
+    chrome.runtime.onMessage.addListener((message: Message) => {
+      if (message.type === 'reduce-count') {
+        setSeconds(message.data.secs)
+      } else if (message.type === 'expire') {
+        setSeconds(message.data.secs)
+        setIsRunning(false)
+        setTodayTotalPomodoroCount(message.data.todayTotalPomodoroCount)
+        setTotalPomodoroCountInSession(
+          message.data.totalPomodoroCountsInSession
+        )
+        setPomodoroCountUntilLongBreak(message.data.pomodoroCountUntilLongBreak)
+      } else if (message.type === 'toggle-timer-status') {
+        setIsRunning(message.data.toggledTimerStatus)
       }
-    )
+    })
   }, [])
 
   const expire = (): void => {
@@ -91,13 +83,21 @@ const Timer: React.FC<IProps> = (props) => {
     })
   }
 
+  const PomodoroCircles: React.FC = () => {
+    const circles = []
+    for (let i = 0; i < pomodoroCountUntilLongBreak; i++) {
+      if (i < totalPomodoroCountInSession) {
+        circles.push(<Circle fillColor="rgb(244 244 245" />)
+      } else {
+        circles.push(<Circle fillColor="rgb(24 24 27" />)
+      }
+    }
+    return <>{circles}</>
+  }
+
   const totalPomodoroCountMessge = t('popup.totalPomodoroCount').replace(
     '%f',
-    String(totalPomodoroCount)
-  )
-  const untilLongBreakMessage = t('popup.pomodoroCountUntilLongBreak').replace(
-    '%f',
-    String(pomodoroCountUntilLongBreak)
+    String(todayTotalPomodoroCount)
   )
 
   switch (isDisplayPage) {
@@ -128,9 +128,11 @@ const Timer: React.FC<IProps> = (props) => {
               </button>
             )}
           </div>
+          <div className="flex justify-center">
+            <PomodoroCircles />
+          </div>
           <div className="text-center text-base mt-3">
             <p className="class">{totalPomodoroCountMessge}</p>
-            <p className="class">{untilLongBreakMessage}</p>
           </div>
           <div className="flex justify-end gap-3 mt-5">
             <button className="" onClick={onDisplaySettigns}>
@@ -152,7 +154,10 @@ const Timer: React.FC<IProps> = (props) => {
 const Popup: React.FC = () => {
   const [reminingSeconds, setReminingSeconds] = useState<number | null>(null)
   const [isRunning, setIsRunning] = useState<boolean>(false)
-  const [totalPomodoroCount, setTotalPomodoroCount] = useState<number>(0)
+  const [todayTotalPomodoroCount, setTodayTotalPomodoroCount] =
+    useState<number>(0)
+  const [totalPomodoroCountInSession, setTotalPomodoroCountInSession] =
+    useState<number>(0)
   const [pomodoroCountUntilLongBreak, setPomodoroCountUntilLongBreak] =
     useState<number>(0)
 
@@ -166,10 +171,11 @@ const Popup: React.FC = () => {
     ]).then((value: StorageValue) => {
       setReminingSeconds(value.reminingSeconds)
       setIsRunning(value.isRunning)
-      setTotalPomodoroCount(extractTodayPomodoroCount(value.dailyPomodoros))
-      setPomodoroCountUntilLongBreak(
-        value.pomodoroCountUntilLongBreak - value.totalPomodoroCountsInSession
+      setTodayTotalPomodoroCount(
+        extractTodayPomodoroCount(value.dailyPomodoros)
       )
+      setTotalPomodoroCountInSession(value.totalPomodoroCountsInSession)
+      setPomodoroCountUntilLongBreak(value.pomodoroCountUntilLongBreak)
     })
   }, [])
 
@@ -180,7 +186,8 @@ const Popup: React.FC = () => {
       <Timer
         reminingSeconds={reminingSeconds}
         isRunning={isRunning}
-        totalPomodoroCount={totalPomodoroCount}
+        totalPomodoroCountInSession={totalPomodoroCountInSession}
+        todayTotalPomodoroCount={todayTotalPomodoroCount}
         pomodoroCountUntilLongBreak={pomodoroCountUntilLongBreak}
       />
     </div>

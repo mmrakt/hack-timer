@@ -7,6 +7,8 @@ import { openNewTab } from './Tab'
 import { createNotificationContent, sendNotification } from './Notification'
 import keepAlive from '../utils/keepAliveServiceWorker'
 import { extractTodayPomodoroCount } from '../utils/timeHelper'
+import { Message } from '../types/index'
+import { FromServiceWorkerMessgeType } from '../utils/message'
 
 let intervalId = 0
 
@@ -166,12 +168,15 @@ const expire = async (
     }
     setTickInterval(false)
     // popup非表示時はここで止まってしまうため最後に実行する
-    await runtime.sendMessage({
-      message: 'expire',
-      secs: reminingSeconds,
-      phase: nextPhase,
-      addedTotalPomodoroCount: todayTotalPomodoroCount,
-      addedPomodoroCountUntilLongBreak: totalPomodoroCountsInSession
+    await runtime.sendMessage<Message>({
+      type: FromServiceWorkerMessgeType.EXPIRE,
+      data: {
+        secs: reminingSeconds,
+        phase: nextPhase,
+        todayTotalPomodoroCount,
+        totalPomodoroCountsInSession,
+        pomodoroCountUntilLongBreak
+      }
     })
   } catch (e) {
     console.error(e)

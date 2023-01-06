@@ -1,3 +1,7 @@
+import {
+  FromPopupMessageType,
+  FromServiceWorkerMessgeType
+} from '../utils/message'
 export type Response = {
   id: string
 }
@@ -56,3 +60,8 @@ export type DataSet = Array<{
   name: string | number
   count: number
 }>
+
+export type Message = {
+  type: FromPopupMessageType | FromServiceWorkerMessgeType
+  data: any
+}
