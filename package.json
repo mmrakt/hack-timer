@@ -3,12 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "d": "vite",
+    "b": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint --fix './src/'",
-    "test": "jest",
-    "test:w": "jest --watch",
+    "l": "eslint --fix './src/'",
+    "t": "jest",
+    "t:w": "jest --watch",
     "prepare": "husky install"
   },
   "dependencies": {

@@ -5,10 +5,10 @@ import {
   HISTORY_CSV_FILE_NAME,
   HISTORY_CSV_HEADER_ARRAY
 } from '../../consts'
-import { dailyPomodoro } from '../../types'
+import { DailyPomodoro } from '../../types'
 import { useTranslation } from 'react-i18next'
 
-const createStorageValue = (content: string): dailyPomodoro[] => {
+const createStorageValue = (content: string): DailyPomodoro[] => {
   const csvRows = content.slice(content.indexOf('\n') + 1).split('\n')
   return csvRows.map((row) => {
     // FIXME: refactor
@@ -22,7 +22,7 @@ const createStorageValue = (content: string): dailyPomodoro[] => {
   })
 }
 
-const createBlobData = (dailyPomodoros: dailyPomodoro[]): string => {
+const createBlobData = (dailyPomodoros: DailyPomodoro[]): string => {
   const header = HISTORY_CSV_HEADER_ARRAY.join(',') + '\n'
 
   let joinedData = ''

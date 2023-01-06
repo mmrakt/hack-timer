@@ -41,19 +41,6 @@ export type StorageValue = {
 
 export type StorageKey = keyof StorageValue
 
-export type FromServiceWorkerMessge =
-  | 'reduceCount'
-  | 'toggleTimerStatus'
-  | 'expire'
-  | 'playTimerSound'
-
-export type FromPopupMessge =
-  | 'displayPopup'
-  | 'resume'
-  | 'pause'
-  | 'expire'
-  | 'displayHistory'
-
 export type DisplayTerm = 'week' | 'month' | 'year'
 
 export type DataSet = Array<{
@@ -63,5 +50,5 @@ export type DataSet = Array<{
 
 export type Message = {
   type: FromPopupMessageType | FromServiceWorkerMessgeType
-  data: any
+  data?: any
 }

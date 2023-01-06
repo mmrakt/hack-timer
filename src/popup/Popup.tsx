@@ -16,6 +16,7 @@ import { getStorage } from '../utils/chrome'
 import { useTranslation } from 'react-i18next'
 import Forward from '../components/svg/Forward'
 import Circle from '../components/svg/Circle'
+import { FromPopupMessageType } from '../utils/message'
 
 interface IProps {
   reminingSeconds: number
@@ -70,17 +71,23 @@ const Timer: React.FC<IProps> = (props) => {
   }, [])
 
   const expire = (): void => {
-    chrome.runtime.sendMessage('expire', async () => {})
+    chrome.runtime.sendMessage<Message>({ type: FromPopupMessageType.EXPIRE })
   }
   const pause = (): void => {
-    chrome.runtime.sendMessage('pause', async () => {
-      setIsRunning(false)
-    })
+    chrome.runtime.sendMessage<Message>(
+      { type: FromPopupMessageType.PAUSE },
+      async () => {
+        setIsRunning(false)
+      }
+    )
   }
   const resume = (): void => {
-    chrome.runtime.sendMessage('resume', async () => {
-      setIsRunning(true)
-    })
+    chrome.runtime.sendMessage<Message>(
+      { type: FromPopupMessageType.RESUME },
+      async () => {
+        setIsRunning(true)
+      }
+    )
   }
 
   const PomodoroCircles: React.FC = () => {

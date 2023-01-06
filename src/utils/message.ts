@@ -2,8 +2,7 @@ export enum FromPopupMessageType {
   DISPLAY_POPUP = 'display-popup',
   RESUME = 'resume',
   PAUSE = 'pause',
-  EXPIRE = 'expire',
-  DISPLAY_HISTORY = 'display-history'
+  EXPIRE = 'expire'
 }
 
 export enum FromServiceWorkerMessgeType {

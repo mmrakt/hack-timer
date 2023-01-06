@@ -1,8 +1,8 @@
 import { fireEvent, render } from '@testing-library/react'
 import { Expire, ExpireContainer } from '../Expire'
 import { chrome } from 'jest-chrome'
-import { FromPopupMessge } from '../../types/index'
 import '@testing-library/jest-dom'
+import { FromPopupMessageType } from '../../utils/message'
 
 describe('ExpireContainer', () => {
   it('render', () => {
@@ -35,7 +35,7 @@ describe('Expire', () => {
   })
 
   it('key down enter', () => {
-    const expectedSendMessage: FromPopupMessge = 'resume'
+    const expectedSendMessage = { type: FromPopupMessageType.RESUME }
     const { container } = render(
       <Expire
         finishPhase="break"
@@ -49,7 +49,7 @@ describe('Expire', () => {
     expect(chrome.runtime.sendMessage).toBeCalledWith(expectedSendMessage)
   })
   it('button click', async () => {
-    const expectedSendMessage: FromPopupMessge = 'resume'
+    const expectedSendMessage = { type: FromPopupMessageType.RESUME }
     const { getByText } = render(
       <Expire
         finishPhase="break"

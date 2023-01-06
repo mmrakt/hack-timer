@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import '../styles/globals.css'
 import { getStorage } from '../utils/chrome'
-import { Phase, StorageValue } from '../types/index'
+import { Message, Phase, StorageValue } from '../types/index'
 import { useTranslation } from 'react-i18next'
+import { FromPopupMessageType } from '../utils/message'
 
 type IProps = {
   finishPhase: Phase
@@ -18,7 +19,9 @@ const Expire: React.FC<IProps> = (props) => {
     props.reminingPomodorCountUntilLongBreak
   )
   const onStartBreak = async (): Promise<void> => {
-    await chrome.runtime.sendMessage('resume')
+    await chrome.runtime.sendMessage<Message>({
+      type: FromPopupMessageType.RESUME
+    })
     const queryOptions = { active: true, lastFocusedWindow: true }
     await chrome.tabs.query(queryOptions, async ([result]) => {
       if (result.id) {

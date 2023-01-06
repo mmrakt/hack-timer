@@ -28,9 +28,11 @@ const toggleTimerStatus = async (needSendMessage = false): Promise<void> => {
         await resumeTimer()
       }
       if (needSendMessage) {
-        await runtime.sendMessage({
-          message: 'toggleTimerStatus',
-          toggledTimerStatus: !data.isRunning
+        await runtime.sendMessage<Message>({
+          type: FromServiceWorkerMessgeType.TOGGLE_TIMER_STATUS,
+          data: {
+            toggledTimerStatus: !data.isRunning
+          }
         })
       }
     } catch (e) {
@@ -81,9 +83,11 @@ const reduceCount = async (reminingSeconds: number): Promise<void> => {
   try {
     setStorage({ reminingSeconds: reminingSeconds - 1 })
     await updateSecondsOfBadge(reminingSeconds - 1)
-    await runtime.sendMessage({
-      message: 'reduceCount',
-      secs: reminingSeconds - 1
+    await runtime.sendMessage<Message>({
+      type: FromServiceWorkerMessgeType.REDUCE_COUNT,
+      data: {
+        secs: reminingSeconds - 1
+      }
     })
   } catch (e) {
     console.error(e)

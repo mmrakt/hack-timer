@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react'
 import { HISTORY_CSV_FILE_NAME } from '../../consts/index'
-import { dailyPomodoro } from '../../types'
+import { DailyPomodoro } from '../../types'
 import {
   DropdownMenu,
   createBlobData,
@@ -10,7 +10,7 @@ import {
 
 describe('Settings', () => {
   const csvData = 'year,month,day,count\n2022,12,1,10\n2022,12,3,5\n2022,12,4,3'
-  const storageData: dailyPomodoro[] = [
+  const storageData: DailyPomodoro[] = [
     {
       year: 2022,
       month: 12,

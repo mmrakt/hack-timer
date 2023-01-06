@@ -6,6 +6,8 @@ import {
   DEFAULT_TIMER_LENGTH
 } from '../../consts/index'
 import { expire } from '../Timer'
+import { Message } from '../../types/index'
+import { FromServiceWorkerMessgeType } from '../../utils/message'
 
 describe('service worker', () => {
   beforeEach(() => {
@@ -56,15 +58,22 @@ describe('service worker', () => {
         }
       ]
     }
-    const expectedOptions = {
-      message: 'expire',
-      secs: expected.reminingSeconds,
-      phase: expected.phase
+    const pomodoroCountUntilLongBreak = 4
+    const todayTotalPomodoroCount = 0
+    const expectedOptions: Message = {
+      type: FromServiceWorkerMessgeType.EXPIRE,
+      data: {
+        secs: expected.reminingSeconds,
+        phase: expected.phase,
+        pomodoroCountUntilLongBreak,
+        todayTotalPomodoroCount: todayTotalPomodoroCount + 1,
+        totalPomodoroCountsInSession: expected.totalPomodoroCountsInSession
+      }
     }
     const expectedBadgeText = '00:06'
     const expectedBadgeBackgroundColor = BREAK_BADGE_COLOR_CODE
 
-    await expire('focus', 0, [], 0)
+    await expire('focus', 0, [], 4)
 
     expect(chrome.storage.local.set).toBeCalledWith(expected)
     // @ts-expect-error
@@ -93,10 +102,17 @@ describe('service worker', () => {
         }
       ]
     }
-    const expectedOptions = {
-      message: 'expire',
-      secs: expected.reminingSeconds,
-      phase: expected.phase
+    const pomodoroCountUntilLongBreak = 4
+    const todayTotalPomodoroCount = 1
+    const expectedOptions: Message = {
+      type: FromServiceWorkerMessgeType.EXPIRE,
+      data: {
+        secs: expected.reminingSeconds,
+        phase: expected.phase,
+        pomodoroCountUntilLongBreak,
+        todayTotalPomodoroCount,
+        totalPomodoroCountsInSession: expected.totalPomodoroCountsInSession
+      }
     }
     const expectedBadgeText = '00:05'
     const expectedBadgeBackgroundColor = FOCUS_BADGE_COLOR_CODE
@@ -142,10 +158,17 @@ describe('service worker', () => {
         }
       ]
     }
+    const pomodoroCountUntilLongBreak = 4
+    const todayTotalPomodoroCount = 3
     const expectedOptions = {
-      message: 'expire',
-      secs: expected.reminingSeconds,
-      phase: expected.phase
+      type: FromServiceWorkerMessgeType.EXPIRE,
+      data: {
+        secs: expected.reminingSeconds,
+        phase: expected.phase,
+        pomodoroCountUntilLongBreak,
+        todayTotalPomodoroCount: todayTotalPomodoroCount + 1,
+        totalPomodoroCountsInSession: expected.totalPomodoroCountsInSession
+      }
     }
     const expectedBadgeText = '30:00'
     const expectedBadgeBackgroundColor = BREAK_BADGE_COLOR_CODE

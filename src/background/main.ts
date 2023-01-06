@@ -1,4 +1,4 @@
-import { FromPopupMessge, StorageValue } from '../types/index'
+import { StorageValue, Message } from '../types/index'
 import { runtime, getStorage, setStorage, commands } from '../utils/chrome'
 import '../utils/i18n'
 import { closeTabs } from './Tab'
@@ -27,45 +27,31 @@ commands.onCommand.addListener(async (command) => {
 })
 
 // popup event
-runtime.onMessage.addListener(
-  (message: FromPopupMessge, sender, sendResponse) => {
-    switch (message) {
-      case 'displayPopup':
-        getStorage(['reminingSeconds', 'isRunning']).then((data) => {
-          sendResponse(data)
-        })
-        break
-      case 'resume':
-        resumeTimer()
-        closeTabs()
-        sendResponse()
-        break
-      case 'pause':
-        pauseTimer()
-        sendResponse()
-        break
-      case 'expire':
-        getStorage([
-          'phase',
-          'totalPomodoroCountsInSession',
-          'dailyPomodoros',
-          'pomodoroCountUntilLongBreak'
-        ]).then((data: StorageValue) => {
-          expire(
-            data.phase,
-            data.totalPomodoroCountsInSession,
-            data.dailyPomodoros,
-            data.pomodoroCountUntilLongBreak,
-            false
-          )
-        })
-        break
-      case 'displayHistory':
-        getStorage(['dailyPomodoros']).then((data) => {
-          sendResponse(data)
-        })
-        break
-    }
-    return true
+runtime.onMessage.addListener((message: Message) => {
+  switch (message.type) {
+    case 'resume':
+      resumeTimer()
+      closeTabs()
+      break
+    case 'pause':
+      pauseTimer()
+      break
+    case 'expire':
+      getStorage([
+        'phase',
+        'totalPomodoroCountsInSession',
+        'dailyPomodoros',
+        'pomodoroCountUntilLongBreak'
+      ]).then((data: StorageValue) => {
+        expire(
+          data.phase,
+          data.totalPomodoroCountsInSession,
+          data.dailyPomodoros,
+          data.pomodoroCountUntilLongBreak,
+          false
+        )
+      })
+      break
   }
-)
+  return true
+})

@@ -16,6 +16,7 @@ import dayjs from 'dayjs'
 import EllipsisHorizontal from '../components/svg/EllipsisHorizontal'
 import Dropdown from '../components/Dropdown'
 import { DropdownMenu } from '../components/history/DropdownMenu'
+import { getStorage } from '../utils/chrome'
 
 const pStyle = {
   color: '#f4f4f4'
@@ -37,21 +38,18 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
 
   useEffect(() => {
     const testValue = testData
-    chrome.runtime.sendMessage(
-      'displayHistory',
-      ({ dailyPomodoros: value }: { dailyPomodoros: DailyPomodoro[] }) => {
-        if (displayTerm === 'week') {
-          const paddedDays = paddingUnfocusedDaysOfWeek(testValue)
-          setDisplayData(paddedDays)
-        } else if (displayTerm === 'month') {
-          const paddedDays = paddingUnfocusedDaysOfMonth(testValue)
-          setDisplayData(paddedDays)
-        } else {
-          const paddedMonths = paddingUnfocusedMonths(testValue)
-          setDisplayData(paddedMonths)
-        }
+    getStorage(['dailyPomodoros']).then((data) => {
+      if (displayTerm === 'week') {
+        const paddedDays = paddingUnfocusedDaysOfWeek(testValue)
+        setDisplayData(paddedDays)
+      } else if (displayTerm === 'month') {
+        const paddedDays = paddingUnfocusedDaysOfMonth(testValue)
+        setDisplayData(paddedDays)
+      } else {
+        const paddedMonths = paddingUnfocusedMonths(testValue)
+        setDisplayData(paddedMonths)
       }
-    )
+    })
   }, [displayTerm])
 
   const paddingUnfocusedMonths = (dailyPomodoros: DailyPomodoro[]): DataSet => {
