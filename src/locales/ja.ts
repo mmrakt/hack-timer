@@ -5,8 +5,7 @@ const translation = {
     longBreak: '長い休憩'
   },
   popup: {
-    totalPomodoroCount: 'ポモドーロ - %f 回',
-    pomodoroCountUntilLongBreak: '長い休憩まで - %f 回'
+    totalPomodoroCount: '今日 - %f'
   },
   settings: {
     timer: {

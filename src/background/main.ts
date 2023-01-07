@@ -27,14 +27,16 @@ commands.onCommand.addListener(async (command) => {
 })
 
 // popup event
-runtime.onMessage.addListener((message: Message) => {
+runtime.onMessage.addListener((message: Message, sender, sendResponse) => {
   switch (message.type) {
     case 'resume':
       resumeTimer()
       closeTabs()
+      sendResponse()
       break
     case 'pause':
       pauseTimer()
+      sendResponse()
       break
     case 'expire':
       getStorage([

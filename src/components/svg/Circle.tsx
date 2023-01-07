@@ -18,7 +18,7 @@ const Circle: React.FC<IProps> = ({ fillColor }) => {
           strokeWidth="20"
           cx="50"
           cy="50"
-          r="48"
+          r="40"
         ></circle>
       </svg>
     </>

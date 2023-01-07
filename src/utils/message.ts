@@ -8,6 +8,5 @@ export enum FromPopupMessageType {
 export enum FromServiceWorkerMessgeType {
   REDUCE_COUNT = 'reduce-count',
   TOGGLE_TIMER_STATUS = 'toggle-timer-status',
-  EXPIRE = 'expire',
-  PLAY_TIMER_SOUND = 'play-timer-sound'
+  EXPIRE = 'expire'
 }

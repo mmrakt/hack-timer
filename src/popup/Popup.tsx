@@ -110,14 +110,13 @@ const Timer: React.FC<IProps> = (props) => {
   switch (isDisplayPage) {
     case 'timer':
       return (
-        <div className="w-48 m-6">
-          <div className="flex">
-            <img src="assets/img/logo.png" width={40} height={10} alt="" />
-            <button
-              className="ml-auto text-lg border-2 border-gray-200 px-1 rounded-md  hover:border-gray-300 hover:text-gray-300"
-              onClick={expire}
-            >
-              <Forward />
+        <div className="w-48 m-4">
+          <div className="flex gap-3">
+            <button className="" onClick={onDisplayHistory}>
+              <Chart />
+            </button>
+            <button className="" onClick={onDisplaySettigns}>
+              <Cogwheel />
             </button>
           </div>
           <div className="mt-3 text-5xl w-32 mx-auto">
@@ -135,18 +134,17 @@ const Timer: React.FC<IProps> = (props) => {
               </button>
             )}
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-2 mt-3">
             <PomodoroCircles />
           </div>
-          <div className="text-center text-base mt-3">
-            <p className="class">{totalPomodoroCountMessge}</p>
-          </div>
-          <div className="flex justify-end gap-3 mt-5">
-            <button className="" onClick={onDisplaySettigns}>
-              <Cogwheel />
-            </button>
-            <button className="" onClick={onDisplayHistory}>
-              <Chart />
+          <div className="text-center text-base mt-3"></div>
+          <div className="flex gap-3 items-center mt-5">
+            <span>{totalPomodoroCountMessge}</span>
+            <button
+              className="ml-auto text-lg border-2 border-gray-200 px-1 rounded-md  hover:border-gray-300 hover:text-gray-300"
+              onClick={expire}
+            >
+              <Forward />
             </button>
           </div>
         </div>
@@ -189,7 +187,7 @@ const Popup: React.FC = () => {
   if (!reminingSeconds) return <div>...loading</div>
 
   return (
-    <div className="bg-zinc-900 border-2 border-gray-700 text-zinc-100">
+    <div className="base-color border-2 border-gray-700 text-color">
       <Timer
         reminingSeconds={reminingSeconds}
         isRunning={isRunning}

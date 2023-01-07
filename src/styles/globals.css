@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.base-color {
+  @apply dark:bg-zinc-800;
+}
+
+.text-color {
+  @apply dark:text-zinc-100;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

@@ -202,7 +202,7 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
               margin={{ top: 0, left: 0, bottom: 0, right: 40 }}
             >
               <CartesianGrid stroke="#353a45" strokeDasharray="3 3" />
-              <XAxis dataKey="name" label="name" />
+              <XAxis dataKey="name" />
               <YAxis />
               <Bar
                 type="monotone"

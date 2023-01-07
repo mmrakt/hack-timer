@@ -9,7 +9,7 @@ import { expire } from '../Timer'
 import { Message } from '../../types/index'
 import { FromServiceWorkerMessgeType } from '../../utils/message'
 
-describe('service worker', () => {
+describe('Timer', () => {
   beforeEach(() => {
     MockDate.set('2022-12-01')
   })
