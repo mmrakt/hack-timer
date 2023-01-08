@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import ArrowLeft from '../components/svg/ArrowLeft'
-import { DisplayTerm, DailyPomodoro, DataSet } from '../types/index'
+import { DisplayTermType, DailyPomodoro, DataSet } from '../types/index'
 import {
   BarChart,
   Bar,
@@ -17,6 +17,11 @@ import EllipsisHorizontal from '../components/svg/EllipsisHorizontal'
 import Dropdown from '../components/Dropdown'
 import { DropdownMenu } from '../components/history/DropdownMenu'
 import { getStorage } from '../utils/chrome'
+import ja from 'dayjs/locale/ja'
+import ChevronLeft from '../components/svg/ChevronLeft'
+import ChevronRight from '../components/svg/ChevronRight'
+
+dayjs.locale(ja)
 
 const pStyle = {
   color: '#f4f4f4'
@@ -33,16 +38,19 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
   handleDisplayTimer
 }) => {
   const [displayData, setDisplayData] = useState<DataSet>([])
-  const [displayTerm, setDisplayTerm] = useState<DisplayTerm>('week')
-  const terms: DisplayTerm[] = ['week', 'month', 'year']
+  const [displayTermType, setDisplayTermType] =
+    useState<DisplayTermType>('week')
+  const [targetTermString, setTargetTermString] = useState<string>('')
+  const termTypes: DisplayTermType[] = ['week', 'month', 'year']
 
   useEffect(() => {
+    setTargetTermString(formatTargetTermString)
     const testValue = testData
     getStorage(['dailyPomodoros']).then((data) => {
-      if (displayTerm === 'week') {
+      if (displayTermType === 'week') {
         const paddedDays = paddingUnfocusedDaysOfWeek(testValue)
         setDisplayData(paddedDays)
-      } else if (displayTerm === 'month') {
+      } else if (displayTermType === 'month') {
         const paddedDays = paddingUnfocusedDaysOfMonth(testValue)
         setDisplayData(paddedDays)
       } else {
@@ -50,7 +58,23 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
         setDisplayData(paddedMonths)
       }
     })
-  }, [displayTerm])
+  }, [displayTermType])
+
+  const formatTargetTermString = (): string => {
+    switch (displayTermType) {
+      case 'week':
+        // TODO: 月曜始まりに直す
+        return (
+          dayjs().startOf('week').format('YYYY/MM/DD') +
+          ' ~ ' +
+          dayjs().endOf('week').format('YYYY/MM/DD')
+        )
+      case 'month':
+        return dayjs().format('YYYY/MM')
+      case 'year':
+        return dayjs().format('YYYY')
+    }
+  }
 
   const paddingUnfocusedMonths = (dailyPomodoros: DailyPomodoro[]): DataSet => {
     const paddedMonths: DataSet = []
@@ -173,24 +197,35 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
           <Dropdown target={<EllipsisHorizontal />} menu={<DropdownMenu />} />
         </span>
       </div>
-      <div className="mt-3 w-5/6 mx-auto flex bg-zinc-800 border-zinc-600 border-[1px] rounded-lg p-1">
-        {terms.map((term) => (
-          <button
-            key={term}
-            className={`${
-              displayTerm === term ? 'bg-zinc-700' : ''
-            } px-2 py-1 rounded-md flex-grow`}
-            onClick={() => {
-              setDisplayTerm(term)
-            }}
-          >
-            {term === 'week'
-              ? 'Weekly'
-              : term === 'month'
-              ? 'Monthly'
-              : 'Yearly'}
-          </button>
-        ))}
+      <div className="mt-3 w-5/6 mx-auto">
+        <div className="flex bg-zinc-800 border-zinc-600 border-[1px] rounded-lg p-1">
+          {termTypes.map((term) => (
+            <button
+              key={term}
+              className={`${
+                displayTermType === term ? 'bg-zinc-700' : ''
+              } px-2 py-1 rounded-md flex-grow`}
+              onClick={() => {
+                setDisplayTermType(term)
+              }}
+            >
+              {term === 'week'
+                ? 'Weekly'
+                : term === 'month'
+                ? 'Monthly'
+                : 'Yearly'}
+            </button>
+          ))}
+        </div>
+        <div className="flex justify-between items-center mt-3 text-base">
+          <span className="">
+            <ChevronLeft />
+          </span>
+          {targetTermString}
+          <span className="">
+            <ChevronRight />
+          </span>
+        </div>
       </div>
       {displayData.length === 0 ? (
         <LoadingSpinner />

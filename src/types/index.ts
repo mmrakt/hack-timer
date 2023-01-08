@@ -41,7 +41,7 @@ export type StorageValue = {
 
 export type StorageKey = keyof StorageValue
 
-export type DisplayTerm = 'week' | 'month' | 'year'
+export type DisplayTermType = 'week' | 'month' | 'year'
 
 export type DataSet = Array<{
   name: string | number
