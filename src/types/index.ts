@@ -43,7 +43,7 @@ export type StorageKey = keyof StorageValue
 
 export type DisplayTermType = 'week' | 'month' | 'year'
 
-export type DataSet = Array<{
+export type HistoryDataSet = Array<{
   name: string | number
   count: number
 }>

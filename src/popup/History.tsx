@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import ArrowLeft from '../components/svg/ArrowLeft'
-import { DisplayTermType, DailyPomodoro, DataSet } from '../types/index'
+import { DisplayTermType, DailyPomodoro, HistoryDataSet } from '../types/index'
 import {
   BarChart,
   Bar,
@@ -37,14 +37,17 @@ const divStyle = {
 const History: React.FC<{ handleDisplayTimer: () => void }> = ({
   handleDisplayTimer
 }) => {
-  const [displayData, setDisplayData] = useState<DataSet>([])
+  const [displayData, setDisplayData] = useState<HistoryDataSet>([])
   const [displayTermType, setDisplayTermType] =
     useState<DisplayTermType>('week')
   const [targetTermString, setTargetTermString] = useState<string>('')
+  const [targetSinceDate, setTargetSinceDate] = useState<string>('')
+  const [targetUntilDate, setTargetUntilDate] = useState<string>('')
+  const [timesGoBack, setTimesGoBack] = useState<number>(0)
   const termTypes: DisplayTermType[] = ['week', 'month', 'year']
 
   useEffect(() => {
-    setTargetTermString(formatTargetTermString)
+    setTargetTerm()
     const testValue = testData
     getStorage(['dailyPomodoros']).then((data) => {
       if (displayTermType === 'week') {
@@ -58,26 +61,60 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
         setDisplayData(paddedMonths)
       }
     })
-  }, [displayTermType])
+  }, [displayTermType, timesGoBack])
 
-  const formatTargetTermString = (): string => {
+  const setTargetTerm = (): void => {
     switch (displayTermType) {
       case 'week':
         // TODO: 月曜始まりに直す
-        return (
-          dayjs().startOf('week').format('YYYY/MM/DD') +
-          ' ~ ' +
-          dayjs().endOf('week').format('YYYY/MM/DD')
+        setTargetSinceDate(
+          dayjs()
+            .startOf('week')
+            .subtract(timesGoBack, 'week')
+            .format('YYYY/MM/DD')
         )
+        setTargetUntilDate(
+          dayjs()
+            .endOf('week')
+            .subtract(timesGoBack, 'week')
+            .format('YYYY/MM/DD')
+        )
+        break
       case 'month':
-        return dayjs().format('YYYY/MM')
+        setTargetSinceDate(
+          dayjs()
+            .startOf('month')
+            .subtract(timesGoBack, 'month')
+            .format('YYYY/MM/DD')
+        )
+        setTargetUntilDate(
+          dayjs()
+            .endOf('month')
+            .subtract(timesGoBack, 'month')
+            .format('YYYY/MM/DD')
+        )
+        break
       case 'year':
-        return dayjs().format('YYYY')
+        setTargetSinceDate(
+          dayjs()
+            .startOf('year')
+            .subtract(timesGoBack, 'year')
+            .format('YYYY/MM/DD')
+        )
+        setTargetUntilDate(
+          dayjs()
+            .endOf('year')
+            .subtract(timesGoBack, 'year')
+            .format('YYYY/MM/DD')
+        )
+        break
     }
   }
 
-  const paddingUnfocusedMonths = (dailyPomodoros: DailyPomodoro[]): DataSet => {
-    const paddedMonths: DataSet = []
+  const paddingUnfocusedMonths = (
+    dailyPomodoros: DailyPomodoro[]
+  ): HistoryDataSet => {
+    const paddedMonths: HistoryDataSet = []
     const numberMonthsOfYear = 12
     const today = dayjs()
     const month = today.month() + 1
@@ -125,10 +162,11 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
 
   const paddingUnfocusedDaysOfWeek = (
     dailyPomodoros: DailyPomodoro[]
-  ): DataSet => {
-    const paddedDays: DataSet = []
+  ): HistoryDataSet => {
+    const historyDataSet: HistoryDataSet = []
     const numberDaysOfWeek = 7
     const today = dayjs()
+    // TODO: 月を跨ぐとバグる？
     const lastMonth = dailyPomodoros.filter(
       (obj) => obj.year === today.year() && obj.month === today.month() + 1
     )
@@ -141,25 +179,25 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
       if (i <= day) {
         const index = lastDaysOfMonth.indexOf(targetDate)
         if (index !== -1) {
-          paddedDays.push({
+          historyDataSet.push({
             name: String(lastMonth[index].day),
             count: lastMonth[index].count
           })
           continue
         }
       }
-      paddedDays.push({
+      historyDataSet.push({
         name: String(today.add(i - day, 'day').date()),
         count: 0
       })
     }
-    return paddedDays
+    return historyDataSet
   }
 
   const paddingUnfocusedDaysOfMonth = (
     dailyPomodoros: DailyPomodoro[]
-  ): DataSet => {
-    const paddedDays: DataSet = []
+  ): HistoryDataSet => {
+    const historyDataSet: HistoryDataSet = []
     const today = dayjs()
     const endOfDate = today.endOf('month').date()
     const lastMonth = dailyPomodoros.filter(
@@ -173,7 +211,7 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
       if (i <= today.date()) {
         const index = lastDaysOfMonth.indexOf(i)
         if (index !== -1) {
-          paddedDays.push({
+          historyDataSet.push({
             name:
               String(today.month() + 1) + '/' + String(lastMonth[index].day),
             count: lastMonth[index].count
@@ -181,12 +219,27 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
           continue
         }
       }
-      paddedDays.push({
+      historyDataSet.push({
         name: String(today.month() + 1) + '/' + String(i),
         count: 0
       })
     }
-    return paddedDays
+    return historyDataSet
+  }
+
+  const handleChangeDisplayTermType = (term: DisplayTermType): void => {
+    setDisplayTermType(term)
+    setTimesGoBack(0)
+  }
+
+  const handleGoBack = (): void => {
+    setTimesGoBack(timesGoBack + 1)
+  }
+
+  const handleMoveForward = (): void => {
+    if (timesGoBack > 0) {
+      setTimesGoBack(timesGoBack - 1)
+    }
   }
 
   return (
@@ -206,7 +259,7 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
                 displayTermType === term ? 'bg-zinc-700' : ''
               } px-2 py-1 rounded-md flex-grow`}
               onClick={() => {
-                setDisplayTermType(term)
+                handleChangeDisplayTermType(term)
               }}
             >
               {term === 'week'
@@ -218,13 +271,13 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
           ))}
         </div>
         <div className="flex justify-between items-center mt-3 text-base">
-          <span className="">
+          <button onClick={handleGoBack}>
             <ChevronLeft />
-          </span>
-          {targetTermString}
-          <span className="">
+          </button>
+          {targetSinceDate + ' ~ ' + targetUntilDate}
+          <button onClick={handleMoveForward}>
             <ChevronRight />
-          </span>
+          </button>
         </div>
       </div>
       {displayData.length === 0 ? (
