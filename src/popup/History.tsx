@@ -1,224 +1,28 @@
 import { useState, useEffect } from 'react'
 import ArrowLeft from '../components/svg/ArrowLeft'
-import { DisplayTermType, DailyPomodoro, HistoryDataSet } from '../types/index'
-import {
-  BarChart,
-  Bar,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer
-} from 'recharts'
+import { DisplayTermType, DailyPomodoro } from '../types/index'
 import LoadingSpinner from '../components/LoadingSpinner'
-import dayjs from 'dayjs'
 import EllipsisHorizontal from '../components/svg/EllipsisHorizontal'
 import Dropdown from '../components/Dropdown'
 import { DropdownMenu } from '../components/history/DropdownMenu'
 import { getStorage } from '../utils/chrome'
-import ja from 'dayjs/locale/ja'
-import ChevronLeft from '../components/svg/ChevronLeft'
-import ChevronRight from '../components/svg/ChevronRight'
-
-dayjs.locale(ja)
-
-const pStyle = {
-  color: '#f4f4f4'
-}
-
-const divStyle = {
-  background: '#181818',
-  opacity: 0.9,
-  fontWeight: 'bold',
-  border: 'solid 1px #353a45'
-}
+import HistoryChart from '../components/history/HistoryChart'
+import TargetTerm from '../components/history/TargetTerm'
 
 const History: React.FC<{ handleDisplayTimer: () => void }> = ({
   handleDisplayTimer
 }) => {
-  const [displayData, setDisplayData] = useState<HistoryDataSet>([])
+  const [dailyPomodoros, setDailyPomodoros] = useState<DailyPomodoro[]>([])
   const [displayTermType, setDisplayTermType] =
     useState<DisplayTermType>('week')
-  const [targetTermString, setTargetTermString] = useState<string>('')
-  const [targetSinceDate, setTargetSinceDate] = useState<string>('')
-  const [targetUntilDate, setTargetUntilDate] = useState<string>('')
   const [timesGoBack, setTimesGoBack] = useState<number>(0)
   const termTypes: DisplayTermType[] = ['week', 'month', 'year']
 
   useEffect(() => {
-    setTargetTerm()
     getStorage(['dailyPomodoros']).then((data) => {
-      if (displayTermType === 'week') {
-        const paddedDays = paddingUnfocusedDaysOfWeek(data.dailyPomodoros)
-        setDisplayData(paddedDays)
-      } else if (displayTermType === 'month') {
-        const paddedDays = paddingUnfocusedDaysOfMonth(data.dailyPomodoros)
-        setDisplayData(paddedDays)
-      } else {
-        const paddedMonths = paddingUnfocusedMonths(data.dailyPomodoros)
-        setDisplayData(paddedMonths)
-      }
+      setDailyPomodoros(data.dailyPomodoros)
     })
   }, [displayTermType, timesGoBack])
-
-  const setTargetTerm = (): void => {
-    switch (displayTermType) {
-      case 'week':
-        // TODO: 月曜始まりに直す
-        setTargetSinceDate(
-          dayjs()
-            .startOf('week')
-            .subtract(timesGoBack, 'week')
-            .format('YYYY/MM/DD')
-        )
-        setTargetUntilDate(
-          dayjs()
-            .endOf('week')
-            .subtract(timesGoBack, 'week')
-            .format('YYYY/MM/DD')
-        )
-        break
-      case 'month':
-        setTargetSinceDate(
-          dayjs()
-            .startOf('month')
-            .subtract(timesGoBack, 'month')
-            .format('YYYY/MM/DD')
-        )
-        setTargetUntilDate(
-          dayjs()
-            .endOf('month')
-            .subtract(timesGoBack, 'month')
-            .format('YYYY/MM/DD')
-        )
-        break
-      case 'year':
-        setTargetSinceDate(
-          dayjs()
-            .startOf('year')
-            .subtract(timesGoBack, 'year')
-            .format('YYYY/MM/DD')
-        )
-        setTargetUntilDate(
-          dayjs()
-            .endOf('year')
-            .subtract(timesGoBack, 'year')
-            .format('YYYY/MM/DD')
-        )
-        break
-    }
-  }
-
-  const paddingUnfocusedMonths = (
-    dailyPomodoros: DailyPomodoro[]
-  ): HistoryDataSet => {
-    const paddedMonths: HistoryDataSet = []
-    const numberMonthsOfYear = 12
-    const targetDay = dayjs().subtract(timesGoBack, 'year')
-    const daysOfThisYear = dailyPomodoros.filter(
-      (obj) => obj.year === targetDay.year()
-    )
-    let monthlyTotalFocused: DailyPomodoro[] = []
-    monthlyTotalFocused = daysOfThisYear.reduce((result, current) => {
-      const element = result.find((p) => p.month === current.month)
-      if (element != null) {
-        element.count += current.count
-      } else {
-        result.push({
-          year: current.year,
-          month: current.month,
-          day: current.day,
-          count: current.count
-        })
-      }
-      return result
-    }, monthlyTotalFocused)
-
-    const focusedMonths = monthlyTotalFocused.map((obj) => {
-      return obj.month
-    })
-
-    for (let i = 1; i <= numberMonthsOfYear; i++) {
-      const index = focusedMonths.indexOf(i)
-      if (index !== -1) {
-        paddedMonths.push({
-          name: String(monthlyTotalFocused[index].month),
-          count: monthlyTotalFocused[index].count
-        })
-        continue
-      }
-      paddedMonths.push({
-        name: String(i),
-        count: 0
-      })
-    }
-    return paddedMonths
-  }
-
-  const paddingUnfocusedDaysOfWeek = (
-    dailyPomodoros: DailyPomodoro[]
-  ): HistoryDataSet => {
-    const historyDataSet: HistoryDataSet = []
-    const numberDaysOfWeek = 7
-    const targetDay = dayjs().subtract(timesGoBack, 'week')
-    // TODO: 月を跨ぐとバグる？
-    const lastMonth = dailyPomodoros.filter(
-      (obj) =>
-        obj.year === targetDay.year() && obj.month === targetDay.month() + 1
-    )
-    const lastDaysOfMonth = lastMonth.map((obj) => {
-      return obj.day
-    })
-    const day = targetDay.day()
-    for (let i = 0; i < numberDaysOfWeek; i++) {
-      const targetDate = targetDay.subtract(day - i, 'd').date()
-      const index = lastDaysOfMonth.indexOf(targetDate)
-      if (index !== -1) {
-        historyDataSet.push({
-          name: String(lastMonth[index].day),
-          count: lastMonth[index].count
-        })
-        continue
-      }
-      historyDataSet.push({
-        name: String(targetDay.add(i - day, 'day').date()),
-        count: 0
-      })
-    }
-    return historyDataSet
-  }
-
-  const paddingUnfocusedDaysOfMonth = (
-    dailyPomodoros: DailyPomodoro[]
-  ): HistoryDataSet => {
-    const historyDataSet: HistoryDataSet = []
-    const targetDay = dayjs().subtract(timesGoBack, 'month')
-    const endOfDate = targetDay.endOf('month').date()
-    const lastMonth = dailyPomodoros.filter(
-      (obj) =>
-        obj.year === targetDay.year() && obj.month === targetDay.month() + 1
-    )
-    const lastDaysOfMonth = lastMonth.map((obj) => {
-      return obj.day
-    })
-
-    for (let i = 1; i <= endOfDate; i++) {
-      const index = lastDaysOfMonth.indexOf(i)
-      if (index !== -1) {
-        historyDataSet.push({
-          name:
-            String(targetDay.month() + 1) + '/' + String(lastMonth[index].day),
-          count: lastMonth[index].count
-        })
-        continue
-      }
-      historyDataSet.push({
-        name: String(targetDay.month() + 1) + '/' + String(i),
-        count: 0
-      })
-    }
-    return historyDataSet
-  }
 
   const handleChangeDisplayTermType = (term: DisplayTermType): void => {
     setDisplayTermType(term)
@@ -230,9 +34,7 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
   }
 
   const handleMoveForward = (): void => {
-    if (timesGoBack > 0) {
-      setTimesGoBack(timesGoBack - 1)
-    }
+    setTimesGoBack(timesGoBack - 1)
   }
 
   return (
@@ -263,43 +65,21 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
             </button>
           ))}
         </div>
-        <div className="flex justify-between items-center mt-3 text-base">
-          <button onClick={handleGoBack}>
-            <ChevronLeft />
-          </button>
-          {targetSinceDate + ' ~ ' + targetUntilDate}
-          <button onClick={handleMoveForward}>
-            <ChevronRight />
-          </button>
-        </div>
+        <TargetTerm
+          displayTermType={displayTermType}
+          timesGoBack={timesGoBack}
+          onGoBack={handleGoBack}
+          onMoveForward={handleMoveForward}
+        />
       </div>
-      {displayData.length === 0 ? (
+      {dailyPomodoros.length === 0 ? (
         <LoadingSpinner />
       ) : (
-        <div className="my-5">
-          <ResponsiveContainer width={500} height={200}>
-            <BarChart
-              data={displayData}
-              margin={{ top: 0, left: 0, bottom: 0, right: 40 }}
-            >
-              <CartesianGrid stroke="#353a45" strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Bar
-                type="monotone"
-                dataKey="count"
-                stroke="#8884d8"
-                fill="#8884d8"
-                isAnimationActive={false}
-              />
-              <Tooltip
-                cursor={{ fill: 'transparent' }}
-                contentStyle={divStyle}
-                labelStyle={pStyle}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <HistoryChart
+          dailyPomodoros={dailyPomodoros}
+          displayTermType={displayTermType}
+          timesGoBack={timesGoBack}
+        />
       )}
     </>
   )
