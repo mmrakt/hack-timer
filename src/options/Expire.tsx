@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import '../styles/globals.css'
 import { getStorage } from '../utils/chrome'
 import { Message, Phase, StorageValue } from '../types/index'
 import { useTranslation } from 'react-i18next'

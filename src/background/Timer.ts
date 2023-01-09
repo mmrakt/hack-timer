@@ -57,7 +57,7 @@ const handleCountDown = (): void => {
       await reduceCount(data.reminingSeconds)
     }
 
-    if (data.reminingSeconds === 0) {
+    if (data.reminingSeconds === 1) {
       const {
         phase,
         totalPomodoroCountsInSession,

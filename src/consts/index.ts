@@ -1,5 +1,6 @@
 import { DailyPomodoro, Phase, StorageValue } from '../types'
 import { testData } from '../utils/testDate'
+import { PageType } from '../types/index'
 
 export const DEFAULT_TIMER_LENGTH: {
   [T in Phase]: number
@@ -56,3 +57,5 @@ export const LONG_BREAK_LENGTH_ARRAY = [
 export const POMODORO_COUNT_UNTIL_LONG_BREAK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 export const EXPIRE_PAGE = 'expire.html'
+
+export const DEFAULT_POPUP_PAGE_TYPE: PageType = 'timer'
