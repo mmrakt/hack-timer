@@ -34,6 +34,11 @@ const translation = {
     }
   },
   history: {
+    termType: {
+      weekly: '週',
+      monthly: '月',
+      yearly: '年'
+    },
     import: {
       buttonText: '履歴を更新する',
       confirmMessage: '履歴を更新しますか？'

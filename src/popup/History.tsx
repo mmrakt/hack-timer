@@ -8,10 +8,12 @@ import { DropdownMenu } from '../components/history/DropdownMenu'
 import { getStorage } from '../utils/chrome'
 import HistoryChart from '../components/history/HistoryChart'
 import TargetTerm from '../components/history/TargetTerm'
+import { useTranslation } from 'react-i18next'
 
 const History: React.FC<{ handleDisplayTimer: () => void }> = ({
   handleDisplayTimer
 }) => {
+  const { t } = useTranslation()
   const [dailyPomodoros, setDailyPomodoros] = useState<DailyPomodoro[]>([])
   const [displayTermType, setDisplayTermType] =
     useState<DisplayTermType>('week')
@@ -37,6 +39,17 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
     setTimesGoBack(timesGoBack - 1)
   }
 
+  const getTermTypeString = (term: DisplayTermType): string => {
+    switch (term) {
+      case 'week':
+        return t('history.termType.weekly')
+      case 'month':
+        return t('history.termType.monthly')
+      case 'year':
+        return t('history.termType.yearly')
+    }
+  }
+
   return (
     <>
       <div className="flex display-start mt-3 mx-3">
@@ -57,11 +70,7 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
                 handleChangeDisplayTermType(term)
               }}
             >
-              {term === 'week'
-                ? 'Weekly'
-                : term === 'month'
-                ? 'Monthly'
-                : 'Yearly'}
+              {getTermTypeString(term)}
             </button>
           ))}
         </div>
