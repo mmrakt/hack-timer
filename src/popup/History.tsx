@@ -11,7 +11,6 @@ import {
   ResponsiveContainer
 } from 'recharts'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { testData } from '../utils/testDate'
 import dayjs from 'dayjs'
 import EllipsisHorizontal from '../components/svg/EllipsisHorizontal'
 import Dropdown from '../components/Dropdown'
@@ -48,16 +47,15 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
 
   useEffect(() => {
     setTargetTerm()
-    const testValue = testData
     getStorage(['dailyPomodoros']).then((data) => {
       if (displayTermType === 'week') {
-        const paddedDays = paddingUnfocusedDaysOfWeek(testValue)
+        const paddedDays = paddingUnfocusedDaysOfWeek(data.dailyPomodoros)
         setDisplayData(paddedDays)
       } else if (displayTermType === 'month') {
-        const paddedDays = paddingUnfocusedDaysOfMonth(testValue)
+        const paddedDays = paddingUnfocusedDaysOfMonth(data.dailyPomodoros)
         setDisplayData(paddedDays)
       } else {
-        const paddedMonths = paddingUnfocusedMonths(testValue)
+        const paddedMonths = paddingUnfocusedMonths(data.dailyPomodoros)
         setDisplayData(paddedMonths)
       }
     })
@@ -116,10 +114,9 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
   ): HistoryDataSet => {
     const paddedMonths: HistoryDataSet = []
     const numberMonthsOfYear = 12
-    const today = dayjs()
-    const month = today.month() + 1
+    const targetDay = dayjs().subtract(timesGoBack, 'year')
     const daysOfThisYear = dailyPomodoros.filter(
-      (obj) => obj.year === today.year()
+      (obj) => obj.year === targetDay.year()
     )
     let monthlyTotalFocused: DailyPomodoro[] = []
     monthlyTotalFocused = daysOfThisYear.reduce((result, current) => {
@@ -142,15 +139,13 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
     })
 
     for (let i = 1; i <= numberMonthsOfYear; i++) {
-      if (i <= month) {
-        const index = focusedMonths.indexOf(i)
-        if (index !== -1) {
-          paddedMonths.push({
-            name: String(monthlyTotalFocused[index].month),
-            count: monthlyTotalFocused[index].count
-          })
-          continue
-        }
+      const index = focusedMonths.indexOf(i)
+      if (index !== -1) {
+        paddedMonths.push({
+          name: String(monthlyTotalFocused[index].month),
+          count: monthlyTotalFocused[index].count
+        })
+        continue
       }
       paddedMonths.push({
         name: String(i),
@@ -165,29 +160,28 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
   ): HistoryDataSet => {
     const historyDataSet: HistoryDataSet = []
     const numberDaysOfWeek = 7
-    const today = dayjs()
+    const targetDay = dayjs().subtract(timesGoBack, 'week')
     // TODO: 月を跨ぐとバグる？
     const lastMonth = dailyPomodoros.filter(
-      (obj) => obj.year === today.year() && obj.month === today.month() + 1
+      (obj) =>
+        obj.year === targetDay.year() && obj.month === targetDay.month() + 1
     )
     const lastDaysOfMonth = lastMonth.map((obj) => {
       return obj.day
     })
-    const day = today.day()
-    for (let i = 1; i <= numberDaysOfWeek; i++) {
-      const targetDate = today.subtract(day - i, 'd').date()
-      if (i <= day) {
-        const index = lastDaysOfMonth.indexOf(targetDate)
-        if (index !== -1) {
-          historyDataSet.push({
-            name: String(lastMonth[index].day),
-            count: lastMonth[index].count
-          })
-          continue
-        }
+    const day = targetDay.day()
+    for (let i = 0; i < numberDaysOfWeek; i++) {
+      const targetDate = targetDay.subtract(day - i, 'd').date()
+      const index = lastDaysOfMonth.indexOf(targetDate)
+      if (index !== -1) {
+        historyDataSet.push({
+          name: String(lastMonth[index].day),
+          count: lastMonth[index].count
+        })
+        continue
       }
       historyDataSet.push({
-        name: String(today.add(i - day, 'day').date()),
+        name: String(targetDay.add(i - day, 'day').date()),
         count: 0
       })
     }
@@ -198,29 +192,28 @@ const History: React.FC<{ handleDisplayTimer: () => void }> = ({
     dailyPomodoros: DailyPomodoro[]
   ): HistoryDataSet => {
     const historyDataSet: HistoryDataSet = []
-    const today = dayjs()
-    const endOfDate = today.endOf('month').date()
+    const targetDay = dayjs().subtract(timesGoBack, 'month')
+    const endOfDate = targetDay.endOf('month').date()
     const lastMonth = dailyPomodoros.filter(
-      (obj) => obj.year === today.year() && obj.month === today.month() + 1
+      (obj) =>
+        obj.year === targetDay.year() && obj.month === targetDay.month() + 1
     )
     const lastDaysOfMonth = lastMonth.map((obj) => {
       return obj.day
     })
 
     for (let i = 1; i <= endOfDate; i++) {
-      if (i <= today.date()) {
-        const index = lastDaysOfMonth.indexOf(i)
-        if (index !== -1) {
-          historyDataSet.push({
-            name:
-              String(today.month() + 1) + '/' + String(lastMonth[index].day),
-            count: lastMonth[index].count
-          })
-          continue
-        }
+      const index = lastDaysOfMonth.indexOf(i)
+      if (index !== -1) {
+        historyDataSet.push({
+          name:
+            String(targetDay.month() + 1) + '/' + String(lastMonth[index].day),
+          count: lastMonth[index].count
+        })
+        continue
       }
       historyDataSet.push({
-        name: String(today.month() + 1) + '/' + String(i),
+        name: String(targetDay.month() + 1) + '/' + String(i),
         count: 0
       })
     }
