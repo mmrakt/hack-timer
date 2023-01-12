@@ -5,10 +5,6 @@ import SettingsContainer from './Settings'
 import TimerContainer from './Timer'
 import { DEFAULT_POPUP_PAGE_TYPE } from '../consts/index'
 
-// TODO: 型付け
-// type ContextType = {
-//   setDisplayPageType: React.Dispatch<React.SetStateAction<PageType>>
-// }
 export const DisplayPageContext = createContext<any>(null)
 
 const Popup: React.FC = () => {
@@ -18,15 +14,17 @@ const Popup: React.FC = () => {
 
   return (
     <DisplayPageContext.Provider value={{ setDisplayPageType }}>
-      {displayPageType === 'timer' ? (
-        <TimerContainer />
-      ) : displayPageType === 'history' ? (
-        <HistoryContainer />
-      ) : displayPageType === 'settings' ? (
-        <SettingsContainer />
-      ) : (
-        <p>loading</p>
-      )}
+      <div className="p-3 base-color border-2 border-gray-700 text-color w-[400px]">
+        {displayPageType === 'timer' ? (
+          <TimerContainer />
+        ) : displayPageType === 'history' ? (
+          <HistoryContainer />
+        ) : displayPageType === 'settings' ? (
+          <SettingsContainer />
+        ) : (
+          <p>loading</p>
+        )}
+      </div>
     </DisplayPageContext.Provider>
   )
 }

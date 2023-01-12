@@ -8,6 +8,7 @@ const translation = {
     totalPomodoroCount: '今日 - %f'
   },
   settings: {
+    pageTitle: '設定',
     timer: {
       title: 'タイマー',
       length: {
@@ -34,6 +35,7 @@ const translation = {
     }
   },
   history: {
+    pageTitle: '履歴',
     termType: {
       weekly: '週',
       monthly: '月',

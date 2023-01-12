@@ -3,7 +3,7 @@ import Cogwheel from '../svg/Cogwheel'
 import { useContext } from 'react'
 import { DisplayPageContext } from '../../popup/Popup'
 
-const Header: React.FC = () => {
+const HeaderMenu: React.FC = () => {
   const { setDisplayPageType } = useContext(DisplayPageContext)
   return (
     <div className="flex gap-3 justify-start">
@@ -27,4 +27,4 @@ const Header: React.FC = () => {
   )
 }
 
-export default Header
+export default HeaderMenu

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import Header from '../components/timer/Header'
+import LoadingSpinner from '../components/LoadingSpinner'
+import Header from '../components/timer/HeaderMenu'
 import TimerMenu from '../components/TimerMenu'
 import { StorageValue } from '../types'
 import { getStorage } from '../utils/chrome'
@@ -33,19 +34,21 @@ const TimerContainer: React.FC = () => {
     })
   }, [])
 
-  if (!reminingSeconds) return <div>...loading</div>
-
   return (
-    <div className="base-color border-2 border-gray-700 text-color w-[400px]">
+    <>
       <Header />
-      <TimerMenu
-        reminingSeconds={reminingSeconds}
-        isRunning={isRunning}
-        totalPomodoroCountInSession={totalPomodoroCountInSession}
-        todayTotalPomodoroCount={todayTotalPomodoroCount}
-        pomodoroCountUntilLongBreak={pomodoroCountUntilLongBreak}
-      />
-    </div>
+      {!reminingSeconds ? (
+        <LoadingSpinner />
+      ) : (
+        <TimerMenu
+          reminingSeconds={reminingSeconds}
+          isRunning={isRunning}
+          totalPomodoroCountInSession={totalPomodoroCountInSession}
+          todayTotalPomodoroCount={todayTotalPomodoroCount}
+          pomodoroCountUntilLongBreak={pomodoroCountUntilLongBreak}
+        />
+      )}
+    </>
   )
 }
 

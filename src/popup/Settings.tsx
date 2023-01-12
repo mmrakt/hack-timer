@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
-import ArrowLeft from '../components/svg/ArrowLeft'
+import React, { useEffect, useState } from 'react'
 import TimerLengthSelect from '../components/settings/TimerLengthSelect'
 import SettingToggle from '../components/settings/SettingToggle'
 import { useTranslation } from 'react-i18next'
@@ -9,14 +8,12 @@ import {
   POMODORO_LENGTH_ARRAY,
   BREAK_LENGTH_ARRAY,
   LONG_BREAK_LENGTH_ARRAY,
-  POMODORO_COUNT_UNTIL_LONG_BREAK,
-  DEFAULT_POPUP_PAGE_TYPE
+  POMODORO_COUNT_UNTIL_LONG_BREAK
 } from '../consts/index'
-import { DisplayPageContext } from './Popup'
+import Header from '../components/Header'
 
 const Settings: React.FC = () => {
   const { t } = useTranslation()
-  const { setDisplayPageType } = useContext(DisplayPageContext)
   const [pomodoroLength, setPomodoroLength] = useState<number>(0)
   const [breakLength, setBreakLength] = useState<number>(0)
   const [longBreakLength, setLongBreakLength] = useState<number>(0)
@@ -68,14 +65,8 @@ const Settings: React.FC = () => {
   }, [])
 
   return (
-    <div className="w-96">
-      <div className="flex display-start mt-3 mx-3">
-        <ArrowLeft
-          handleClick={() => {
-            setDisplayPageType(DEFAULT_POPUP_PAGE_TYPE)
-          }}
-        />
-      </div>
+    <>
+      <Header pageType="settings" />
       <div className="text-lg p-3">
         <div className="mb-3">
           <p className="text-lg text-center">{t('settings.timer.title')}</p>
@@ -188,16 +179,12 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
 const SettingsContainer: React.FC = () => {
-  return (
-    <div className="base-color border-2 border-gray-700 text-color w-[400px]">
-      <Settings />
-    </div>
-  )
+  return <Settings />
 }
 
 export default SettingsContainer

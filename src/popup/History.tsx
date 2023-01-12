@@ -1,5 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
-import ArrowLeft from '../components/svg/ArrowLeft'
+import { useState, useEffect } from 'react'
 import { DisplayTermType, DailyPomodoro } from '../types/index'
 import LoadingSpinner from '../components/LoadingSpinner'
 import EllipsisHorizontal from '../components/svg/EllipsisHorizontal'
@@ -9,12 +8,10 @@ import { getStorage } from '../utils/chrome'
 import HistoryChart from '../components/history/HistoryChart'
 import TargetTerm from '../components/history/TargetTerm'
 import { useTranslation } from 'react-i18next'
-import { DisplayPageContext } from './Popup'
-import { DEFAULT_POPUP_PAGE_TYPE } from '../consts/index'
+import Header from '../components/Header'
 
 const History: React.FC = () => {
   const { t } = useTranslation()
-  const { setDisplayPageType } = useContext(DisplayPageContext)
   const [dailyPomodoros, setDailyPomodoros] = useState<DailyPomodoro[]>([])
   const [displayTermType, setDisplayTermType] =
     useState<DisplayTermType>('week')
@@ -53,16 +50,10 @@ const History: React.FC = () => {
 
   return (
     <>
-      <div className="flex display-start mt-3 mx-3">
-        <ArrowLeft
-          handleClick={() => {
-            setDisplayPageType(DEFAULT_POPUP_PAGE_TYPE)
-          }}
-        />
-        <span className="ml-auto">
-          <Dropdown target={<EllipsisHorizontal />} menu={<DropdownMenu />} />
-        </span>
-      </div>
+      <Header pageType="history" />
+      <span className="ml-auto">
+        <Dropdown target={<EllipsisHorizontal />} menu={<DropdownMenu />} />
+      </span>
       <div className="mt-3 w-5/6 mx-auto">
         <div className="flex bg-zinc-800 border-zinc-600 border-[1px] rounded-lg p-1">
           {termTypes.map((term) => (
@@ -100,11 +91,7 @@ const History: React.FC = () => {
 }
 
 const HistoryContainer: React.FC = () => {
-  return (
-    <div className="base-color border-2 border-gray-700 text-color">
-      <History />
-    </div>
-  )
+  return <History />
 }
 
 export default HistoryContainer
