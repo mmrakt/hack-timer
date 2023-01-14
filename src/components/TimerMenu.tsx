@@ -95,6 +95,17 @@ const TimerMenu: React.FC<IProps> = (props) => {
     return <>{circles}</>
   }
 
+  const getCurrentPhaseText = (): string => {
+    switch (props.phase) {
+      case 'focus':
+        return t('common.pomodoro')
+      case 'break':
+        return t('common.break')
+      case 'longBreak':
+        return t('common.longBreak')
+    }
+  }
+
   const totalPomodoroCountMessge = t('popup.totalPomodoroCount').replace(
     '%f',
     String(todayTotalPomodoroCount)
@@ -102,17 +113,22 @@ const TimerMenu: React.FC<IProps> = (props) => {
 
   return (
     <div className="m-4">
+      <p className="text-center">{getCurrentPhaseText()}</p>
       {duration !== 0 && reminingSeconds !== 0 && (
-        <CountdownCircleTimer
-          isPlaying={isRunning}
-          duration={duration}
-          initialRemainingTime={reminingSeconds}
-          isSmoothColorTransition
-          colors={['#004777', '#F7B801', '#A30000', '#A30000']}
-          colorsTime={[10, 6, 3, 0]}
-        >
-          {({ remainingTime }) => <Countdown reminingSeconds={remainingTime} />}
-        </CountdownCircleTimer>
+        <div className="mt-3 flex justify-center">
+          <CountdownCircleTimer
+            isPlaying={isRunning}
+            duration={duration}
+            initialRemainingTime={reminingSeconds}
+            isSmoothColorTransition
+            colors={'rgba(251, 191, 36)'}
+            trailColor={'rgb(63 63 70)'}
+          >
+            {({ remainingTime }) => (
+              <Countdown reminingSeconds={remainingTime} />
+            )}
+          </CountdownCircleTimer>
+        </div>
       )}
       <div className="flex justify-center mt-3">
         {isRunning ? (

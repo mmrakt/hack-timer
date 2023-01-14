@@ -44,14 +44,15 @@ export const BREAK_BADGE_COLOR_CODE = '#374151'
 
 export const START_BREAK_HTML_PATH = 'chrome-extension://*/start-break.html'
 
+// TODO: リリース時は1は削除
 export const POMODORO_LENGTH_ARRAY = [
-  5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60
+  1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60
 ]
 export const BREAK_LENGTH_ARRAY = [
-  5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60
+  1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60
 ]
 export const LONG_BREAK_LENGTH_ARRAY = [
-  5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60
+  1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60
 ]
 
 export const POMODORO_COUNT_UNTIL_LONG_BREAK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
