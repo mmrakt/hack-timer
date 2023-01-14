@@ -1,8 +1,8 @@
 import MockDate from 'mockdate'
 import { chrome } from 'jest-chrome'
 import {
-  BREAK_BADGE_COLOR_CODE,
-  FOCUS_BADGE_COLOR_CODE,
+  BREAK_COLOR_CODE,
+  FOCUS_COLOR_CODE,
   DEFAULT_TIMER_SECONDS
 } from '../../consts/index'
 import { expire } from '../Timer'
@@ -71,7 +71,7 @@ describe('Timer', () => {
       }
     }
     const expectedBadgeText = '00:06'
-    const expectedBadgeBackgroundColor = BREAK_BADGE_COLOR_CODE
+    const expectedBadgeBackgroundColor = BREAK_COLOR_CODE
 
     await expire('focus', 0, [], 4)
 
@@ -115,7 +115,7 @@ describe('Timer', () => {
       }
     }
     const expectedBadgeText = '00:05'
-    const expectedBadgeBackgroundColor = FOCUS_BADGE_COLOR_CODE
+    const expectedBadgeBackgroundColor = FOCUS_COLOR_CODE
 
     await expire(
       'break',
@@ -171,7 +171,7 @@ describe('Timer', () => {
       }
     }
     const expectedBadgeText = '30:00'
-    const expectedBadgeBackgroundColor = BREAK_BADGE_COLOR_CODE
+    const expectedBadgeBackgroundColor = BREAK_COLOR_CODE
     await expire(
       'focus',
       3,

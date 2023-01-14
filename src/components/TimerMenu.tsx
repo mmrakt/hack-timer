@@ -8,7 +8,11 @@ import Pause from './svg/Pause'
 import Play from './svg/Play'
 import { ColorFormat, CountdownCircleTimer } from 'react-countdown-circle-timer'
 import Countdown from './timer/Countdown'
-import { DEFAULT_TIMER_SECONDS } from '../consts/index'
+import {
+  DEFAULT_TIMER_SECONDS,
+  FOCUS_COLOR_CODE,
+  BREAK_COLOR_CODE
+} from '../consts/index'
 
 type IProps = {
   phase: Phase
@@ -113,11 +117,11 @@ const TimerMenu: React.FC<IProps> = (props) => {
   const getCircleColor = (): ColorFormat => {
     switch (phase) {
       case 'focus':
-        return 'rgba(251, 191, 36)'
+        return FOCUS_COLOR_CODE
       case 'break':
-        return 'rgba(96, 165, 250)'
+        return BREAK_COLOR_CODE
       case 'longBreak':
-        return 'rgba(96, 165, 250)'
+        return BREAK_COLOR_CODE
     }
   }
 
