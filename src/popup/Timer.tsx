@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Header from '../components/timer/HeaderMenu'
 import TimerMenu from '../components/TimerMenu'
-import { StorageValue } from '../types'
+import { Phase, StorageValue } from '../types'
 import { getStorage } from '../utils/chrome'
 import { extractTodayPomodoroCount } from '../utils/timeHelper'
 
 const TimerContainer: React.FC = () => {
+  const [phase, setPhase] = useState<Phase>('focus')
   const [reminingSeconds, setReminingSeconds] = useState<number | null>(null)
   const [isRunning, setIsRunning] = useState<boolean>(false)
   const [todayTotalPomodoroCount, setTodayTotalPomodoroCount] =
@@ -18,12 +19,14 @@ const TimerContainer: React.FC = () => {
 
   useEffect(() => {
     getStorage([
+      'phase',
       'reminingSeconds',
       'isRunning',
       'dailyPomodoros',
       'totalPomodoroCountsInSession',
       'pomodoroCountUntilLongBreak'
     ]).then((value: StorageValue) => {
+      setPhase(value.phase)
       setReminingSeconds(value.reminingSeconds)
       setIsRunning(value.isRunning)
       setTodayTotalPomodoroCount(
@@ -41,6 +44,7 @@ const TimerContainer: React.FC = () => {
         <LoadingSpinner />
       ) : (
         <TimerMenu
+          phase={phase}
           reminingSeconds={reminingSeconds}
           isRunning={isRunning}
           totalPomodoroCountInSession={totalPomodoroCountInSession}

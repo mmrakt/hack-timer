@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Message } from '../types'
+import { Message, Phase } from '../types'
 import { FromPopupMessageType } from '../utils/message'
-import { getTimeFromSeconds } from '../utils/timeHelper'
-import Digit from './Degit'
 import Circle from './svg/Circle'
 import Forward from './svg/Forward'
 import Pause from './svg/Pause'
 import Play from './svg/Play'
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import Countdown from './timer/Countdown'
+import { DEFAULT_TIMER_LENGTH } from '../consts/index'
 
 type IProps = {
+  phase: Phase
   reminingSeconds: number
   isRunning: boolean
   todayTotalPomodoroCount: number
@@ -19,7 +21,10 @@ type IProps = {
 
 const TimerMenu: React.FC<IProps> = (props) => {
   const { t } = useTranslation()
-  const [seconds, setSeconds] = useState<number>(props.reminingSeconds)
+  const [duration, setDuration] = useState<number>(0)
+  const [reminingSeconds, setReminingSeconds] = useState<number>(
+    props.reminingSeconds
+  )
   const [todayTotalPomodoroCount, setTodayTotalPomodoroCount] =
     useState<number>(props.todayTotalPomodoroCount)
   const [totalPomodoroCountInSession, setTotalPomodoroCountInSession] =
@@ -27,15 +32,14 @@ const TimerMenu: React.FC<IProps> = (props) => {
   const [pomodoroCountUntilLongBreak, setPomodoroCountUntilLongBreak] =
     useState<number>(props.pomodoroCountUntilLongBreak)
   const [isRunning, setIsRunning] = useState<boolean>(props.isRunning)
-  const { seconds: displaySeconds, minutes: displayMinutes } =
-    getTimeFromSeconds(seconds)
 
   useEffect(() => {
+    setDuration(getDuration(props.phase))
     chrome.runtime.onMessage.addListener((message: Message) => {
       if (message.type === 'reduce-count') {
-        setSeconds(message.data.secs)
+        setReminingSeconds(message.data.secs)
       } else if (message.type === 'expire') {
-        setSeconds(message.data.secs)
+        setReminingSeconds(message.data.secs)
         setIsRunning(false)
         setTodayTotalPomodoroCount(message.data.todayTotalPomodoroCount)
         setTotalPomodoroCountInSession(
@@ -47,6 +51,17 @@ const TimerMenu: React.FC<IProps> = (props) => {
       }
     })
   }, [])
+
+  const getDuration = (phase: Phase): number => {
+    switch (phase) {
+      case 'focus':
+        return DEFAULT_TIMER_LENGTH.focus
+      case 'break':
+        return DEFAULT_TIMER_LENGTH.break
+      case 'longBreak':
+        return DEFAULT_TIMER_LENGTH.longBreak
+    }
+  }
 
   const expire = (): void => {
     chrome.runtime.sendMessage<Message>({ type: FromPopupMessageType.EXPIRE })
@@ -87,10 +102,18 @@ const TimerMenu: React.FC<IProps> = (props) => {
 
   return (
     <div className="m-4">
-      <div className="mt-3 text-5xl w-32 font-extralight mx-auto">
-        <Digit count={displayMinutes} />:
-        <Digit count={displaySeconds} />
-      </div>
+      {duration !== 0 && reminingSeconds !== 0 && (
+        <CountdownCircleTimer
+          isPlaying={isRunning}
+          duration={duration}
+          initialRemainingTime={reminingSeconds}
+          isSmoothColorTransition
+          colors={['#004777', '#F7B801', '#A30000', '#A30000']}
+          colorsTime={[10, 6, 3, 0]}
+        >
+          {({ remainingTime }) => <Countdown reminingSeconds={remainingTime} />}
+        </CountdownCircleTimer>
+      )}
       <div className="flex justify-center mt-3">
         {isRunning ? (
           <button onClick={pause}>
