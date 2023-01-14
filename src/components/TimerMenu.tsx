@@ -160,10 +160,10 @@ const TimerMenu: React.FC<IProps> = (props) => {
         <PomodoroCircles />
       </div>
       <div className="text-center text-base mt-3"></div>
-      <div className="flex gap-3 items-center mt-5">
+      <div className="flex gap-3 items-center mt-5 text-sm">
         <span>{totalPomodoroCountMessge}</span>
         <button
-          className="ml-auto text-lg border-2 border-gray-200 px-1 rounded-md  hover:border-gray-300 hover:text-gray-300"
+          className="ml-auto text-lg px-1 rounded-md hover:text-gray-300"
           onClick={expire}
         >
           <Forward />
