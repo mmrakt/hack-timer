@@ -6,7 +6,7 @@ import Circle from './svg/Circle'
 import Forward from './svg/Forward'
 import Pause from './svg/Pause'
 import Play from './svg/Play'
-import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import { ColorFormat, CountdownCircleTimer } from 'react-countdown-circle-timer'
 import Countdown from './timer/Countdown'
 import { DEFAULT_TIMER_SECONDS } from '../consts/index'
 
@@ -29,7 +29,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
   const [todayTotalPomodoroCount, setTodayTotalPomodoroCount] =
     useState<number>(props.todayTotalPomodoroCount)
   const [totalPomodoroCountInSession, setTotalPomodoroCountInSession] =
-    useState<number>(0)
+    useState<number>(props.totalPomodoroCountInSession)
   const [pomodorosUntilLongBreak, setpomodorosUntilLongBreak] =
     useState<number>(props.pomodorosUntilLongBreak)
   const [isRunning, setIsRunning] = useState<boolean>(props.isRunning)
@@ -67,6 +67,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
   }
 
   const expire = (): void => {
+    setReminingSeconds(0)
     chrome.runtime.sendMessage<Message>({ type: FromPopupMessageType.EXPIRE })
   }
   const pause = (): void => {
@@ -109,6 +110,17 @@ const TimerMenu: React.FC<IProps> = (props) => {
     }
   }
 
+  const getCircleColor = (): ColorFormat => {
+    switch (phase) {
+      case 'focus':
+        return 'rgba(251, 191, 36)'
+      case 'break':
+        return 'rgba(96, 165, 250)'
+      case 'longBreak':
+        return 'rgba(96, 165, 250)'
+    }
+  }
+
   const totalPomodoroCountMessge = t('popup.totalPomodoroCount').replace(
     '%f',
     String(todayTotalPomodoroCount)
@@ -116,23 +128,23 @@ const TimerMenu: React.FC<IProps> = (props) => {
 
   return (
     <div className="m-4">
-      <p className="text-center">{getCurrentPhaseText()}</p>
-      {duration !== 0 && reminingSeconds !== 0 && (
-        <div className="mt-3 flex justify-center">
+      <p className="text-center text-sm">{getCurrentPhaseText()}</p>
+      <div className="mt-5 flex justify-center h-44">
+        {duration !== 0 && reminingSeconds !== 0 && (
           <CountdownCircleTimer
             isPlaying={isRunning}
             duration={duration}
             initialRemainingTime={reminingSeconds}
             isSmoothColorTransition
-            colors={'rgba(251, 191, 36)'}
+            colors={getCircleColor()}
             trailColor={'rgb(63 63 70)'}
           >
             {({ remainingTime }) => (
               <Countdown reminingSeconds={remainingTime} />
             )}
           </CountdownCircleTimer>
-        </div>
-      )}
+        )}
+      </div>
       <div className="flex justify-center mt-3">
         {isRunning ? (
           <button onClick={pause}>
