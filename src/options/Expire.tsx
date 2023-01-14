@@ -21,7 +21,6 @@ const Expire: React.FC<IProps> = (props) => {
     await chrome.runtime.sendMessage<Message>({
       type: FromPopupMessageType.RESUME
     })
-    console.log('here')
     const queryOptions = { active: true, lastFocusedWindow: true }
     await chrome.tabs.query(queryOptions, async ([result]) => {
       if (result.id) {

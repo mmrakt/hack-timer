@@ -21,6 +21,7 @@ type IProps = {
 
 const TimerMenu: React.FC<IProps> = (props) => {
   const { t } = useTranslation()
+  const [phase, setPhase] = useState<Phase>(props.phase)
   const [duration, setDuration] = useState<number>(0)
   const [reminingSeconds, setReminingSeconds] = useState<number>(
     props.reminingSeconds
@@ -34,11 +35,13 @@ const TimerMenu: React.FC<IProps> = (props) => {
   const [isRunning, setIsRunning] = useState<boolean>(props.isRunning)
 
   useEffect(() => {
-    setDuration(getDuration(props.phase))
+    setDuration(getDuration(phase))
     chrome.runtime.onMessage.addListener((message: Message) => {
       if (message.type === 'reduce-count') {
         setReminingSeconds(message.data.secs)
       } else if (message.type === 'expire') {
+        setPhase(message.data.phase)
+        setDuration(getDuration(message.data.phase))
         setReminingSeconds(message.data.secs)
         setIsRunning(false)
         setTodayTotalPomodoroCount(message.data.todayTotalPomodoroCount)
@@ -96,7 +99,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
   }
 
   const getCurrentPhaseText = (): string => {
-    switch (props.phase) {
+    switch (phase) {
       case 'focus':
         return t('common.pomodoro')
       case 'break':
