@@ -4,10 +4,10 @@ import { setStorage } from '../../utils/chrome'
 
 type IProps = {
   id:
-    | 'pomodoroLength'
-    | 'breakLength'
-    | 'longBreakLength'
-    | 'pomodoroCountUntilLongBreak'
+    | 'pomodoroSeconds'
+    | 'breakSeconds'
+    | 'longBreakSeconds'
+    | 'pomodorosUntilLongBreak'
   className?: string
   currentValue: number
   options: number[] | string[]
@@ -26,17 +26,17 @@ const TimerLengthSelect: React.FC<IProps> = ({
     const value = Number(e.target.value)
 
     switch (id) {
-      case 'pomodoroLength':
-        setStorage({ pomodoroLength: value })
+      case 'pomodoroSeconds':
+        setStorage({ pomodoroSeconds: value })
         break
-      case 'breakLength':
-        setStorage({ breakLength: value })
+      case 'breakSeconds':
+        setStorage({ breakSeconds: value })
         break
-      case 'longBreakLength':
-        setStorage({ longBreakLength: value })
+      case 'longBreakSeconds':
+        setStorage({ longBreakSeconds: value })
         break
-      case 'pomodoroCountUntilLongBreak':
-        setStorage({ pomodoroCountUntilLongBreak: value })
+      case 'pomodorosUntilLongBreak':
+        setStorage({ pomodorosUntilLongBreak: value })
     }
   }
   return (
@@ -57,9 +57,9 @@ const TimerLengthSelect: React.FC<IProps> = ({
         ))}
       </select>
       <span className="class">
-        {id === 'pomodoroLength' ||
-        id === 'breakLength' ||
-        id === 'longBreakLength'
+        {id === 'pomodoroSeconds' ||
+        id === 'breakSeconds' ||
+        id === 'longBreakSeconds'
           ? t('settings.timer.length.unit')
           : t('settings.timer.count.unit')}
       </span>

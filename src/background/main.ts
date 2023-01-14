@@ -43,13 +43,13 @@ runtime.onMessage.addListener((message: Message, sender, sendResponse) => {
         'phase',
         'totalPomodoroCountsInSession',
         'dailyPomodoros',
-        'pomodoroCountUntilLongBreak'
+        'pomodorosUntilLongBreak'
       ]).then((data: StorageValue) => {
         expire(
           data.phase,
           data.totalPomodoroCountsInSession,
           data.dailyPomodoros,
-          data.pomodoroCountUntilLongBreak,
+          data.pomodorosUntilLongBreak,
           false
         )
       })

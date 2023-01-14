@@ -8,7 +8,7 @@ import Pause from './svg/Pause'
 import Play from './svg/Play'
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import Countdown from './timer/Countdown'
-import { DEFAULT_TIMER_LENGTH } from '../consts/index'
+import { DEFAULT_TIMER_SECONDS } from '../consts/index'
 
 type IProps = {
   phase: Phase
@@ -16,7 +16,7 @@ type IProps = {
   isRunning: boolean
   todayTotalPomodoroCount: number
   totalPomodoroCountInSession: number
-  pomodoroCountUntilLongBreak: number
+  pomodorosUntilLongBreak: number
 }
 
 const TimerMenu: React.FC<IProps> = (props) => {
@@ -29,8 +29,8 @@ const TimerMenu: React.FC<IProps> = (props) => {
     useState<number>(props.todayTotalPomodoroCount)
   const [totalPomodoroCountInSession, setTotalPomodoroCountInSession] =
     useState<number>(0)
-  const [pomodoroCountUntilLongBreak, setPomodoroCountUntilLongBreak] =
-    useState<number>(props.pomodoroCountUntilLongBreak)
+  const [pomodorosUntilLongBreak, setpomodorosUntilLongBreak] =
+    useState<number>(props.pomodorosUntilLongBreak)
   const [isRunning, setIsRunning] = useState<boolean>(props.isRunning)
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
         setTotalPomodoroCountInSession(
           message.data.totalPomodoroCountsInSession
         )
-        setPomodoroCountUntilLongBreak(message.data.pomodoroCountUntilLongBreak)
+        setpomodorosUntilLongBreak(message.data.pomodorosUntilLongBreak)
       } else if (message.type === 'toggle-timer-status') {
         setIsRunning(message.data.toggledTimerStatus)
       }
@@ -55,11 +55,11 @@ const TimerMenu: React.FC<IProps> = (props) => {
   const getDuration = (phase: Phase): number => {
     switch (phase) {
       case 'focus':
-        return DEFAULT_TIMER_LENGTH.focus
+        return DEFAULT_TIMER_SECONDS.focus
       case 'break':
-        return DEFAULT_TIMER_LENGTH.break
+        return DEFAULT_TIMER_SECONDS.break
       case 'longBreak':
-        return DEFAULT_TIMER_LENGTH.longBreak
+        return DEFAULT_TIMER_SECONDS.longBreak
     }
   }
 
@@ -85,7 +85,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
 
   const PomodoroCircles: React.FC = () => {
     const circles = []
-    for (let i = 0; i < pomodoroCountUntilLongBreak; i++) {
+    for (let i = 0; i < pomodorosUntilLongBreak; i++) {
       if (i < totalPomodoroCountInSession) {
         circles.push(<Circle fillColor="rgb(244 244 245" />)
       } else {

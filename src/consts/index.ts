@@ -2,16 +2,18 @@ import { DailyPomodoro, Phase, StorageValue } from '../types'
 import { testData } from '../utils/testDate'
 import { PageType } from '../types/index'
 
-export const DEFAULT_TIMER_LENGTH: {
+export const DEFAULT_TIMER_SECONDS: {
   [T in Phase]: number
 } = {
-  focus: 5,
-  break: 6,
+  focus: 1500,
+  break: 300,
   longBreak: 1800
 }
 
+export const DEFAULT_POMODOROS_UNTIL_LONG_BREAK = 4
+
 export const DEFAULT_STORAGE_VALUE: StorageValue = {
-  reminingSeconds: DEFAULT_TIMER_LENGTH.focus,
+  reminingSeconds: DEFAULT_TIMER_SECONDS.focus,
   phase: 'focus',
   isRunning: false,
   totalPomodoroCountsInSession: 0,
@@ -20,10 +22,10 @@ export const DEFAULT_STORAGE_VALUE: StorageValue = {
   showNewTabNotificationWhenBreak: true,
   showDesktopNotificationWhenPomodoro: false,
   showDesktopNotificationWhenBreak: false,
-  pomodoroLength: 25,
-  breakLength: 5,
-  longBreakLength: 30,
-  pomodoroCountUntilLongBreak: 4
+  pomodoroSeconds: DEFAULT_TIMER_SECONDS.focus,
+  breakSeconds: DEFAULT_TIMER_SECONDS.break,
+  longBreakSeconds: DEFAULT_TIMER_SECONDS.longBreak,
+  pomodorosUntilLongBreak: DEFAULT_POMODOROS_UNTIL_LONG_BREAK
 }
 
 export const HISTORY_CSV_COLUMN_COUNT = 4

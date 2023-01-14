@@ -33,10 +33,10 @@ export type StorageValue = {
   showNewTabNotificationWhenBreak: boolean
   showDesktopNotificationWhenPomodoro: boolean
   showDesktopNotificationWhenBreak: boolean
-  pomodoroLength: number
-  breakLength: number
-  longBreakLength: number
-  pomodoroCountUntilLongBreak: number
+  pomodoroSeconds: number
+  breakSeconds: number
+  longBreakSeconds: number
+  pomodorosUntilLongBreak: number
 }
 
 export type StorageKey = keyof StorageValue

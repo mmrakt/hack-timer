@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { DEFAULT_TIMER_LENGTH } from '../consts'
+import { DEFAULT_TIMER_SECONDS } from '../consts'
 import { StorageValue, Phase, DailyPomodoro } from '../types'
 import { getStorage, runtime, setStorage } from '../utils/chrome'
 import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
@@ -62,18 +62,18 @@ const handleCountDown = (): void => {
         phase,
         totalPomodoroCountsInSession,
         dailyPomodoros,
-        pomodoroCountUntilLongBreak
+        pomodorosUntilLongBreak
       } = await getStorage([
         'phase',
         'totalPomodoroCountsInSession',
         'dailyPomodoros',
-        'pomodoroCountUntilLongBreak'
+        'pomodorosUntilLongBreak'
       ])
       await expire(
         phase,
         totalPomodoroCountsInSession,
         dailyPomodoros,
-        pomodoroCountUntilLongBreak
+        pomodorosUntilLongBreak
       )
     }
   })
@@ -98,24 +98,24 @@ const expire = async (
   phase: Phase,
   totalPomodoroCountsInSession: number,
   dailyPomodoros: DailyPomodoro[],
-  pomodoroCountUntilLongBreak: number,
+  pomodorosUntilLongBreak: number,
   isAutoExpire = true
 ): Promise<void> => {
   let reminingSeconds = 0
   let nextPhase: Phase = 'focus'
   if (phase === 'focus') {
     totalPomodoroCountsInSession++
-    if (totalPomodoroCountsInSession === pomodoroCountUntilLongBreak) {
-      reminingSeconds = DEFAULT_TIMER_LENGTH.longBreak
+    if (totalPomodoroCountsInSession === pomodorosUntilLongBreak) {
+      reminingSeconds = DEFAULT_TIMER_SECONDS.longBreak
       totalPomodoroCountsInSession = 0
       nextPhase = 'longBreak'
     } else {
-      reminingSeconds = DEFAULT_TIMER_LENGTH.break
+      reminingSeconds = DEFAULT_TIMER_SECONDS.break
       nextPhase = 'break'
     }
     dailyPomodoros = increaseDailyPomodoro(dailyPomodoros)
   } else {
-    reminingSeconds = DEFAULT_TIMER_LENGTH.focus
+    reminingSeconds = DEFAULT_TIMER_SECONDS.focus
   }
   const todayTotalPomodoroCount = extractTodayPomodoroCount(dailyPomodoros)
   try {
@@ -148,7 +148,7 @@ const expire = async (
             const [title, message] = await createNotificationContent(
               phase,
               todayTotalPomodoroCount,
-              pomodoroCountUntilLongBreak - totalPomodoroCountsInSession
+              pomodorosUntilLongBreak - totalPomodoroCountsInSession
             )
             sendNotification(title, message)
           }
@@ -160,7 +160,7 @@ const expire = async (
             const [title, message] = await createNotificationContent(
               phase,
               todayTotalPomodoroCount,
-              pomodoroCountUntilLongBreak - totalPomodoroCountsInSession
+              pomodorosUntilLongBreak - totalPomodoroCountsInSession
             )
             sendNotification(title, message)
           }
@@ -179,7 +179,7 @@ const expire = async (
         phase: nextPhase,
         todayTotalPomodoroCount,
         totalPomodoroCountsInSession,
-        pomodoroCountUntilLongBreak
+        pomodorosUntilLongBreak
       }
     })
   } catch (e) {

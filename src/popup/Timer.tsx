@@ -14,7 +14,7 @@ const TimerContainer: React.FC = () => {
     useState<number>(0)
   const [totalPomodoroCountInSession, setTotalPomodoroCountInSession] =
     useState<number>(0)
-  const [pomodoroCountUntilLongBreak, setPomodoroCountUntilLongBreak] =
+  const [pomodorosUntilLongBreak, setpomodorosUntilLongBreak] =
     useState<number>(0)
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const TimerContainer: React.FC = () => {
       'isRunning',
       'dailyPomodoros',
       'totalPomodoroCountsInSession',
-      'pomodoroCountUntilLongBreak'
+      'pomodorosUntilLongBreak'
     ]).then((value: StorageValue) => {
       setPhase(value.phase)
       setReminingSeconds(value.reminingSeconds)
@@ -33,7 +33,7 @@ const TimerContainer: React.FC = () => {
         extractTodayPomodoroCount(value.dailyPomodoros)
       )
       setTotalPomodoroCountInSession(value.totalPomodoroCountsInSession)
-      setPomodoroCountUntilLongBreak(value.pomodoroCountUntilLongBreak)
+      setpomodorosUntilLongBreak(value.pomodorosUntilLongBreak)
     })
   }, [])
 
@@ -49,7 +49,7 @@ const TimerContainer: React.FC = () => {
           isRunning={isRunning}
           totalPomodoroCountInSession={totalPomodoroCountInSession}
           todayTotalPomodoroCount={todayTotalPomodoroCount}
-          pomodoroCountUntilLongBreak={pomodoroCountUntilLongBreak}
+          pomodorosUntilLongBreak={pomodorosUntilLongBreak}
         />
       )}
     </>

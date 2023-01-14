@@ -3,7 +3,7 @@ import { chrome } from 'jest-chrome'
 import {
   BREAK_BADGE_COLOR_CODE,
   FOCUS_BADGE_COLOR_CODE,
-  DEFAULT_TIMER_LENGTH
+  DEFAULT_TIMER_SECONDS
 } from '../../consts/index'
 import { expire } from '../Timer'
 import { Message } from '../../types/index'
@@ -45,7 +45,7 @@ describe('Timer', () => {
 
   it('finish first focus', async () => {
     const expected = {
-      reminingSeconds: DEFAULT_TIMER_LENGTH.break,
+      reminingSeconds: DEFAULT_TIMER_SECONDS.break,
       phase: 'break',
       totalPomodoroCountsInSession: 1,
       isRunning: false,
@@ -58,14 +58,14 @@ describe('Timer', () => {
         }
       ]
     }
-    const pomodoroCountUntilLongBreak = 4
+    const pomodorosUntilLongBreak = 4
     const todayTotalPomodoroCount = 0
     const expectedOptions: Message = {
       type: FromServiceWorkerMessgeType.EXPIRE,
       data: {
         secs: expected.reminingSeconds,
         phase: expected.phase,
-        pomodoroCountUntilLongBreak,
+        pomodorosUntilLongBreak,
         todayTotalPomodoroCount: todayTotalPomodoroCount + 1,
         totalPomodoroCountsInSession: expected.totalPomodoroCountsInSession
       }
@@ -89,7 +89,7 @@ describe('Timer', () => {
 
   it('finish first short break', async () => {
     const expected = {
-      reminingSeconds: DEFAULT_TIMER_LENGTH.focus,
+      reminingSeconds: DEFAULT_TIMER_SECONDS.focus,
       phase: 'focus',
       totalPomodoroCountsInSession: 1,
       isRunning: false,
@@ -102,14 +102,14 @@ describe('Timer', () => {
         }
       ]
     }
-    const pomodoroCountUntilLongBreak = 4
+    const pomodorosUntilLongBreak = 4
     const todayTotalPomodoroCount = 1
     const expectedOptions: Message = {
       type: FromServiceWorkerMessgeType.EXPIRE,
       data: {
         secs: expected.reminingSeconds,
         phase: expected.phase,
-        pomodoroCountUntilLongBreak,
+        pomodorosUntilLongBreak,
         todayTotalPomodoroCount,
         totalPomodoroCountsInSession: expected.totalPomodoroCountsInSession
       }
@@ -145,7 +145,7 @@ describe('Timer', () => {
 
   it('start long break', async () => {
     const expected = {
-      reminingSeconds: DEFAULT_TIMER_LENGTH.longBreak,
+      reminingSeconds: DEFAULT_TIMER_SECONDS.longBreak,
       phase: 'longBreak',
       totalPomodoroCountsInSession: 0,
       isRunning: false,
@@ -158,14 +158,14 @@ describe('Timer', () => {
         }
       ]
     }
-    const pomodoroCountUntilLongBreak = 4
+    const pomodorosUntilLongBreak = 4
     const todayTotalPomodoroCount = 3
     const expectedOptions = {
       type: FromServiceWorkerMessgeType.EXPIRE,
       data: {
         secs: expected.reminingSeconds,
         phase: expected.phase,
-        pomodoroCountUntilLongBreak,
+        pomodorosUntilLongBreak,
         todayTotalPomodoroCount: todayTotalPomodoroCount + 1,
         totalPomodoroCountsInSession: expected.totalPomodoroCountsInSession
       }

@@ -90,12 +90,12 @@ const ExpireContainer: React.FC = () => {
       'phase',
       'dailyPomodoros',
       'totalPomodoroCountsInSession',
-      'pomodoroCountUntilLongBreak'
+      'pomodorosUntilLongBreak'
     ]).then((value: StorageValue) => {
       setFinishPhase(value.phase === 'focus' ? 'break' : 'focus')
       setDailyPomodoroCount(value.dailyPomodoros.slice(-1)[0].count)
       setReminingPomodorCountUntilLongBreak(
-        value.pomodoroCountUntilLongBreak - value.totalPomodoroCountsInSession
+        value.pomodorosUntilLongBreak - value.totalPomodoroCountsInSession
       )
     })
   }, [])

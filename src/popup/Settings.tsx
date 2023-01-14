@@ -14,9 +14,9 @@ import Header from '../components/Header'
 
 const Settings: React.FC = () => {
   const { t } = useTranslation()
-  const [pomodoroLength, setPomodoroLength] = useState<number>(0)
-  const [breakLength, setBreakLength] = useState<number>(0)
-  const [longBreakLength, setLongBreakLength] = useState<number>(0)
+  const [pomodoroSeconds, setpomodoroSeconds] = useState<number>(0)
+  const [breakSeconds, setbreakSeconds] = useState<number>(0)
+  const [longBreakSeconds, setlongBreakSeconds] = useState<number>(0)
   const [
     showDesktopNotificationWhenPomodoro,
     setShowDesktopNotificationWhenPomodoro
@@ -33,23 +33,23 @@ const Settings: React.FC = () => {
     showNewTabpNotificationWhenBreak,
     setShowNewTabpNotificationWhenBreak
   ] = useState<boolean | null>(null)
-  const [pomodoroCountUntilLongBreak, setPomodoroCountUntilLongBreak] =
+  const [pomodorosUntilLongBreak, setpomodorosUntilLongBreak] =
     useState<number>(0)
 
   useEffect(() => {
     getStorage([
-      'pomodoroLength',
-      'breakLength',
-      'longBreakLength',
+      'pomodoroSeconds',
+      'breakSeconds',
+      'longBreakSeconds',
       'showDesktopNotificationWhenPomodoro',
       'showDesktopNotificationWhenBreak',
       'showNewTabNotificationWhenPomodoro',
       'showNewTabNotificationWhenBreak',
-      'pomodoroCountUntilLongBreak'
+      'pomodorosUntilLongBreak'
     ]).then((value: StorageValue) => {
-      setPomodoroLength(value.pomodoroLength)
-      setBreakLength(value.breakLength)
-      setLongBreakLength(value.longBreakLength)
+      setpomodoroSeconds(value.pomodoroSeconds)
+      setbreakSeconds(value.breakSeconds)
+      setlongBreakSeconds(value.longBreakSeconds)
       setShowDesktopNotificationWhenPomodoro(
         value.showDesktopNotificationWhenPomodoro
       )
@@ -60,7 +60,7 @@ const Settings: React.FC = () => {
         value.showNewTabNotificationWhenPomodoro
       )
       setShowNewTabpNotificationWhenBreak(value.showNewTabNotificationWhenBreak)
-      setPomodoroCountUntilLongBreak(value.pomodoroCountUntilLongBreak)
+      setpomodorosUntilLongBreak(value.pomodorosUntilLongBreak)
     })
   }, [])
 
@@ -77,9 +77,9 @@ const Settings: React.FC = () => {
               </span>
               <span className="ml-auto">
                 <TimerLengthSelect
-                  id="pomodoroLength"
+                  id="pomodoroSeconds"
                   options={POMODORO_LENGTH_ARRAY}
-                  currentValue={pomodoroLength}
+                  currentValue={pomodoroSeconds}
                 />
               </span>
             </div>
@@ -87,9 +87,9 @@ const Settings: React.FC = () => {
               <span className="class">{t('settings.timer.length.break')}</span>
               <span className="ml-auto">
                 <TimerLengthSelect
-                  id="breakLength"
+                  id="breakSeconds"
                   options={BREAK_LENGTH_ARRAY}
-                  currentValue={breakLength}
+                  currentValue={breakSeconds}
                 />
               </span>
             </div>
@@ -99,9 +99,9 @@ const Settings: React.FC = () => {
               </span>
               <span className="ml-auto">
                 <TimerLengthSelect
-                  id="longBreakLength"
+                  id="longBreakSeconds"
                   options={LONG_BREAK_LENGTH_ARRAY}
-                  currentValue={longBreakLength}
+                  currentValue={longBreakSeconds}
                 />
               </span>
             </div>
@@ -111,9 +111,9 @@ const Settings: React.FC = () => {
               </span>
               <span className="ml-auto">
                 <TimerLengthSelect
-                  id="pomodoroCountUntilLongBreak"
+                  id="pomodorosUntilLongBreak"
                   options={POMODORO_COUNT_UNTIL_LONG_BREAK}
-                  currentValue={pomodoroCountUntilLongBreak}
+                  currentValue={pomodorosUntilLongBreak}
                 />
               </span>
             </div>

@@ -6,7 +6,7 @@ describe('', () => {
   it('onChange', () => {
     const { getByRole, getAllByRole } = render(
       <TimerLengthSelect
-        id="pomodoroLength"
+        id="pomodoroSeconds"
         currentValue={25}
         options={POMODORO_LENGTH_ARRAY}
       />
@@ -22,6 +22,6 @@ describe('', () => {
       (getByRole('option', { name: '20' }) as HTMLOptionElement).selected
     ).toBe(true)
 
-    expect(chrome.storage.local.set).toBeCalledWith({ pomodoroLength: 20 })
+    expect(chrome.storage.local.set).toBeCalledWith({ pomodoroSeconds: 20 })
   })
 })
