@@ -1,13 +1,10 @@
 import MockDate from 'mockdate'
 import { chrome } from 'jest-chrome'
-import {
-  BREAK_COLOR_CODE,
-  FOCUS_COLOR_CODE,
-  DEFAULT_TIMER_SECONDS
-} from '../../consts/index'
+import { DEFAULT_TIMER_SECONDS } from '../../consts/index'
 import { expire } from '../Timer'
 import { Message } from '../../types/index'
 import { FromServiceWorkerMessgeType } from '../../utils/message'
+import { COLOR } from '../../consts/color'
 
 describe('Timer', () => {
   beforeEach(() => {
@@ -70,8 +67,8 @@ describe('Timer', () => {
         totalPomodoroCountsInSession: expected.totalPomodoroCountsInSession
       }
     }
-    const expectedBadgeText = '00:06'
-    const expectedBadgeBackgroundColor = BREAK_COLOR_CODE
+    const expectedBadgeText = '05:00'
+    const expectedBadgeBackgroundColor = COLOR.break
 
     await expire('focus', 0, [], 4)
 
@@ -87,7 +84,7 @@ describe('Timer', () => {
     expect(chrome.runtime.sendMessage).toBeCalledWith(expectedOptions)
   })
 
-  it('finish first short break', async () => {
+  it('finish first break', async () => {
     const expected = {
       reminingSeconds: DEFAULT_TIMER_SECONDS.focus,
       phase: 'focus',
@@ -114,8 +111,8 @@ describe('Timer', () => {
         totalPomodoroCountsInSession: expected.totalPomodoroCountsInSession
       }
     }
-    const expectedBadgeText = '00:05'
-    const expectedBadgeBackgroundColor = FOCUS_COLOR_CODE
+    const expectedBadgeText = '25:00'
+    const expectedBadgeBackgroundColor = COLOR.focus
 
     await expire(
       'break',
@@ -171,7 +168,7 @@ describe('Timer', () => {
       }
     }
     const expectedBadgeText = '30:00'
-    const expectedBadgeBackgroundColor = BREAK_COLOR_CODE
+    const expectedBadgeBackgroundColor = COLOR.break
     await expire(
       'focus',
       3,

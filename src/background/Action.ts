@@ -1,4 +1,4 @@
-import { FOCUS_COLOR_CODE, BREAK_COLOR_CODE } from '../consts'
+import { COLOR } from '../consts/color'
 import { Phase } from '../types'
 import { action } from '../utils/chrome'
 import { getTimeFromSeconds, formatDisplayTime } from '../utils/timeHelper'
@@ -11,7 +11,7 @@ const updateSecondsOfBadge = async (reminingSeconds: number): Promise<void> => {
 }
 
 const updateColorOfBadge = async (phase: Phase): Promise<void> => {
-  const color = phase === 'focus' ? FOCUS_COLOR_CODE : BREAK_COLOR_CODE
+  const color = phase === 'focus' ? COLOR.focus : COLOR.break
   await action.setBadgeBackgroundColor({ color })
 }
 

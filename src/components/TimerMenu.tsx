@@ -6,13 +6,10 @@ import Circle from './svg/Circle'
 import Forward from './svg/Forward'
 import Pause from './svg/Pause'
 import Play from './svg/Play'
-import { ColorFormat, CountdownCircleTimer } from 'react-countdown-circle-timer'
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import Countdown from './timer/Countdown'
-import {
-  DEFAULT_TIMER_SECONDS,
-  FOCUS_COLOR_CODE,
-  BREAK_COLOR_CODE
-} from '../consts/index'
+import { DEFAULT_TIMER_SECONDS } from '../consts/index'
+import { COLOR } from '../consts/color'
 
 type IProps = {
   phase: Phase
@@ -114,14 +111,14 @@ const TimerMenu: React.FC<IProps> = (props) => {
     }
   }
 
-  const getCircleColor = (): ColorFormat => {
+  const getCircleColor = (): string => {
     switch (phase) {
       case 'focus':
-        return FOCUS_COLOR_CODE
+        return COLOR.focus
       case 'break':
-        return BREAK_COLOR_CODE
+        return COLOR.break
       case 'longBreak':
-        return BREAK_COLOR_CODE
+        return COLOR.break
     }
   }
 
