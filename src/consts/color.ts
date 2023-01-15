@@ -1,5 +1,5 @@
 export const COLOR = {
-  focus: '#fbbf24',
-  break: '#60a5fa',
+  primary: '#fbbf24',
+  secondary: '#60a5fa',
   bg: '#18181b'
 }

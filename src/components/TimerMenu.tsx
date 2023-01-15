@@ -92,9 +92,9 @@ const TimerMenu: React.FC<IProps> = (props) => {
     const circles = []
     for (let i = 0; i < pomodorosUntilLongBreak; i++) {
       if (i < totalPomodoroCountInSession) {
-        circles.push(<Circle fillColor="rgb(244 244 245" />)
+        circles.push(<Circle key={i} fillColor="rgb(244 244 245" />)
       } else {
-        circles.push(<Circle fillColor="rgb(24 24 27" />)
+        circles.push(<Circle key={i} fillColor="rgb(24 24 27" />)
       }
     }
     return <>{circles}</>
@@ -114,11 +114,11 @@ const TimerMenu: React.FC<IProps> = (props) => {
   const getCircleColor = (): string => {
     switch (phase) {
       case 'focus':
-        return COLOR.focus
+        return COLOR.primary
       case 'break':
-        return COLOR.break
+        return COLOR.secondary
       case 'longBreak':
-        return COLOR.break
+        return COLOR.secondary
     }
   }
 

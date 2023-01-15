@@ -68,7 +68,7 @@ describe('Timer', () => {
       }
     }
     const expectedBadgeText = '05:00'
-    const expectedBadgeBackgroundColor = COLOR.break
+    const expectedBadgeBackgroundColor = COLOR.secondary
 
     await expire('focus', 0, [], 4)
 
@@ -112,7 +112,7 @@ describe('Timer', () => {
       }
     }
     const expectedBadgeText = '25:00'
-    const expectedBadgeBackgroundColor = COLOR.focus
+    const expectedBadgeBackgroundColor = COLOR.primary
 
     await expire(
       'break',
@@ -168,7 +168,7 @@ describe('Timer', () => {
       }
     }
     const expectedBadgeText = '30:00'
-    const expectedBadgeBackgroundColor = COLOR.break
+    const expectedBadgeBackgroundColor = COLOR.secondary
     await expire(
       'focus',
       3,

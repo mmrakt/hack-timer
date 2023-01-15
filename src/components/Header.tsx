@@ -23,14 +23,14 @@ const Header: React.FC<IProps> = ({ pageType }) => {
   }
   return (
     <>
-      <div className="flex display-start items-center justify-between">
+      <div className="flex items-center justify-between">
         <ArrowLeft
           handleClick={() => {
             setDisplayPageType(DEFAULT_POPUP_PAGE_TYPE)
           }}
         />
         <h1 className="text-base mr-3">{getPageTitle()}</h1>
-        <span />
+        <span className="ml-3" />
       </div>
     </>
   )

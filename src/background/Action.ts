@@ -11,7 +11,7 @@ const updateSecondsOfBadge = async (reminingSeconds: number): Promise<void> => {
 }
 
 const updateColorOfBadge = async (phase: Phase): Promise<void> => {
-  const color = phase === 'focus' ? COLOR.focus : COLOR.break
+  const color = phase === 'focus' ? COLOR.primary : COLOR.secondary
   await action.setBadgeBackgroundColor({ color })
 }
 
