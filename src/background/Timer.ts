@@ -105,7 +105,7 @@ const expire = async (
   let nextPhase: Phase = 'focus'
   if (phase === 'focus') {
     totalPomodoroCountsInSession++
-    if (totalPomodoroCountsInSession === pomodorosUntilLongBreak) {
+    if (totalPomodoroCountsInSession >= pomodorosUntilLongBreak) {
       reminingSeconds = DEFAULT_TIMER_SECONDS.longBreak
       totalPomodoroCountsInSession = 0
       nextPhase = 'longBreak'
