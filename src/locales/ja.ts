@@ -42,11 +42,11 @@ const translation = {
       yearly: '年'
     },
     import: {
-      buttonText: '履歴を更新する',
+      buttonText: '履歴を更新',
       confirmMessage: '履歴を更新しますか？'
     },
     export: {
-      buttonText: '履歴をダウンロードする'
+      buttonText: '履歴をダウンロード'
     }
   },
   notifications: {

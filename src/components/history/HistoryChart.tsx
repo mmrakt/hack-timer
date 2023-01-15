@@ -169,7 +169,11 @@ const HistoryChart: React.FC<IProps> = ({
           data={displayData}
           margin={{ top: 0, left: 0, bottom: 0, right: 40 }}
         >
-          <CartesianGrid stroke="#353a45" strokeDasharray="3 3" />
+          <CartesianGrid
+            stroke="#353a45"
+            strokeDasharray="3 3"
+            vertical={false}
+          />
           <XAxis dataKey="name" />
           <YAxis />
           <Bar

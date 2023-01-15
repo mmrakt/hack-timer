@@ -105,7 +105,8 @@ const DropdownMenu: React.FC = () => {
       document.body.removeChild(input)
     }
   }
-  const style = 'px-3 py-2 w-full text-left text-xs hover:bg-zinc-600'
+  const style =
+    'px-3 py-1 my-2 block text-left text-sm hover:bg-zinc-600 border-2 border-zinc-200 rounded-2xl'
   return (
     <>
       <button className={style} onClick={handleExport}>
