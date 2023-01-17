@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { setStorage } from '../../utils/chrome'
+import { getStorage, setStorage } from '../../utils/chrome'
 
 type IProps = {
   id:
@@ -23,20 +23,20 @@ const TimerLengthSelect: React.FC<IProps> = ({
 
   const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     if (!e) return
-    const value = Number(e.target.value)
+    const seconds = Number(e.target.value) * 60
 
     switch (id) {
       case 'pomodoroSeconds':
-        setStorage({ pomodoroSeconds: value })
+        setStorage({ pomodoroSeconds: seconds })
         break
       case 'breakSeconds':
-        setStorage({ breakSeconds: value })
+        setStorage({ breakSeconds: seconds })
         break
       case 'longBreakSeconds':
-        setStorage({ longBreakSeconds: value })
+        setStorage({ longBreakSeconds: seconds })
         break
       case 'pomodorosUntilLongBreak':
-        setStorage({ pomodorosUntilLongBreak: value })
+        setStorage({ pomodorosUntilLongBreak: seconds })
     }
   }
   return (

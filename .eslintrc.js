@@ -23,7 +23,8 @@ module.exports = {
     '@typescript-eslint/prefer-ts-expect-error': 0,
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
-    'multiline-ternary': 0
+    'multiline-ternary': 0,
+    'no-case-declarations': 0
   },
   ignorePatterns: [
     'src/vite-env.d.ts',

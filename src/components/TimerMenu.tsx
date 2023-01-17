@@ -8,8 +8,8 @@ import Pause from './svg/Pause'
 import Play from './svg/Play'
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import Countdown from './timer/Countdown'
-import { DEFAULT_TIMER_SECONDS } from '../consts/index'
 import { COLOR } from '../consts/color'
+import { getStorage } from '../utils/chrome'
 
 type IProps = {
   phase: Phase
@@ -36,34 +36,36 @@ const TimerMenu: React.FC<IProps> = (props) => {
   const [isRunning, setIsRunning] = useState<boolean>(props.isRunning)
 
   useEffect(() => {
-    setDuration(getDuration(phase))
-    chrome.runtime.onMessage.addListener((message: Message) => {
-      if (message.type === 'reduce-count') {
-        setReminingSeconds(message.data.secs)
-      } else if (message.type === 'expire') {
-        setPhase(message.data.phase)
-        setDuration(getDuration(message.data.phase))
-        setReminingSeconds(message.data.secs)
-        setIsRunning(false)
-        setTodayTotalPomodoroCount(message.data.todayTotalPomodoroCount)
-        setTotalPomodoroCountInSession(
-          message.data.totalPomodoroCountsInSession
-        )
-        setpomodorosUntilLongBreak(message.data.pomodorosUntilLongBreak)
-      } else if (message.type === 'toggle-timer-status') {
-        setIsRunning(message.data.toggledTimerStatus)
-      }
-    })
+    ;(async () => {
+      setDuration(await getDuration(phase))
+      chrome.runtime.onMessage.addListener(async (message: Message) => {
+        if (message.type === 'reduce-count') {
+          setReminingSeconds(message.data.secs)
+        } else if (message.type === 'expire') {
+          setPhase(message.data.phase)
+          setDuration(await getDuration(message.data.phase))
+          setReminingSeconds(message.data.secs)
+          setIsRunning(false)
+          setTodayTotalPomodoroCount(message.data.todayTotalPomodoroCount)
+          setTotalPomodoroCountInSession(
+            message.data.totalPomodoroCountsInSession
+          )
+          setpomodorosUntilLongBreak(message.data.pomodorosUntilLongBreak)
+        } else if (message.type === 'toggle-timer-status') {
+          setIsRunning(message.data.toggledTimerStatus)
+        }
+      })
+    })()
   }, [])
 
-  const getDuration = (phase: Phase): number => {
+  const getDuration = async (phase: Phase): Promise<number> => {
     switch (phase) {
       case 'focus':
-        return DEFAULT_TIMER_SECONDS.focus
+        return (await getStorage(['pomodoroSeconds'])).pomodoroSeconds
       case 'break':
-        return DEFAULT_TIMER_SECONDS.break
+        return (await getStorage(['breakSeconds'])).breakSeconds
       case 'longBreak':
-        return DEFAULT_TIMER_SECONDS.longBreak
+        return (await getStorage(['longBreakSeconds'])).longBreakSeconds
     }
   }
 
