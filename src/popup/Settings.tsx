@@ -66,7 +66,7 @@ const Settings: React.FC = () => {
   }, [])
 
   return (
-    <>
+    <div className="h-[27rem]">
       <Header pageType="settings" />
       <div className="text-lg p-2">
         <div className="mb-3">
@@ -142,7 +142,7 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

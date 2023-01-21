@@ -22,6 +22,6 @@ describe('', () => {
       (getByRole('option', { name: '20' }) as HTMLOptionElement).selected
     ).toBe(true)
 
-    expect(chrome.storage.local.set).toBeCalledWith({ pomodoroSeconds: 20 })
+    expect(chrome.storage.local.set).toBeCalledWith({ pomodoroSeconds: 1200 })
   })
 })

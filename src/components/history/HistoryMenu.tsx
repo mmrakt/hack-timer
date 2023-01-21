@@ -68,7 +68,7 @@ const readCsv = async (uploadFile: File): Promise<any> => {
   }
 }
 
-const DropdownMenu: React.FC = () => {
+const HistoryMenu: React.FC = () => {
   const { t } = useTranslation()
   const handleExport = (): void => {
     getStorage(['dailyPomodoros']).then(({ dailyPomodoros }) => {
@@ -106,23 +106,17 @@ const DropdownMenu: React.FC = () => {
     }
   }
   const style =
-    'px-3 py-1 my-2 block text-left text-sm hover:bg-zinc-600 border-2 border-zinc-200 rounded-2xl'
+    'px-3 py-1 mb-3 text-left text-xs hover:bg-zinc-600 border-2 border-zinc-200 rounded-2xl w-full grid place-items-center'
   return (
-    <>
+    <div className="w-40">
       <button className={style} onClick={handleExport}>
         {t('history.export.buttonText')}
       </button>
       <button className={style} onClick={handleOnChange}>
         {t('history.import.buttonText')}
       </button>
-    </>
+    </div>
   )
 }
 
-export {
-  DropdownMenu,
-  createBlobData,
-  createStorageValue,
-  downloadCsv,
-  readCsv
-}
+export { HistoryMenu, createBlobData, createStorageValue, downloadCsv, readCsv }
