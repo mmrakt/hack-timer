@@ -4,9 +4,14 @@ import { defineConfig } from 'vite'
 
 const manifest = defineManifest({
   manifest_version: 3,
-  name: 'hack timer',
+  name: 'hack-timer',
   version: '0.0.1',
-  description: 'discription',
+  description: 'A simple pomodoro timer to improve productivity',
+  icons: {
+    '16': 'public/assets/img/h-16.png',
+    '48': 'public/assets/img/h-48.png',
+    '128': 'public/assets/img/h-128.png'
+  },
   action: {
     default_popup: 'popup.html'
   },
@@ -20,7 +25,7 @@ const manifest = defineManifest({
       suggested_key: {
         default: 'MacCtrl+Shift+T'
       },
-      description: 'Toggle Pause/Resume'
+      description: 'Toggle Pause/Resume a timer'
     }
   },
   options_page: 'expire.html'
