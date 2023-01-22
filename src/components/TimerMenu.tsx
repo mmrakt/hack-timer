@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Message, Phase } from '../types'
 import { FromPopupMessageType } from '../utils/message'
-import Circle from './svg/Circle'
 import Forward from './svg/Forward'
 import Pause from './svg/Pause'
 import Play from './svg/Play'
@@ -10,6 +9,7 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import Countdown from './timer/Countdown'
 import { COLOR } from '../consts/color'
 import { getStorage } from '../utils/chrome'
+import PomodoroCircles from './timer/PomodoroCircles'
 
 type IProps = {
   phase: Phase
@@ -90,18 +90,6 @@ const TimerMenu: React.FC<IProps> = (props) => {
     )
   }
 
-  const PomodoroCircles: React.FC = () => {
-    const circles = []
-    for (let i = 0; i < pomodorosUntilLongBreak; i++) {
-      if (i < totalPomodoroCountInSession) {
-        circles.push(<Circle key={i} fillColor="rgb(244 244 245" />)
-      } else {
-        circles.push(<Circle key={i} fillColor="rgb(24 24 27" />)
-      }
-    }
-    return <>{circles}</>
-  }
-
   const getCurrentPhaseText = (): string => {
     switch (phase) {
       case 'focus':
@@ -160,7 +148,10 @@ const TimerMenu: React.FC<IProps> = (props) => {
         )}
       </div>
       <div className="flex justify-center gap-2 mt-3">
-        <PomodoroCircles />
+        <PomodoroCircles
+          pomodorosUntilLongBreak={pomodorosUntilLongBreak}
+          totalPomodoroCountInSession={totalPomodoroCountInSession}
+        />
       </div>
       <div className="text-center text-base mt-3"></div>
       <div className="flex gap-3 items-center mt-5 text-sm">

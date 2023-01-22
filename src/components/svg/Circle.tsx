@@ -1,9 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import LoadingSpinner from '../LoadingSpinner'
 
 type IProps = {
-  fillColor?: string
+  isArchived?: boolean
 }
-const Circle: React.FC<IProps> = ({ fillColor }) => {
+const white = 'rgb(244 244 245'
+const black = 'rgb(24 24 27'
+const gray = 'rgb(50, 50, 54'
+
+const Circle: React.FC<IProps> = ({ isArchived = false }) => {
+  const [fillColor, setFillColor] = useState<string>('')
+  const [strokeColor, setStrokeColor] = useState<string>('')
+  useEffect(() => {
+    if (window?.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setStrokeColor(white)
+      if (isArchived) {
+        setFillColor(white)
+      } else {
+        setFillColor(black)
+      }
+    } else {
+      setStrokeColor(gray)
+      if (isArchived) {
+        setFillColor(gray)
+      } else {
+        setFillColor(white)
+      }
+    }
+  })
+  if (fillColor === '' || strokeColor === '') return <LoadingSpinner />
+
   return (
     <>
       <svg
@@ -14,7 +40,7 @@ const Circle: React.FC<IProps> = ({ fillColor }) => {
       >
         <circle
           fill={fillColor}
-          stroke="rgb(244 244 245"
+          stroke={strokeColor}
           strokeWidth="20"
           cx="50"
           cy="50"

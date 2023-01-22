@@ -68,10 +68,10 @@ const Settings: React.FC = () => {
   return (
     <div className="h-[27rem]">
       <Header pageType="settings" />
-      <div className="text-lg p-2">
+      <div className="text-lg p-2 sentence-color">
         <div className="mb-3">
           <p className="text-lg text-center">{t('settings.timer.title')}</p>
-          <div className="mt-3 text-zinc-300 text-sm">
+          <div className="mt-3 text-sm">
             <SettingRow label={t('settings.timer.length.pomodoro')}>
               <TimerLengthSelect
                 id="pomodoroSeconds"
@@ -106,7 +106,7 @@ const Settings: React.FC = () => {
           <p className="text-lg text-center">
             {t('settings.notification.title')}
           </p>
-          <div className="mt-3 text-zinc-300 text-sm">
+          <div className="mt-3 text-sm">
             <SettingRow label={t('settings.notification.showNewTab.pomodoro')}>
               {showNewTabNotificationWhenPomodoro !== null && (
                 <SettingToggle
