@@ -41,7 +41,9 @@ const TimerContainer: React.FC = () => {
     <>
       <Header />
       {!reminingSeconds ? (
-        <LoadingSpinner />
+        <div className="w-full h-[22rem] flex justify-center items-center">
+          <LoadingSpinner />
+        </div>
       ) : (
         <TimerMenu
           phase={phase}

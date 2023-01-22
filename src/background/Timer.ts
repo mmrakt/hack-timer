@@ -1,13 +1,11 @@
 import dayjs from 'dayjs'
-import { DEFAULT_TIMER_SECONDS } from '../consts'
-import { StorageValue, Phase, DailyPomodoro } from '../types'
+import { StorageValue, Phase, DailyPomodoro, Message } from '../types'
 import { getStorage, runtime, setStorage } from '../utils/chrome'
 import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
 import { openNewTab } from './Tab'
 import { createNotificationContent, sendNotification } from './Notification'
 import keepAlive from '../utils/keepAliveServiceWorker'
 import { extractTodayPomodoroCount } from '../utils/timeHelper'
-import { Message } from '../types/index'
 import { FromServiceWorkerMessgeType } from '../utils/message'
 
 let intervalId = 0
@@ -101,23 +99,27 @@ const expire = async (
   pomodorosUntilLongBreak: number,
   isAutoExpire = true
 ): Promise<void> => {
-  let reminingSeconds = 0
+  let reminingSeconds = 100
   let nextPhase: Phase = 'focus'
   if (phase === 'focus') {
     totalPomodoroCountsInSession++
-    if (totalPomodoroCountsInSession === pomodorosUntilLongBreak) {
-      reminingSeconds = DEFAULT_TIMER_SECONDS.longBreak
+    if (totalPomodoroCountsInSession >= pomodorosUntilLongBreak) {
+      const value = await getStorage(['longBreakSeconds'])
+      reminingSeconds = value.longBreakSeconds
       totalPomodoroCountsInSession = 0
       nextPhase = 'longBreak'
     } else {
-      reminingSeconds = DEFAULT_TIMER_SECONDS.break
+      const value = await getStorage(['breakSeconds'])
+      reminingSeconds = value.breakSeconds
       nextPhase = 'break'
     }
     dailyPomodoros = increaseDailyPomodoro(dailyPomodoros)
   } else {
-    reminingSeconds = DEFAULT_TIMER_SECONDS.focus
+    const value = await getStorage(['pomodoroSeconds'])
+    reminingSeconds = value.pomodoroSeconds
   }
   const todayTotalPomodoroCount = extractTodayPomodoroCount(dailyPomodoros)
+
   try {
     setStorage({
       reminingSeconds,

@@ -85,14 +85,18 @@ const TargetTerm: React.FC<IProps> = ({
   }
 
   return (
-    <div className="flex justify-between items-center mt-3 text-base">
+    <div className="flex justify-between items-center text-sm">
       <button onClick={handleGoBack}>
         <ChevronLeft />
       </button>
       {targetSinceDate + ' ~ ' + targetUntilDate}
-      <button onClick={handleMoveForward}>
-        <ChevronRight />
-      </button>
+      {timesGoBack !== 0 ? (
+        <button onClick={handleMoveForward}>
+          <ChevronRight />
+        </button>
+      ) : (
+        <span className="ml-5" />
+      )}
     </div>
   )
 }

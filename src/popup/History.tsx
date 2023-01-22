@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
 import { DisplayTermType, DailyPomodoro } from '../types/index'
 import LoadingSpinner from '../components/LoadingSpinner'
-import EllipsisHorizontal from '../components/svg/EllipsisHorizontal'
-import Dropdown from '../components/Dropdown'
-import { DropdownMenu } from '../components/history/DropdownMenu'
+import { HistoryMenu } from '../components/history/HistoryMenu'
 import { getStorage } from '../utils/chrome'
 import HistoryChart from '../components/history/HistoryChart'
 import TargetTerm from '../components/history/TargetTerm'
@@ -49,36 +47,42 @@ const History: React.FC = () => {
   }
 
   return (
-    <>
+    <div className="h-[28rem]">
       <Header pageType="history" />
-      <span className="ml-auto">
-        <Dropdown target={<EllipsisHorizontal />} menu={<DropdownMenu />} />
-      </span>
       <div className="mt-3 w-5/6 mx-auto">
-        <div className="flex bg-zinc-800 border-zinc-600 border-[1px] rounded-lg p-1">
-          {termTypes.map((term) => (
-            <button
-              key={term}
-              className={`${
-                displayTermType === term ? 'bg-zinc-700' : ''
-              } px-2 py-1 rounded-md flex-grow`}
-              onClick={() => {
-                handleChangeDisplayTermType(term)
-              }}
-            >
-              {getTermTypeString(term)}
-            </button>
-          ))}
+        <div className="flex justify-center h-8">
+          <div className="w-4/5 flex bg-zinc-800 border-zinc-600 border-[1px] rounded-lg p-1">
+            {termTypes.map((term) => (
+              <button
+                key={term}
+                className={`${
+                  displayTermType === term ? 'bg-zinc-700' : ''
+                } px-2s rounded-md flex-auto`}
+                onClick={() => {
+                  handleChangeDisplayTermType(term)
+                }}
+              >
+                {getTermTypeString(term)}
+              </button>
+            ))}
+          </div>
+          {/* <span className="ml-auto">
+            <Dropdown target={<EllipsisHorizontal />} menu={<HistoryMenu />} />
+          </span> */}
         </div>
-        <TargetTerm
-          displayTermType={displayTermType}
-          timesGoBack={timesGoBack}
-          onGoBack={handleGoBack}
-          onMoveForward={handleMoveForward}
-        />
+        <div className="mt-5">
+          <TargetTerm
+            displayTermType={displayTermType}
+            timesGoBack={timesGoBack}
+            onGoBack={handleGoBack}
+            onMoveForward={handleMoveForward}
+          />
+        </div>
       </div>
       {dailyPomodoros.length === 0 ? (
-        <LoadingSpinner />
+        <div className="h-[15rem] flex items-center justify-center">
+          <LoadingSpinner />
+        </div>
       ) : (
         <HistoryChart
           dailyPomodoros={dailyPomodoros}
@@ -86,7 +90,10 @@ const History: React.FC = () => {
           timesGoBack={timesGoBack}
         />
       )}
-    </>
+      <div className="mb-8 flex justify-center">
+        <HistoryMenu />
+      </div>
+    </div>
   )
 }
 

@@ -2,11 +2,11 @@ import { render, fireEvent } from '@testing-library/react'
 import { HISTORY_CSV_FILE_NAME } from '../../consts/index'
 import { DailyPomodoro } from '../../types'
 import {
-  DropdownMenu,
+  HistoryMenu,
   createBlobData,
   createStorageValue,
   downloadCsv
-} from './DropdownMenu'
+} from './HistoryMenu'
 
 describe('Settings', () => {
   const csvData = 'year,month,day,count\n2022,12,1,10\n2022,12,3,5\n2022,12,4,3'
@@ -41,7 +41,7 @@ describe('Settings', () => {
   })
 
   it('click export button', () => {
-    const renderResult = render(<DropdownMenu />)
+    const renderResult = render(<HistoryMenu />)
 
     fireEvent.click(renderResult.getByText('history.export.buttonText'))
     expect(chrome.storage.local.get).toBeCalled()

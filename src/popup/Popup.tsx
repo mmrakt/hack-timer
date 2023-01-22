@@ -14,7 +14,7 @@ const Popup: React.FC = () => {
 
   return (
     <DisplayPageContext.Provider value={{ setDisplayPageType }}>
-      <div className="p-3 base-color border-2 border-gray-700 text-color w-[400px]">
+      <div className="p-3 base-color border-2 border-gray-700 text-color w-[25rem]">
         {displayPageType === 'timer' ? (
           <TimerContainer />
         ) : displayPageType === 'history' ? (

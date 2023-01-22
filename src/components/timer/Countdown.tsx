@@ -11,7 +11,7 @@ const Countdown: React.FC<IProps> = ({ reminingSeconds }) => {
   return (
     <div className="mt-3 text-5xl w-30 font-extralight flex items-center">
       <Digit count={displayMinutes} />
-      <span>:</span>
+      <span className="pb-2 mx-1">:</span>
       <Digit count={displaySeconds} />
     </div>
   )

@@ -15,13 +15,13 @@ describe('', () => {
     expect(
       (getByRole('option', { name: '25' }) as HTMLOptionElement).selected
     ).toBe(true)
-    expect(getAllByRole('option').length).toBe(12)
+    expect(getAllByRole('option').length).toBe(13)
 
     fireEvent.change(getByRole('combobox'), { target: { value: '20' } })
     expect(
       (getByRole('option', { name: '20' }) as HTMLOptionElement).selected
     ).toBe(true)
 
-    expect(chrome.storage.local.set).toBeCalledWith({ pomodoroSeconds: 20 })
+    expect(chrome.storage.local.set).toBeCalledWith({ pomodoroSeconds: 1200 })
   })
 })

@@ -2,10 +2,10 @@ import { StorageKey, StorageValue } from '../types'
 
 const { runtime, commands, action, tabs, storage, notifications } = chrome
 
-const getStorage = async (keys: StorageKey[]): Promise<any> => {
+const getStorage = async (keys: StorageKey[]): Promise<StorageValue> => {
   return await new Promise((resolve) => {
     storage.local.get(keys, (data) => {
-      resolve(data)
+      resolve(data as StorageValue)
     })
   })
 }

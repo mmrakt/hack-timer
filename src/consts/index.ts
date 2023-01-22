@@ -40,10 +40,6 @@ export const HISTORY_CSV_HEADER_ARRAY: Array<keyof DailyPomodoro> = [
 ]
 export const BOM_ARRAY = [0xef, 0xbb, 0xbf]
 
-export const FOCUS_BADGE_COLOR_CODE = '#0c4a6e'
-
-export const BREAK_BADGE_COLOR_CODE = '#374151'
-
 export const START_BREAK_HTML_PATH = 'chrome-extension://*/start-break.html'
 
 // TODO: リリース時は1は削除

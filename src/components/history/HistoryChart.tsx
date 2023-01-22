@@ -11,6 +11,7 @@ import {
 import dayjs from 'dayjs'
 import { DailyPomodoro, DisplayTermType, HistoryDataSet } from '../../types'
 import LoadingSpinner from '../LoadingSpinner'
+import { COLOR } from '../../consts/color'
 
 const pStyle = {
   color: '#f4f4f4'
@@ -169,14 +170,14 @@ const HistoryChart: React.FC<IProps> = ({
           data={displayData}
           margin={{ top: 0, left: 0, bottom: 0, right: 40 }}
         >
-          <CartesianGrid stroke="#353a45" strokeDasharray="3 3" />
+          <CartesianGrid stroke="#353a45" vertical={false} />
           <XAxis dataKey="name" />
-          <YAxis />
+          <YAxis width={30} axisLine={false} tickLine={false} />
           <Bar
             type="monotone"
             dataKey="count"
-            stroke="#8884d8"
-            fill="#8884d8"
+            stroke={COLOR.primary}
+            fill={COLOR.primary}
             isAnimationActive={false}
           />
           <Tooltip

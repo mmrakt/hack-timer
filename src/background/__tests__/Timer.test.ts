@@ -1,13 +1,10 @@
 import MockDate from 'mockdate'
 import { chrome } from 'jest-chrome'
-import {
-  BREAK_BADGE_COLOR_CODE,
-  FOCUS_BADGE_COLOR_CODE,
-  DEFAULT_TIMER_SECONDS
-} from '../../consts/index'
+import { DEFAULT_TIMER_SECONDS } from '../../consts/index'
 import { expire } from '../Timer'
 import { Message } from '../../types/index'
 import { FromServiceWorkerMessgeType } from '../../utils/message'
+import { COLOR } from '../../consts/color'
 
 describe('Timer', () => {
   beforeEach(() => {
@@ -44,7 +41,7 @@ describe('Timer', () => {
   // })
 
   it('finish first focus', async () => {
-    const expected = {
+    const expectedSetValue = {
       reminingSeconds: DEFAULT_TIMER_SECONDS.break,
       phase: 'break',
       totalPomodoroCountsInSession: 1,
@@ -63,19 +60,20 @@ describe('Timer', () => {
     const expectedOptions: Message = {
       type: FromServiceWorkerMessgeType.EXPIRE,
       data: {
-        secs: expected.reminingSeconds,
-        phase: expected.phase,
+        secs: expectedSetValue.reminingSeconds,
+        phase: expectedSetValue.phase,
         pomodorosUntilLongBreak,
         todayTotalPomodoroCount: todayTotalPomodoroCount + 1,
-        totalPomodoroCountsInSession: expected.totalPomodoroCountsInSession
+        totalPomodoroCountsInSession:
+          expectedSetValue.totalPomodoroCountsInSession
       }
     }
-    const expectedBadgeText = '00:06'
-    const expectedBadgeBackgroundColor = BREAK_BADGE_COLOR_CODE
+    const expectedBadgeText = '05:00'
+    const expectedBadgeBackgroundColor = COLOR.secondary
 
     await expire('focus', 0, [], 4)
 
-    expect(chrome.storage.local.set).toBeCalledWith(expected)
+    expect(chrome.storage.local.set).toBeCalledWith(expectedSetValue)
     // @ts-expect-error
     expect(chrome.action.setBadgeText).toBeCalledWith({
       text: expectedBadgeText
@@ -87,8 +85,8 @@ describe('Timer', () => {
     expect(chrome.runtime.sendMessage).toBeCalledWith(expectedOptions)
   })
 
-  it('finish first short break', async () => {
-    const expected = {
+  it('finish first break', async () => {
+    const expectedSetValue = {
       reminingSeconds: DEFAULT_TIMER_SECONDS.focus,
       phase: 'focus',
       totalPomodoroCountsInSession: 1,
@@ -107,15 +105,16 @@ describe('Timer', () => {
     const expectedOptions: Message = {
       type: FromServiceWorkerMessgeType.EXPIRE,
       data: {
-        secs: expected.reminingSeconds,
-        phase: expected.phase,
+        secs: expectedSetValue.reminingSeconds,
+        phase: expectedSetValue.phase,
         pomodorosUntilLongBreak,
         todayTotalPomodoroCount,
-        totalPomodoroCountsInSession: expected.totalPomodoroCountsInSession
+        totalPomodoroCountsInSession:
+          expectedSetValue.totalPomodoroCountsInSession
       }
     }
-    const expectedBadgeText = '00:05'
-    const expectedBadgeBackgroundColor = FOCUS_BADGE_COLOR_CODE
+    const expectedBadgeText = '25:00'
+    const expectedBadgeBackgroundColor = COLOR.primary
 
     await expire(
       'break',
@@ -131,7 +130,7 @@ describe('Timer', () => {
       4
     )
 
-    expect(chrome.storage.local.set).toBeCalledWith(expected)
+    expect(chrome.storage.local.set).toBeCalledWith(expectedSetValue)
     // @ts-expect-error
     expect(chrome.action.setBadgeText).toBeCalledWith({
       text: expectedBadgeText
@@ -144,7 +143,7 @@ describe('Timer', () => {
   })
 
   it('start long break', async () => {
-    const expected = {
+    const expectedSetValue = {
       reminingSeconds: DEFAULT_TIMER_SECONDS.longBreak,
       phase: 'longBreak',
       totalPomodoroCountsInSession: 0,
@@ -163,15 +162,16 @@ describe('Timer', () => {
     const expectedOptions = {
       type: FromServiceWorkerMessgeType.EXPIRE,
       data: {
-        secs: expected.reminingSeconds,
-        phase: expected.phase,
+        secs: expectedSetValue.reminingSeconds,
+        phase: expectedSetValue.phase,
         pomodorosUntilLongBreak,
         todayTotalPomodoroCount: todayTotalPomodoroCount + 1,
-        totalPomodoroCountsInSession: expected.totalPomodoroCountsInSession
+        totalPomodoroCountsInSession:
+          expectedSetValue.totalPomodoroCountsInSession
       }
     }
     const expectedBadgeText = '30:00'
-    const expectedBadgeBackgroundColor = BREAK_BADGE_COLOR_CODE
+    const expectedBadgeBackgroundColor = COLOR.secondary
     await expire(
       'focus',
       3,
@@ -186,7 +186,62 @@ describe('Timer', () => {
       4
     )
 
-    expect(chrome.storage.local.set).toBeCalledWith(expected)
+    expect(chrome.storage.local.set).toBeCalledWith(expectedSetValue)
+    // @ts-expect-error
+    expect(chrome.action.setBadgeText).toBeCalledWith({
+      text: expectedBadgeText
+    })
+    // @ts-expect-error
+    expect(chrome.action.setBadgeBackgroundColor).toBeCalledWith({
+      color: expectedBadgeBackgroundColor
+    })
+    expect(chrome.runtime.sendMessage).toBeCalledWith(expectedOptions)
+  })
+
+  it('長い休憩までのポモドーロ数を実施済みポモドーロ数以下に設定した場合。実施数3 長い休憩までのポモドーロ数4 変更後2', async () => {
+    const changedPomodorosUntilLongBreak = 2
+    const expectedSetValue = {
+      reminingSeconds: DEFAULT_TIMER_SECONDS.longBreak,
+      phase: 'longBreak',
+      totalPomodoroCountsInSession: 0,
+      isRunning: false,
+      dailyPomodoros: [
+        {
+          year: 2022,
+          month: 11,
+          day: 1,
+          count: 4
+        }
+      ]
+    }
+    const expectedOptions = {
+      type: FromServiceWorkerMessgeType.EXPIRE,
+      data: {
+        secs: expectedSetValue.reminingSeconds,
+        phase: expectedSetValue.phase,
+        pomodorosUntilLongBreak: changedPomodorosUntilLongBreak,
+        todayTotalPomodoroCount: 4,
+        totalPomodoroCountsInSession:
+          expectedSetValue.totalPomodoroCountsInSession
+      }
+    }
+    const expectedBadgeText = '30:00'
+    const expectedBadgeBackgroundColor = COLOR.secondary
+    await expire(
+      'focus',
+      3,
+      [
+        {
+          year: 2022,
+          month: 11,
+          day: 1,
+          count: 3
+        }
+      ],
+      changedPomodorosUntilLongBreak
+    )
+
+    expect(chrome.storage.local.set).toBeCalledWith(expectedSetValue)
     // @ts-expect-error
     expect(chrome.action.setBadgeText).toBeCalledWith({
       text: expectedBadgeText
