@@ -24,7 +24,6 @@ const Expire: React.FC<IProps> = (props) => {
     const queryOptions = { active: true, lastFocusedWindow: true }
     await chrome.tabs.query(queryOptions, async ([result]) => {
       if (result.id) {
-        console.log('hoge')
         await chrome.tabs.remove(result.id)
       }
     })

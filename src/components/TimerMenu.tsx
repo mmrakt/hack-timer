@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Message, Phase } from '../types'
 import { FromPopupMessageType } from '../utils/message'
 import Forward from './svg/Forward'
 import Pause from './svg/Pause'
 import Play from './svg/Play'
-import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import { ColorFormat, CountdownCircleTimer } from 'react-countdown-circle-timer'
 import Countdown from './timer/Countdown'
 import { COLOR } from '../consts/color'
 import { getStorage } from '../utils/chrome'
 import PomodoroCircles from './timer/PomodoroCircles'
+import { ThemeContext } from '../popup/Popup'
 
 type IProps = {
   phase: Phase
@@ -34,6 +35,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
   const [pomodorosUntilLongBreak, setpomodorosUntilLongBreak] =
     useState<number>(props.pomodorosUntilLongBreak)
   const [isRunning, setIsRunning] = useState<boolean>(props.isRunning)
+  const { theme } = useContext(ThemeContext)
 
   useEffect(() => {
     ;(async () => {
@@ -127,8 +129,12 @@ const TimerMenu: React.FC<IProps> = (props) => {
             duration={duration}
             initialRemainingTime={reminingSeconds}
             isSmoothColorTransition
-            colors={getCircleColor()}
-            trailColor={'rgb(63 63 70)'}
+            colors={getCircleColor() as ColorFormat}
+            trailColor={
+              theme === 'dark'
+                ? (COLOR.circleTrail.dark as ColorFormat)
+                : (COLOR.circleTrail.light as ColorFormat)
+            }
           >
             {({ remainingTime }) => (
               <Countdown reminingSeconds={remainingTime} />

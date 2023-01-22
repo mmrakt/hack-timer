@@ -5,7 +5,7 @@ import { PageType } from '../types/index'
 export const DEFAULT_TIMER_SECONDS: {
   [T in Phase]: number
 } = {
-  focus: 1500,
+  focus: 5,
   break: 300,
   longBreak: 1800
 }
