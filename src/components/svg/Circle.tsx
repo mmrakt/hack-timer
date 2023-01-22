@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import LoadingSpinner from '../LoadingSpinner'
+import { ThemeContext } from '../../popup/Popup'
 
 type IProps = {
   isArchived?: boolean
@@ -11,8 +12,10 @@ const gray = 'rgb(50, 50, 54'
 const Circle: React.FC<IProps> = ({ isArchived = false }) => {
   const [fillColor, setFillColor] = useState<string>('')
   const [strokeColor, setStrokeColor] = useState<string>('')
+  const { theme } = useContext(ThemeContext)
+
   useEffect(() => {
-    if (window?.matchMedia('(prefers-color-scheme: dark)').matches) {
+    if (theme === 'dark') {
       setStrokeColor(white)
       if (isArchived) {
         setFillColor(white)
