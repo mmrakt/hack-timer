@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { getStorage, setStorage } from '../../utils/chrome'
+import { setStorage } from '../../utils/chrome'
 
 type IProps = {
   id:
@@ -44,7 +44,7 @@ const TimerLengthSelect: React.FC<IProps> = ({
       <label htmlFor={id} />
       <select
         id={id}
-        defaultValue={currentValue}
+        defaultValue={currentValue / 60}
         onChange={(e) => {
           handleOnChange(e)
         }}
