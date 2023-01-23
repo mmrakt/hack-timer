@@ -3,23 +3,23 @@
 @tailwind utilities;
 
 body {
-  @apply dark:bg-zinc-800;
+  @apply dark:bg-gray-800;
 }
 
 .base-color {
-  @apply dark:bg-zinc-800;
+  @apply dark:bg-gray-800;
 }
 
 .text-color {
-  @apply text-zinc-800 dark:text-zinc-100;
+  @apply text-gray-800 dark:text-gray-100;
 }
 
 .icon-color {
-  @apply text-zinc-800 dark:text-zinc-100 hover:text-zinc-500 hover:dark:text-zinc-300;
+  @apply text-gray-800 dark:text-gray-100 hover:text-gray-500 hover:dark:text-gray-300;
 }
 
 .sentence-color {
-  @apply text-zinc-800 dark:text-zinc-300;
+  @apply text-gray-800 dark:text-gray-300;
 }
 
 @media (prefers-color-scheme: dark) {

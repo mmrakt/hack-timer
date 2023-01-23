@@ -51,12 +51,12 @@ const History: React.FC = () => {
       <Header pageType="history" />
       <div className="mt-3 w-5/6 mx-auto">
         <div className="flex justify-center h-8">
-          <div className="w-4/5 flex bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-600 border-[1px] rounded-lg p-[2px]">
+          <div className="w-4/5 flex bg-gray-200 dark:bg-gray-800 dark:border-gray-600 border-[1px] rounded-lg p-[2px]">
             {termTypes.map((term) => (
               <button
                 key={term}
                 className={`${
-                  displayTermType === term ? 'bg-white dark:bg-zinc-700' : ''
+                  displayTermType === term ? 'bg-white dark:bg-gray-700' : ''
                 } px-2s rounded-md flex-auto`}
                 onClick={() => {
                   handleChangeDisplayTermType(term)
