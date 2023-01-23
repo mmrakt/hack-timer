@@ -10,7 +10,7 @@ import Countdown from './timer/Countdown'
 import { COLOR } from '../consts/color'
 import { getStorage } from '../utils/chrome'
 import PomodoroCircles from './timer/PomodoroCircles'
-import { ThemeContext } from '../popup/Popup'
+import { ThemeContext } from './ThemeProvider'
 
 type IProps = {
   phase: Phase

@@ -2,12 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply dark:bg-zinc-800;
+}
+
 .base-color {
   @apply dark:bg-zinc-800;
 }
 
 .text-color {
-  @apply dark:text-zinc-100;
+  @apply text-zinc-800 dark:text-zinc-100;
 }
 
 .icon-color {
@@ -21,9 +25,5 @@
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
   }
 }

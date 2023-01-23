@@ -12,7 +12,7 @@ import dayjs from 'dayjs'
 import { DailyPomodoro, DisplayTermType, HistoryDataSet } from '../../types'
 import LoadingSpinner from '../LoadingSpinner'
 import { COLOR } from '../../consts/color'
-import { ThemeContext } from '../../popup/Popup'
+import { ThemeContext } from '../ThemeProvider'
 
 const pStyle = {
   color: '#f4f4f4'

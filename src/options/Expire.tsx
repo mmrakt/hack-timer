@@ -1,22 +1,54 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { getStorage } from '../utils/chrome'
-import { Message, Phase, StorageValue } from '../types/index'
+import { Message, Phase, StorageValue, ReminingSeconds } from '../types/index'
 import { useTranslation } from 'react-i18next'
 import { FromPopupMessageType } from '../utils/message'
+import ThemeProvider, { ThemeContext } from '../components/ThemeProvider'
+import LoadingSpinner from '../components/LoadingSpinner'
+import { expire } from '../background/Timer'
+import Forward from '../components/svg/Forward'
+import Play from '../components/svg/Play'
+import PomodoroCircles from '../components/timer/PomodoroCircles'
+import {
+  extractTodayPomodoroCount,
+  formatDisplayTime,
+  getTimeFromSeconds
+} from '../utils/timeHelper'
 
 type IProps = {
-  finishPhase: Phase
-  dailyPomodoroCount: number
-  reminingPomodorCountUntilLongBreak: number
+  phase: Phase
+  reminingSeconds: number
+  todayTotalPomodoroCount: number
+  totalPomodoroCountsInSession: number
+  pomodorosUntilLongBreak: number
 }
 
-const Expire: React.FC<IProps> = (props) => {
+const ExpireMenu: React.FC<IProps> = (props) => {
   const { t } = useTranslation()
-  const [finishPhase] = useState<Phase>(props.finishPhase)
-  const [dailyPomodoroCount] = useState<number>(props.dailyPomodoroCount)
-  const [reminingPomodorCountUntilLongBreak] = useState<number>(
-    props.reminingPomodorCountUntilLongBreak
+  const [phase] = useState<Phase>(props.phase)
+  // const [reminingSeconds] = useState<number>(props.reminingSeconds)
+  const [formatedDisplayTime, setFormatedDisplayTime] = useState<string>('')
+  const [todayTotalPomodoroCount] = useState<number>(
+    props.todayTotalPomodoroCount
   )
+  const [totalPomodoroCountsInSession] = useState<number>(
+    props.totalPomodoroCountsInSession
+  )
+  const [pomodorosUntilLongBreak] = useState<number>(
+    props.pomodorosUntilLongBreak
+  )
+  const { theme } = useContext(ThemeContext)
+
+  useEffect(() => {
+    document.body.addEventListener('keydown', onKeyDown)
+    const { minutes, seconds } = getTimeFromSeconds(props.reminingSeconds)
+    setFormatedDisplayTime(formatDisplayTime(seconds, minutes))
+
+    return () => {
+      document.body.removeEventListener('keydown', onKeyDown)
+    }
+  }, [])
+
   const onStartBreak = async (): Promise<void> => {
     await chrome.runtime.sendMessage<Message>({
       type: FromPopupMessageType.RESUME
@@ -35,78 +67,97 @@ const Expire: React.FC<IProps> = (props) => {
     }
   }
 
-  useEffect(() => {
-    document.body.addEventListener('keydown', onKeyDown)
-
-    return () => {
-      document.body.removeEventListener('keydown', onKeyDown)
+  const getCurrentPhaseText = (): string => {
+    switch (phase) {
+      case 'focus':
+        return t('common.pomodoro')
+      case 'break':
+        return t('common.break')
+      case 'longBreak':
+        return t('common.longBreak')
     }
-  }, [])
+  }
 
-  const title = t('expire.title').replace(
+  const totalPomodoroCountMessge = t('popup.totalPomodoroCount').replace(
     '%f',
-    finishPhase === 'focus' ? t('common.pomodoro') : t('common.break')
-  )
-  const message = t('expire.message')
-    .replace('%f', String(dailyPomodoroCount))
-    .replace('%s', String(reminingPomodorCountUntilLongBreak))
-
-  const buttonText = t('expire.buttonText').replace(
-    '%f',
-    finishPhase === 'focus' ? t('common.break') : t('common.pomodoro')
+    String(todayTotalPomodoroCount)
   )
 
   return (
-    <div className="text-zinc-100 p-20">
-      <div className="text-center">
-        <h1 className="text-5xl">{title}</h1>
-        <div className="class">
-          <p>{message}</p>
-        </div>
+    <div className="h-[50rem] p-40">
+      <p className="text-center text-lg">{getCurrentPhaseText()}</p>
+      <div className="mt-5 flex justify-center">
+        <span className="text-7xl">{formatedDisplayTime}</span>
       </div>
       <div className="flex justify-center mt-5">
-        <button
-          onClick={onStartBreak}
-          className="text-3xl flex border-4 border-gray-200 p-5 rounded-full hover:border-gray-300"
-        >
-          {buttonText}
+        <button onClick={onStartBreak}>
+          <Play className="h-20 w-20" />
         </button>
+      </div>
+      <div className="flex justify-center gap-2 mt-5">
+        <PomodoroCircles
+          pomodorosUntilLongBreak={pomodorosUntilLongBreak}
+          totalPomodoroCountInSession={totalPomodoroCountsInSession}
+        />
+      </div>
+      <div className="text-center text-base mt-3"></div>
+      <div className="flex items-center justify-center mt-10 text-lg">
+        <span>{totalPomodoroCountMessge}</span>
+        {/* <button
+          className="ml-auto text-lg px-1 rounded-md hover:text-gray-300"
+          onClick={expire}
+        >
+          <Forward />
+        </button> */}
       </div>
     </div>
   )
 }
 const ExpireContainer: React.FC = () => {
-  const [finishPhase, setFinishPhase] = useState<Phase | null>(null)
-  const [dailyPomodoroCount, setDailyPomodoroCount] = useState<number>(0)
-  const [
-    reminingPomodorCountUntilLongBreak,
-    setReminingPomodorCountUntilLongBreak
-  ] = useState<number>(0)
+  const [phase, setPhase] = useState<Phase>('focus')
+  const [reminingSeconds, setReminingSeconds] = useState<number>(0)
+  const [todayTotalPomodoroCount, setTodayTotalPomodoroCount] =
+    useState<number>(0)
+  const [totalPomodoroCountsInSession, setTotalPomodoroCountsInSession] =
+    useState<number>(0)
+  const [pomodorosUntilLongBreak, setPomodorosUntilLongBreak] =
+    useState<number>(0)
 
   useEffect(() => {
     getStorage([
       'phase',
+      'reminingSeconds',
       'dailyPomodoros',
       'totalPomodoroCountsInSession',
       'pomodorosUntilLongBreak'
     ]).then((value: StorageValue) => {
-      setFinishPhase(value.phase === 'focus' ? 'break' : 'focus')
-      setDailyPomodoroCount(value.dailyPomodoros.slice(-1)[0].count)
-      setReminingPomodorCountUntilLongBreak(
-        value.pomodorosUntilLongBreak - value.totalPomodoroCountsInSession
+      setPhase(value.phase)
+      setReminingSeconds(value.reminingSeconds)
+      setTodayTotalPomodoroCount(
+        extractTodayPomodoroCount(value.dailyPomodoros)
       )
+      setTotalPomodoroCountsInSession(value.totalPomodoroCountsInSession)
+      setPomodorosUntilLongBreak(value.pomodorosUntilLongBreak)
     })
   }, [])
 
-  if (!finishPhase) return <p>loading</p>
+  if (reminingSeconds === 0 || pomodorosUntilLongBreak === 0) {
+    return <LoadingSpinner />
+  }
 
   return (
-    <Expire
-      finishPhase={finishPhase}
-      dailyPomodoroCount={dailyPomodoroCount}
-      reminingPomodorCountUntilLongBreak={reminingPomodorCountUntilLongBreak}
-    />
+    <ThemeProvider>
+      <div className="base-color text-color">
+        <ExpireMenu
+          phase={phase}
+          reminingSeconds={reminingSeconds}
+          todayTotalPomodoroCount={todayTotalPomodoroCount}
+          totalPomodoroCountsInSession={totalPomodoroCountsInSession}
+          pomodorosUntilLongBreak={pomodorosUntilLongBreak}
+        />
+      </div>
+    </ThemeProvider>
   )
 }
 
-export { Expire, ExpireContainer }
+export { ExpireMenu, ExpireContainer }
