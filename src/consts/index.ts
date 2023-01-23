@@ -40,7 +40,7 @@ export const HISTORY_CSV_HEADER_ARRAY: Array<keyof DailyPomodoro> = [
 ]
 export const BOM_ARRAY = [0xef, 0xbb, 0xbf]
 
-export const START_BREAK_HTML_PATH = 'chrome-extension://*/start-break.html'
+export const EXPIRE_HTML_PATH = 'chrome-extension://*/expire.html'
 
 // TODO: リリース時は1は削除
 export const POMODORO_LENGTH_ARRAY = [

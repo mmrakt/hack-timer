@@ -11,6 +11,7 @@ import { COLOR } from '../consts/color'
 import { getStorage } from '../utils/chrome'
 import PomodoroCircles from './timer/PomodoroCircles'
 import { ThemeContext } from './ThemeProvider'
+import { closeTabs } from '../background/Tab'
 
 type IProps = {
   phase: Phase
@@ -73,6 +74,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
 
   const expire = (): void => {
     setReminingSeconds(0)
+    closeTabs()
     chrome.runtime.sendMessage<Message>({ type: FromPopupMessageType.EXPIRE })
   }
   const pause = (): void => {

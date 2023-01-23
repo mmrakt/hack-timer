@@ -1,12 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getStorage } from '../utils/chrome'
-import { Message, Phase, StorageValue, ReminingSeconds } from '../types/index'
+import { Message, Phase, StorageValue } from '../types/index'
 import { useTranslation } from 'react-i18next'
 import { FromPopupMessageType } from '../utils/message'
-import ThemeProvider, { ThemeContext } from '../components/ThemeProvider'
+import ThemeProvider from '../components/ThemeProvider'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { expire } from '../background/Timer'
-import Forward from '../components/svg/Forward'
 import Play from '../components/svg/Play'
 import PomodoroCircles from '../components/timer/PomodoroCircles'
 import {
@@ -26,7 +24,6 @@ type IProps = {
 const ExpireMenu: React.FC<IProps> = (props) => {
   const { t } = useTranslation()
   const [phase] = useState<Phase>(props.phase)
-  // const [reminingSeconds] = useState<number>(props.reminingSeconds)
   const [formatedDisplayTime, setFormatedDisplayTime] = useState<string>('')
   const [todayTotalPomodoroCount] = useState<number>(
     props.todayTotalPomodoroCount
@@ -37,7 +34,6 @@ const ExpireMenu: React.FC<IProps> = (props) => {
   const [pomodorosUntilLongBreak] = useState<number>(
     props.pomodorosUntilLongBreak
   )
-  const { theme } = useContext(ThemeContext)
 
   useEffect(() => {
     document.body.addEventListener('keydown', onKeyDown)
