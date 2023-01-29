@@ -1,7 +1,22 @@
 {
-  "name": "vite-crxjs-sample",
+  "name": "hack-timer",
+  "description": "A simple pomodoro timer to improve productivity.",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmrakt/hack-timer.git"
+  },
+  "author": "mimu <mimuraakkun3@gmail.com> (https://mimu-memo.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mmrakt/hack-timer/issues"
+  },
+  "keywords": [
+    "hack-timer",
+    "pomodoro",
+    "pomodoro-timer"
+  ],
   "scripts": {
     "d": "vite",
     "b": "tsc && vite build",
