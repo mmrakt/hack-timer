@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Message, Phase } from '../types'
 import { FromPopupMessageType } from '../utils/message'
-import Circle from './svg/Circle'
 import Forward from './svg/Forward'
 import Pause from './svg/Pause'
 import Play from './svg/Play'
-import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import { ColorFormat, CountdownCircleTimer } from 'react-countdown-circle-timer'
 import Countdown from './timer/Countdown'
 import { COLOR } from '../consts/color'
 import { getStorage } from '../utils/chrome'
+import PomodoroCircles from './timer/PomodoroCircles'
+import { ThemeContext } from './ThemeProvider'
+import { closeTabs } from '../background/Tab'
 
 type IProps = {
   phase: Phase
@@ -34,6 +36,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
   const [pomodorosUntilLongBreak, setpomodorosUntilLongBreak] =
     useState<number>(props.pomodorosUntilLongBreak)
   const [isRunning, setIsRunning] = useState<boolean>(props.isRunning)
+  const { theme } = useContext(ThemeContext)
 
   useEffect(() => {
     ;(async () => {
@@ -71,6 +74,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
 
   const expire = (): void => {
     setReminingSeconds(0)
+    closeTabs()
     chrome.runtime.sendMessage<Message>({ type: FromPopupMessageType.EXPIRE })
   }
   const pause = (): void => {
@@ -88,18 +92,6 @@ const TimerMenu: React.FC<IProps> = (props) => {
         setIsRunning(true)
       }
     )
-  }
-
-  const PomodoroCircles: React.FC = () => {
-    const circles = []
-    for (let i = 0; i < pomodorosUntilLongBreak; i++) {
-      if (i < totalPomodoroCountInSession) {
-        circles.push(<Circle key={i} fillColor="rgb(244 244 245" />)
-      } else {
-        circles.push(<Circle key={i} fillColor="rgb(24 24 27" />)
-      }
-    }
-    return <>{circles}</>
   }
 
   const getCurrentPhaseText = (): string => {
@@ -139,8 +131,12 @@ const TimerMenu: React.FC<IProps> = (props) => {
             duration={duration}
             initialRemainingTime={reminingSeconds}
             isSmoothColorTransition
-            colors={getCircleColor()}
-            trailColor={'rgb(63 63 70)'}
+            colors={getCircleColor() as ColorFormat}
+            trailColor={
+              theme === 'dark'
+                ? (COLOR.circleTrail.dark as ColorFormat)
+                : (COLOR.circleTrail.light as ColorFormat)
+            }
           >
             {({ remainingTime }) => (
               <Countdown reminingSeconds={remainingTime} />
@@ -160,7 +156,10 @@ const TimerMenu: React.FC<IProps> = (props) => {
         )}
       </div>
       <div className="flex justify-center gap-2 mt-3">
-        <PomodoroCircles />
+        <PomodoroCircles
+          pomodorosUntilLongBreak={pomodorosUntilLongBreak}
+          totalPomodoroCountInSession={totalPomodoroCountInSession}
+        />
       </div>
       <div className="text-center text-base mt-3"></div>
       <div className="flex gap-3 items-center mt-5 text-sm">

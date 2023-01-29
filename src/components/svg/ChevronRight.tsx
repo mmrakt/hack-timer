@@ -9,7 +9,7 @@ const ChevronRight: React.FC = () => {
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
-        className="w-5 h-5"
+        className="w-5 h-5 icon-color"
       >
         <path
           strokeLinecap="round"

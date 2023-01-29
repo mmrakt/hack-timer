@@ -38,7 +38,7 @@ const Dropdown: React.FC<IProps> = ({ target, menu }) => {
 
         {isOpen && (
           <>
-            <div className="-translate-x-28 -translate-y-4 absolute bg-zinc-700 left-0 mt-2 w-60 rounded-md shadow-xl z-50">
+            <div className="-translate-x-28 -translate-y-4 absolute bg-gray-700 left-0 mt-2 w-60 rounded-md shadow-xl z-50">
               <div className="rounded-md shadow-xs">
                 <div
                   className="py-1"

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import {
   BarChart,
   Bar,
@@ -12,6 +12,7 @@ import dayjs from 'dayjs'
 import { DailyPomodoro, DisplayTermType, HistoryDataSet } from '../../types'
 import LoadingSpinner from '../LoadingSpinner'
 import { COLOR } from '../../consts/color'
+import { ThemeContext } from '../ThemeProvider'
 
 const pStyle = {
   color: '#f4f4f4'
@@ -23,6 +24,9 @@ const divStyle = {
   fontWeight: 'bold',
   border: 'solid 1px #353a45'
 }
+
+const chartStrokeColorInLightTheme = '#e1e3e6'
+const chartStrokeColorInDarkTheme = '#353a45'
 
 type IProps = {
   dailyPomodoros: DailyPomodoro[]
@@ -36,6 +40,7 @@ const HistoryChart: React.FC<IProps> = ({
   timesGoBack
 }) => {
   const [displayData, setDisplayData] = useState<HistoryDataSet>([])
+  const { theme } = useContext(ThemeContext)
 
   useEffect(() => {
     if (displayTermType === 'week') {
@@ -170,7 +175,14 @@ const HistoryChart: React.FC<IProps> = ({
           data={displayData}
           margin={{ top: 0, left: 0, bottom: 0, right: 40 }}
         >
-          <CartesianGrid stroke="#353a45" vertical={false} />
+          <CartesianGrid
+            stroke={
+              theme === 'dark'
+                ? chartStrokeColorInDarkTheme
+                : chartStrokeColorInLightTheme
+            }
+            vertical={false}
+          />
           <XAxis dataKey="name" />
           <YAxis width={30} axisLine={false} tickLine={false} />
           <Bar

@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
-import LoadingSpinner from '../components/LoadingSpinner'
-import Header from '../components/timer/HeaderMenu'
-import TimerMenu from '../components/TimerMenu'
-import { Phase, StorageValue } from '../types'
-import { getStorage } from '../utils/chrome'
-import { extractTodayPomodoroCount } from '../utils/timeHelper'
+import LoadingSpinner from '../LoadingSpinner'
+import TimerMenu from '../TimerMenu'
+import { Phase, StorageValue } from '../../types'
+import { getStorage } from '../../utils/chrome'
+import { extractTodayPomodoroCount } from '../../utils/timeHelper'
 
-const TimerContainer: React.FC = () => {
+const Timer: React.FC = () => {
   const [phase, setPhase] = useState<Phase>('focus')
   const [reminingSeconds, setReminingSeconds] = useState<number | null>(null)
   const [isRunning, setIsRunning] = useState<boolean>(false)
@@ -39,7 +38,6 @@ const TimerContainer: React.FC = () => {
 
   return (
     <>
-      <Header />
       {!reminingSeconds ? (
         <div className="w-full h-[22rem] flex justify-center items-center">
           <LoadingSpinner />
@@ -58,4 +56,4 @@ const TimerContainer: React.FC = () => {
   )
 }
 
-export default TimerContainer
+export default Timer

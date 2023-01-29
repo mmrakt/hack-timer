@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { getStorage, setStorage } from '../../utils/chrome'
+import { setStorage } from '../../utils/chrome'
 
 type IProps = {
   id:
@@ -44,11 +44,11 @@ const TimerLengthSelect: React.FC<IProps> = ({
       <label htmlFor={id} />
       <select
         id={id}
-        defaultValue={currentValue}
+        defaultValue={currentValue / 60}
         onChange={(e) => {
           handleOnChange(e)
         }}
-        className={`w-16 h-full px-2 py-1 border border-zinc-700 rounded-md bg-zinc-800 sm:text-md text-zinc-100 focus:ring-zinc-600 focus:border-zinc-600 ${className}`}
+        className={`w-16 h-full px-2 py-1 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 sm:text-md  focus:ring-gray-600 focus:border-gray-500 ${className}`}
       >
         {options.map((option) => (
           <option key={option} value={option}>

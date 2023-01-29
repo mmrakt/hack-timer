@@ -2,20 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply dark:bg-gray-800;
+}
+
 .base-color {
-  @apply dark:bg-zinc-800;
+  @apply dark:bg-gray-800;
 }
 
 .text-color {
-  @apply dark:text-zinc-100;
+  @apply text-gray-800 dark:text-gray-100;
+}
+
+.icon-color {
+  @apply text-gray-800 dark:text-gray-100 hover:text-gray-500 hover:dark:text-gray-300;
+}
+
+.sentence-color {
+  @apply text-gray-800 dark:text-gray-300;
 }
 
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
   }
 }

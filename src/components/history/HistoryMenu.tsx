@@ -106,7 +106,7 @@ const HistoryMenu: React.FC = () => {
     }
   }
   const style =
-    'px-3 py-1 mb-3 text-left text-xs hover:bg-zinc-600 border-2 border-zinc-200 rounded-2xl w-full grid place-items-center'
+    'px-3 py-1 mb-3 text-left text-xs hover:bg-gray-200 hover:dark:bg-gray-600 border-2 border-gray-200 rounded-2xl w-full grid place-items-center'
   return (
     <div className="w-40">
       <button className={style} onClick={handleExport}>

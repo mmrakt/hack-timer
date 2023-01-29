@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import { StorageValue, Phase, DailyPomodoro, Message } from '../types'
 import { getStorage, runtime, setStorage } from '../utils/chrome'
 import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
-import { openNewTab } from './Tab'
+import { closeTabs, openNewTab } from './Tab'
 import { createNotificationContent, sendNotification } from './Notification'
 import keepAlive from '../utils/keepAliveServiceWorker'
 import { extractTodayPomodoroCount } from '../utils/timeHelper'
@@ -23,6 +23,7 @@ const toggleTimerStatus = async (needSendMessage = false): Promise<void> => {
       if (data.isRunning) {
         await pauseTimer()
       } else {
+        await closeTabs()
         await resumeTimer()
       }
       if (needSendMessage) {

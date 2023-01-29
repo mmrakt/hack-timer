@@ -1,4 +1,8 @@
-const Play: React.FC = () => {
+type IProps = {
+  className?: string
+}
+
+const Play: React.FC<IProps> = ({ className = '' }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,7 +10,7 @@ const Play: React.FC = () => {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-12 h-12 hover:text-gray-300"
+      className={`w-12 h-12 ${className} icon-color`}
     >
       <path
         strokeLinecap="round"
