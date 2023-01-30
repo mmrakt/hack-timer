@@ -23,20 +23,19 @@ const TimerLengthSelect: React.FC<IProps> = ({
 
   const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     if (!e) return
-    const seconds = Number(e.target.value) * 60
 
     switch (id) {
       case 'pomodoroSeconds':
-        setStorage({ pomodoroSeconds: seconds })
+        setStorage({ pomodoroSeconds: Number(e.target.value) * 60 })
         break
       case 'breakSeconds':
-        setStorage({ breakSeconds: seconds })
+        setStorage({ breakSeconds: Number(e.target.value) * 60 })
         break
       case 'longBreakSeconds':
-        setStorage({ longBreakSeconds: seconds })
+        setStorage({ longBreakSeconds: Number(e.target.value) * 60 })
         break
       case 'pomodorosUntilLongBreak':
-        setStorage({ pomodorosUntilLongBreak: seconds })
+        setStorage({ pomodorosUntilLongBreak: Number(e.target.value) })
     }
   }
   return (
