@@ -195,7 +195,7 @@ const increaseDailyPomodoro = (
 ): DailyPomodoro[] => {
   const today = dayjs()
   const year = today.year()
-  const month = today.month()
+  const month = today.month() + 1
   const day = today.date()
 
   const lastPomodoroDate = dailyPomodoros.slice(-1)

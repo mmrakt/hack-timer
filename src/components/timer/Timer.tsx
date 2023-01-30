@@ -38,7 +38,7 @@ const Timer: React.FC = () => {
 
   return (
     <>
-      {!reminingSeconds ? (
+      {!reminingSeconds || pomodorosUntilLongBreak === 0 ? (
         <div className="w-full h-[22rem] flex justify-center items-center">
           <LoadingSpinner />
         </div>

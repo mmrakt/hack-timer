@@ -33,7 +33,7 @@ const sendNotification = async (
     title,
     message,
     type: 'basic',
-    iconUrl: 'assets/img/kawauso.webp'
+    iconUrl: 'assets/img/h-48.png'
   })
 }
 

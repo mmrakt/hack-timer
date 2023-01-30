@@ -10,7 +10,9 @@ import Header from '../components/Header'
 
 const History: React.FC = () => {
   const { t } = useTranslation()
-  const [dailyPomodoros, setDailyPomodoros] = useState<DailyPomodoro[]>([])
+  const [dailyPomodoros, setDailyPomodoros] = useState<DailyPomodoro[] | null>(
+    null
+  )
   const [displayTermType, setDisplayTermType] =
     useState<DisplayTermType>('week')
   const [timesGoBack, setTimesGoBack] = useState<number>(0)
@@ -79,7 +81,7 @@ const History: React.FC = () => {
           />
         </div>
       </div>
-      {dailyPomodoros.length === 0 ? (
+      {dailyPomodoros === null ? (
         <div className="h-[15rem] flex items-center justify-center">
           <LoadingSpinner />
         </div>

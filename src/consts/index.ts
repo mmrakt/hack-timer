@@ -1,12 +1,11 @@
 import { DailyPomodoro, Phase, StorageValue } from '../types'
-import { testData } from '../utils/testDate'
 import { PageType } from '../types/index'
 
 export const DEFAULT_TIMER_SECONDS: {
   [T in Phase]: number
 } = {
-  focus: 1500,
-  break: 300,
+  focus: 5,
+  break: 3,
   longBreak: 1800
 }
 
@@ -17,11 +16,12 @@ export const DEFAULT_STORAGE_VALUE: StorageValue = {
   phase: 'focus',
   isRunning: false,
   totalPomodoroCountsInSession: 0,
-  dailyPomodoros: testData, // 開発用
+  // dailyPomodoros: testData, // 開発用
+  dailyPomodoros: [],
   showNewTabNotificationWhenPomodoro: true,
   showNewTabNotificationWhenBreak: true,
-  showDesktopNotificationWhenPomodoro: false,
-  showDesktopNotificationWhenBreak: false,
+  showDesktopNotificationWhenPomodoro: true,
+  showDesktopNotificationWhenBreak: true,
   pomodoroSeconds: DEFAULT_TIMER_SECONDS.focus,
   breakSeconds: DEFAULT_TIMER_SECONDS.break,
   longBreakSeconds: DEFAULT_TIMER_SECONDS.longBreak,

@@ -43,7 +43,9 @@ const TimerLengthSelect: React.FC<IProps> = ({
       <label htmlFor={id} />
       <select
         id={id}
-        defaultValue={currentValue / 60}
+        defaultValue={
+          id !== 'pomodorosUntilLongBreak' ? currentValue / 60 : currentValue
+        }
         onChange={(e) => {
           handleOnChange(e)
         }}

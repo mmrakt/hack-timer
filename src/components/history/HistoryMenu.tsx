@@ -1,7 +1,6 @@
 import { getStorage, setStorage } from '../../utils/chrome'
 import {
   BOM_ARRAY,
-  HISTORY_CSV_COLUMN_COUNT,
   HISTORY_CSV_FILE_NAME,
   HISTORY_CSV_HEADER_ARRAY
 } from '../../consts'
@@ -27,17 +26,18 @@ const createBlobData = (dailyPomodoros: DailyPomodoro[]): string => {
 
   let joinedData = ''
   dailyPomodoros.forEach((row) => {
-    let joinedRow = ''
-    for (let i = 0; i < HISTORY_CSV_COLUMN_COUNT; i++) {
-      const values = Object.values(row)
-      joinedRow += values[i] !== null ? String(values[i]) : ''
-      if (i === HISTORY_CSV_COLUMN_COUNT - 1) {
-        joinedRow += '\n'
-      } else {
-        joinedRow += ','
-      }
+    if (row.count === 0 || row.day === 0 || row.month === 0 || row.year === 0) {
+      return
     }
-    joinedData += joinedRow
+    joinedData +=
+      String(row.year) +
+      ',' +
+      String(row.month) +
+      ',' +
+      String(row.day) +
+      ',' +
+      String(row.count) +
+      '\n'
   })
   // 改行削除
   joinedData = joinedData.slice(0, -1)
