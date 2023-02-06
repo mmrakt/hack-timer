@@ -1,6 +1,8 @@
-# hack-timer
+<p align="center">
+  <img src="logo.png" />
+</p>
 
-![logo](logo.png)
+# hack-timer
 
 ## Overview
 
