@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 const manifest = defineManifest({
   manifest_version: 3,
   name: 'hack-timer',
-  version: '0.0.1',
+  version: '1.0.0',
   description: 'A simple pomodoro timer to improve productivity',
   icons: {
     '16': 'public/assets/img/h-16.png',

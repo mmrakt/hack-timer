@@ -4,6 +4,8 @@
 
 # hack-timer
 
+[Chrome Web Store](https://chrome.google.com/webstore/detail/hack-timer/pcnppkgggfifkggfbikfacnheemmlbfa?hl=ja)
+
 ## Overview
 
 A simple pomodoro timer to improve productivity.
