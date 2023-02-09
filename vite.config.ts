@@ -23,7 +23,8 @@ const manifest = defineManifest({
   commands: {
     toggle_timer_status: {
       suggested_key: {
-        default: 'MacCtrl+Shift+T'
+        default: 'Ctrl+Shift+T',
+        mac: 'Command+Shift+T'
       },
       description: 'Toggle Pause/Resume a timer'
     }
@@ -34,6 +35,7 @@ const manifest = defineManifest({
 export default defineConfig({
   publicDir: 'public',
   build: {
+    minify: false,
     emptyOutDir: true,
     outDir: 'build',
     rollupOptions: {

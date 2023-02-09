@@ -4,9 +4,9 @@ import { PageType } from '../types/index'
 export const DEFAULT_TIMER_SECONDS: {
   [T in Phase]: number
 } = {
-  focus: 5,
-  break: 3,
-  longBreak: 1800
+  focus: 1500,
+  break: 300,
+  longBreak: 900
 }
 
 export const DEFAULT_POMODOROS_UNTIL_LONG_BREAK = 4
