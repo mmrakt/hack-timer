@@ -39,7 +39,7 @@ const TimerLengthSelect: React.FC<IProps> = ({
     }
   }
   return (
-    <>
+    <div className="w-24">
       <label htmlFor={id} />
       <select
         id={id}
@@ -62,9 +62,9 @@ const TimerLengthSelect: React.FC<IProps> = ({
         id === 'breakSeconds' ||
         id === 'longBreakSeconds'
           ? t('settings.timer.length.unit')
-          : t('settings.timer.count.unit')}
+          : ''}
       </span>
-    </>
+    </div>
   )
 }
 

@@ -6,12 +6,22 @@ import {
 } from '../../consts'
 import { DailyPomodoro } from '../../types'
 import { useTranslation } from 'react-i18next'
+import { NEW_LINE_CODE } from '../../consts/index'
 
 const createStorageValue = (content: string): DailyPomodoro[] => {
-  const csvRows = content.slice(content.indexOf('\n') + 1).split('\n')
+  const newLineCodes =
+    NEW_LINE_CODE.CR + '|' + NEW_LINE_CODE.LF + '|' + NEW_LINE_CODE.CRLF
+  const replacedContent = content.replace(
+    '/' + newLineCodes + '/',
+    NEW_LINE_CODE.LF
+  )
+  const csvRows = replacedContent
+    .slice(replacedContent.indexOf('\n') + 1)
+    .split('\n')
   return csvRows.map((row) => {
     // FIXME: refactor
     const values = row.split(',')
+
     return {
       year: Number(values[0]),
       month: Number(values[1]),
@@ -68,6 +78,14 @@ const readCsv = async (uploadFile: File): Promise<any> => {
   }
 }
 
+const isValidContent = (content: string): boolean => {
+  if (!content) {
+    return false
+  } else {
+    return true
+  }
+}
+
 const HistoryMenu: React.FC = () => {
   const { t } = useTranslation()
   const handleExport = (): void => {
@@ -96,8 +114,11 @@ const HistoryMenu: React.FC = () => {
           }
           const result = readCsv(file)
           result.then((content) => {
-            const value = createStorageValue(content)
-            setStorage({ dailyPomodoros: value })
+            if (!isValidContent(content)) {
+              alert(t('history.import.invalidMessage'))
+            }
+            const storageValues = createStorageValue(content)
+            setStorage({ dailyPomodoros: storageValues })
           })
         }
       }

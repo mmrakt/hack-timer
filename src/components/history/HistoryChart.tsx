@@ -14,19 +14,34 @@ import LoadingSpinner from '../LoadingSpinner'
 import { COLOR } from '../../consts/color'
 import { ThemeContext } from '../ThemeProvider'
 
-const pStyle = {
-  color: '#f4f4f4'
+const tooltipLabelStyle = {
+  light: {
+    color: COLOR.text.light
+  },
+  dark: {
+    color: COLOR.text.dark
+  }
 }
 
-const divStyle = {
-  background: '#181818',
-  opacity: 0.9,
-  fontWeight: 'bold',
-  border: 'solid 1px #353a45'
+const tooltipContentStyle = {
+  light: {
+    background: COLOR.bg.light,
+    opacity: 0.9,
+    fontWeight: 'bold'
+    // border: 'solid 1px #353a45'
+  },
+  dark: {
+    background: COLOR.bg_overrap.dark,
+    opacity: 0.9,
+    fontWeight: 'bold',
+    border: 'solid 1px #353a45'
+  }
 }
 
-const chartStrokeColorInLightTheme = '#e1e3e6'
-const chartStrokeColorInDarkTheme = '#353a45'
+const chartStrokeColor = {
+  light: '#e1e3e6',
+  dark: '#353a45'
+}
 
 type IProps = {
   dailyPomodoros: DailyPomodoro[]
@@ -177,9 +192,7 @@ const HistoryChart: React.FC<IProps> = ({
         >
           <CartesianGrid
             stroke={
-              theme === 'dark'
-                ? chartStrokeColorInDarkTheme
-                : chartStrokeColorInLightTheme
+              theme === 'dark' ? chartStrokeColor.dark : chartStrokeColor.light
             }
             vertical={false}
           />
@@ -194,8 +207,16 @@ const HistoryChart: React.FC<IProps> = ({
           />
           <Tooltip
             cursor={{ fill: 'transparent' }}
-            contentStyle={divStyle}
-            labelStyle={pStyle}
+            contentStyle={
+              theme === 'dark'
+                ? tooltipContentStyle.dark
+                : tooltipContentStyle.light
+            }
+            labelStyle={
+              theme === 'dark'
+                ? tooltipLabelStyle.dark
+                : tooltipLabelStyle.light
+            }
           />
         </BarChart>
       </ResponsiveContainer>
