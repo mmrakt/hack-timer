@@ -18,6 +18,7 @@ jobs:
       - uses: fregante/daily-version-action@a1fc2b591c0bee1c12274b8dffaddea11c079082
         name: Create tag if necessary
         id: daily-version
+      - run: yarn
       - run: yarn b
       - name: Update manifest.json
         run: |
