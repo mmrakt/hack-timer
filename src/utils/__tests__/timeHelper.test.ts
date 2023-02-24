@@ -1,6 +1,6 @@
 import { formatDisplayTime, getTimeFromSeconds } from '../timeHelper'
 
-describe('', () => {
+describe('timeHelper', () => {
   it('getTimerFromSeconds', () => {
     expect(getTimeFromSeconds(1000)).toStrictEqual({
       seconds: 40,

@@ -5,8 +5,8 @@ import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
 import { closeTabs, openNewTab } from './Tab'
 import { createNotificationContent, sendNotification } from './Notification'
 import keepAlive from '../utils/keepAliveServiceWorker'
-import { extractTodayPomodoroCount } from '../utils/timeHelper'
 import { FromServiceWorkerMessgeType } from '../utils/message'
+import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
 
 let intervalId = 0
 
