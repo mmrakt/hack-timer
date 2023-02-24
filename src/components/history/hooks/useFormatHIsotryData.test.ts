@@ -5,12 +5,15 @@ import {
   HistoryDataSet
 } from '../../../types/index'
 import useFormatHistoryData from './useFormatHisotryData'
+import { NUMBER_OF_DAY_BY_WEEK } from '../../../consts/index'
 
 const d = new Date()
 const thisYear = d.getFullYear()
 const thisMonth = d.getMonth() + 1
+const today = d.getDate()
+const dayOfWeek = d.getDay()
 
-describe('year', () => {
+describe('yearly', () => {
   let dailyPomodoros: DailyPomodoro[] = []
   let timesGoBack = 0
   const displayTermType: DisplayTermType = 'year'
@@ -109,11 +112,11 @@ describe('year', () => {
   })
 })
 
-describe('month', () => {
+describe('monthly', () => {
   const displayTermType: DisplayTermType = 'month'
 
   it('initial display', () => {
-    const expectHistoryData = getExpectHistoryData(thisMonth)
+    const expectHistoryData = getExpectMonthlyHistoryData(thisMonth)
     const dailyPomodoros: DailyPomodoro[] = [
       {
         year: thisYear,
@@ -147,14 +150,14 @@ describe('month', () => {
   it('empty pomodoro', () => {
     const dailyPomodoros: DailyPomodoro[] = []
     const timesGoBack = 0
-    const expectHistoryData = getExpectHistoryData(thisMonth)
+    const expectHistoryData = getExpectMonthlyHistoryData(thisMonth)
     const { result } = renderHook(() =>
       useFormatHistoryData(dailyPomodoros, displayTermType, timesGoBack)
     )
     expect(result.current).toStrictEqual(expectHistoryData)
   })
   it('a month ago', () => {
-    const expectHistoryData = getExpectHistoryData(thisMonth - 1)
+    const expectHistoryData = getExpectMonthlyHistoryData(thisMonth - 1)
     const dailyPomodoros: DailyPomodoro[] = [
       {
         year: thisYear,
@@ -187,8 +190,81 @@ describe('month', () => {
   })
 })
 
+describe('weekly', () => {
+  const displayTermType: DisplayTermType = 'week'
+
+  it('initial display', () => {
+    const expectHistoryData: HistoryDataSet = getExpectWeeklyHistoryData(today)
+    // 実施日前後の曜日。金曜（5）なら木曜（4）
+    const arroundDayOfWeek = dayOfWeek > 0 ? dayOfWeek - 1 : dayOfWeek + 1
+    const dailyPomodoros: DailyPomodoro[] = [
+      {
+        year: thisYear,
+        month: thisMonth,
+        day: today,
+        count: 10
+      },
+      {
+        year: thisYear,
+        month: thisMonth,
+        day: today - dayOfWeek + arroundDayOfWeek,
+        count: 5
+      }
+    ]
+    const timesGoBack = 0
+
+    const { result } = renderHook(() =>
+      useFormatHistoryData(dailyPomodoros, displayTermType, timesGoBack)
+    )
+    expectHistoryData[dayOfWeek].count = 10 // 当日：10回
+    expectHistoryData[arroundDayOfWeek].count = 5 // 前後：5回
+
+    expect(result.current).toStrictEqual(expectHistoryData)
+  })
+  it('empty pomodoro', () => {
+    const expectHistoryData: HistoryDataSet = getExpectWeeklyHistoryData(today)
+    const dailyPomodoros: DailyPomodoro[] = []
+    const timesGoBack = 0
+
+    const { result } = renderHook(() =>
+      useFormatHistoryData(dailyPomodoros, displayTermType, timesGoBack)
+    )
+
+    expect(result.current).toStrictEqual(expectHistoryData)
+  })
+  it('a week ago', () => {
+    const aWeekAgoDate = today - NUMBER_OF_DAY_BY_WEEK
+    const expectHistoryData: HistoryDataSet =
+      getExpectWeeklyHistoryData(aWeekAgoDate)
+    const arroundDayOfWeek = dayOfWeek > 0 ? dayOfWeek - 1 : dayOfWeek + 1
+    const dailyPomodoros: DailyPomodoro[] = [
+      {
+        year: thisYear,
+        month: thisMonth,
+        day: aWeekAgoDate,
+        count: 10
+      },
+      {
+        year: thisYear,
+        month: thisMonth,
+        day: aWeekAgoDate - dayOfWeek + arroundDayOfWeek,
+        count: 5
+      }
+    ]
+    const timesGoBack = 1
+
+    const { result } = renderHook(() =>
+      useFormatHistoryData(dailyPomodoros, displayTermType, timesGoBack)
+    )
+    expectHistoryData[dayOfWeek].count = 10 // 1週間前：10回
+    expectHistoryData[arroundDayOfWeek].count = 5 // 1週間前の前後：5回
+
+    expect(result.current).toStrictEqual(expectHistoryData)
+  })
+})
+
 // eslint-disable-next-line
-function getExpectHistoryData(month: number): HistoryDataSet {
+function getExpectMonthlyHistoryData(month: number): HistoryDataSet {
   const historyData: HistoryDataSet = []
   const numberOfMonth = new Date(thisYear, month, 0).getDate()
   for (let i = 1; i <= numberOfMonth; i++) {
@@ -198,5 +274,20 @@ function getExpectHistoryData(month: number): HistoryDataSet {
     }
     historyData.push(history)
   }
+  return historyData
+}
+
+// eslint-disable-next-line
+function getExpectWeeklyHistoryData(day: number): HistoryDataSet {
+  const historyData: HistoryDataSet = []
+
+  for (let i = 0; i < NUMBER_OF_DAY_BY_WEEK; i++) {
+    const history = {
+      name: String(day - dayOfWeek + i),
+      count: 0
+    }
+    historyData.push(history)
+  }
+
   return historyData
 }
