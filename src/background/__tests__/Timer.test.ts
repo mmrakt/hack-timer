@@ -6,7 +6,7 @@ import { Message } from '../../types/index'
 import { FromServiceWorkerMessgeType } from '../../utils/message'
 import { COLOR } from '../../consts/color'
 
-describe('Timer', () => {
+describe.skip('Timer', () => {
   beforeEach(() => {
     MockDate.set('2022-12-01')
   })

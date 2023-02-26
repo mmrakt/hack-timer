@@ -105,22 +105,20 @@ const expire = async (
   if (phase === 'focus') {
     totalPomodoroCountsInSession++
     if (totalPomodoroCountsInSession >= pomodorosUntilLongBreak) {
-      getStorage(['longBreakSeconds']).then(({ longBreakSeconds }) => {
-        reminingSeconds = longBreakSeconds
-      })
+      reminingSeconds = await (
+        await getStorage(['longBreakSeconds'])
+      ).longBreakSeconds
       totalPomodoroCountsInSession = 0
       nextPhase = 'longBreak'
     } else {
-      getStorage(['breakSeconds']).then(({ breakSeconds }) => {
-        reminingSeconds = breakSeconds
-      })
+      reminingSeconds = await (await getStorage(['breakSeconds'])).breakSeconds
       nextPhase = 'break'
     }
     dailyPomodoros = increaseDailyPomodoro(dailyPomodoros)
   } else {
-    getStorage(['pomodoroSeconds']).then(({ pomodoroSeconds }) => {
-      reminingSeconds = pomodoroSeconds
-    })
+    reminingSeconds = await (
+      await getStorage(['pomodoroSeconds'])
+    ).pomodoroSeconds
   }
   const todayTotalPomodoroCount = extractTodayPomodoroCount(dailyPomodoros)
 

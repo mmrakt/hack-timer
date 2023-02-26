@@ -5,7 +5,13 @@ const getTimeFromSeconds = (
   minutes: number
 } => {
   const totalSeconds = Math.ceil(secs)
-  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60)
+  let minutes = 0
+  if (totalSeconds === 60 * 60) {
+    minutes = 60
+  } else {
+    minutes = Math.floor((totalSeconds % (60 * 60)) / 60)
+  }
+  console.log(totalSeconds)
   const seconds = Math.floor(totalSeconds % 60)
 
   return {
