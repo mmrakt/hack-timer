@@ -7,12 +7,11 @@ import HistoryChart from '../components/history/HistoryChart'
 import TargetTerm from '../components/history/TargetTerm'
 import { useTranslation } from 'react-i18next'
 import Header from '../components/Header'
+import useFormatHistoryData from '../components/history/hooks/useFormatHisotryData'
 
 const History: React.FC = () => {
   const { t } = useTranslation()
-  const [dailyPomodoros, setDailyPomodoros] = useState<DailyPomodoro[] | null>(
-    null
-  )
+  const [dailyPomodoros, setDailyPomodoros] = useState<DailyPomodoro[]>([])
   const [displayTermType, setDisplayTermType] =
     useState<DisplayTermType>('week')
   const [timesGoBack, setTimesGoBack] = useState<number>(0)
@@ -23,6 +22,12 @@ const History: React.FC = () => {
       setDailyPomodoros(data.dailyPomodoros)
     })
   }, [displayTermType, timesGoBack])
+
+  const historyData = useFormatHistoryData(
+    dailyPomodoros,
+    displayTermType,
+    timesGoBack
+  )
 
   const handleChangeDisplayTermType = (term: DisplayTermType): void => {
     setDisplayTermType(term)
@@ -86,11 +91,7 @@ const History: React.FC = () => {
           <LoadingSpinner />
         </div>
       ) : (
-        <HistoryChart
-          dailyPomodoros={dailyPomodoros}
-          displayTermType={displayTermType}
-          timesGoBack={timesGoBack}
-        />
+        <HistoryChart historyData={historyData} />
       )}
       <div className="mb-8 flex justify-center">
         <HistoryMenu />

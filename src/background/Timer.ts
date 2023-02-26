@@ -5,8 +5,8 @@ import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
 import { closeTabs, openNewTab } from './Tab'
 import { createNotificationContent, sendNotification } from './Notification'
 import keepAlive from '../utils/keepAliveServiceWorker'
-import { extractTodayPomodoroCount } from '../utils/timeHelper'
 import { FromServiceWorkerMessgeType } from '../utils/message'
+import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
 
 let intervalId = 0
 
@@ -100,24 +100,25 @@ const expire = async (
   pomodorosUntilLongBreak: number,
   isAutoExpire = true
 ): Promise<void> => {
-  let reminingSeconds = 100
+  let reminingSeconds = 0
   let nextPhase: Phase = 'focus'
   if (phase === 'focus') {
     totalPomodoroCountsInSession++
     if (totalPomodoroCountsInSession >= pomodorosUntilLongBreak) {
-      const value = await getStorage(['longBreakSeconds'])
-      reminingSeconds = value.longBreakSeconds
+      reminingSeconds = await (
+        await getStorage(['longBreakSeconds'])
+      ).longBreakSeconds
       totalPomodoroCountsInSession = 0
       nextPhase = 'longBreak'
     } else {
-      const value = await getStorage(['breakSeconds'])
-      reminingSeconds = value.breakSeconds
+      reminingSeconds = await (await getStorage(['breakSeconds'])).breakSeconds
       nextPhase = 'break'
     }
     dailyPomodoros = increaseDailyPomodoro(dailyPomodoros)
   } else {
-    const value = await getStorage(['pomodoroSeconds'])
-    reminingSeconds = value.pomodoroSeconds
+    reminingSeconds = await (
+      await getStorage(['pomodoroSeconds'])
+    ).pomodoroSeconds
   }
   const todayTotalPomodoroCount = extractTodayPomodoroCount(dailyPomodoros)
 

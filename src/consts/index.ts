@@ -1,13 +1,21 @@
 import { DailyPomodoro, Phase, StorageValue } from '../types'
 import { PageType } from '../types/index'
+import { testData } from '../utils/testDate'
 
-export const DEFAULT_TIMER_SECONDS: {
-  [T in Phase]: number
-} = {
+let DEFAULT_TIMER_SECONDS: { [T in Phase]: number } = {
   focus: 1500,
   break: 300,
   longBreak: 900
 }
+if (process.env.NODE_ENV === 'development') {
+  DEFAULT_TIMER_SECONDS = {
+    focus: 5,
+    break: 3,
+    longBreak: 10
+  }
+}
+
+export { DEFAULT_TIMER_SECONDS }
 
 export const DEFAULT_POMODOROS_UNTIL_LONG_BREAK = 4
 
@@ -16,8 +24,8 @@ export const DEFAULT_STORAGE_VALUE: StorageValue = {
   phase: 'focus',
   isRunning: false,
   totalPomodoroCountsInSession: 0,
-  // dailyPomodoros: testData, // 開発用
-  dailyPomodoros: [],
+  dailyPomodoros: testData, // 開発用
+  // dailyPomodoros: [],
   showNewTabNotificationWhenPomodoro: true,
   showNewTabNotificationWhenBreak: true,
   showDesktopNotificationWhenPomodoro: true,
@@ -64,3 +72,6 @@ export const NEW_LINE_CODE = {
   CR: '\r',
   CRLF: '\r\n'
 }
+
+export const NUMBER_OF_MONTH_BY_YEAR = 12
+export const NUMBER_OF_DAY_BY_WEEK = 7

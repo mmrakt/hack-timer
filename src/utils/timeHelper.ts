@@ -1,4 +1,3 @@
-import { DailyPomodoro } from '../types/index'
 const getTimeFromSeconds = (
   secs: number
 ): {
@@ -6,7 +5,12 @@ const getTimeFromSeconds = (
   minutes: number
 } => {
   const totalSeconds = Math.ceil(secs)
-  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60)
+  let minutes = 0
+  if (totalSeconds === 60 * 60) {
+    minutes = 60
+  } else {
+    minutes = Math.floor((totalSeconds % (60 * 60)) / 60)
+  }
   const seconds = Math.floor(totalSeconds % 60)
 
   return {
@@ -21,9 +25,4 @@ const formatDisplayTime = (seconds: number, minutes: number): string => {
   return `${formatMinutes}:${formatSeconds}`
 }
 
-const extractTodayPomodoroCount = (dailyPomodoros: DailyPomodoro[]): number => {
-  if (dailyPomodoros.length === 0) return 0
-  return dailyPomodoros.slice(-1)[0].count
-}
-
-export { getTimeFromSeconds, formatDisplayTime, extractTodayPomodoroCount }
+export { getTimeFromSeconds, formatDisplayTime }

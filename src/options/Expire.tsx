@@ -7,11 +7,8 @@ import ThemeProvider from '../components/ThemeProvider'
 import LoadingSpinner from '../components/LoadingSpinner'
 import Play from '../components/svg/Play'
 import PomodoroCircles from '../components/timer/PomodoroCircles'
-import {
-  extractTodayPomodoroCount,
-  formatDisplayTime,
-  getTimeFromSeconds
-} from '../utils/timeHelper'
+import { formatDisplayTime, getTimeFromSeconds } from '../utils/timeHelper'
+import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
 
 type IProps = {
   phase: Phase

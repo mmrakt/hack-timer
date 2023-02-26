@@ -3,7 +3,7 @@ import LoadingSpinner from '../LoadingSpinner'
 import TimerMenu from '../TimerMenu'
 import { Phase, StorageValue } from '../../types'
 import { getStorage } from '../../utils/chrome'
-import { extractTodayPomodoroCount } from '../../utils/timeHelper'
+import { extractTodayPomodoroCount } from '../../utils/pomodoroHelper'
 
 const Timer: React.FC = () => {
   const [phase, setPhase] = useState<Phase>('focus')

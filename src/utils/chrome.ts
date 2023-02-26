@@ -1,6 +1,7 @@
 import { StorageKey, StorageValue } from '../types'
 
-const { runtime, commands, action, tabs, storage, notifications } = chrome
+const { runtime, commands, action, tabs, storage, notifications, windows } =
+  chrome
 
 const getStorage = async (keys: StorageKey[]): Promise<StorageValue> => {
   return await new Promise((resolve) => {
@@ -22,6 +23,7 @@ export {
   action,
   tabs,
   notifications,
+  windows,
   getStorage,
   setStorage
 }
