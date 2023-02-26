@@ -100,24 +100,27 @@ const expire = async (
   pomodorosUntilLongBreak: number,
   isAutoExpire = true
 ): Promise<void> => {
-  let reminingSeconds = 100
+  let reminingSeconds = 0
   let nextPhase: Phase = 'focus'
   if (phase === 'focus') {
     totalPomodoroCountsInSession++
     if (totalPomodoroCountsInSession >= pomodorosUntilLongBreak) {
-      const value = await getStorage(['longBreakSeconds'])
-      reminingSeconds = value.longBreakSeconds
+      getStorage(['longBreakSeconds']).then(({ longBreakSeconds }) => {
+        reminingSeconds = longBreakSeconds
+      })
       totalPomodoroCountsInSession = 0
       nextPhase = 'longBreak'
     } else {
-      const value = await getStorage(['breakSeconds'])
-      reminingSeconds = value.breakSeconds
+      getStorage(['breakSeconds']).then(({ breakSeconds }) => {
+        reminingSeconds = breakSeconds
+      })
       nextPhase = 'break'
     }
     dailyPomodoros = increaseDailyPomodoro(dailyPomodoros)
   } else {
-    const value = await getStorage(['pomodoroSeconds'])
-    reminingSeconds = value.pomodoroSeconds
+    getStorage(['pomodoroSeconds']).then(({ pomodoroSeconds }) => {
+      reminingSeconds = pomodoroSeconds
+    })
   }
   const todayTotalPomodoroCount = extractTodayPomodoroCount(dailyPomodoros)
 
