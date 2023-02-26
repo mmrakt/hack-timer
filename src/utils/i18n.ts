@@ -5,7 +5,7 @@ import i18next from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
 let debug = false
-if (process.env.NODE_ENV === 'local') {
+if (process.env.NODE_ENV === 'development') {
   debug = true
 }
 

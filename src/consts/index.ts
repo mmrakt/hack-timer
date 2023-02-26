@@ -2,13 +2,20 @@ import { DailyPomodoro, Phase, StorageValue } from '../types'
 import { PageType } from '../types/index'
 import { testData } from '../utils/testDate'
 
-export const DEFAULT_TIMER_SECONDS: {
-  [T in Phase]: number
-} = {
+let DEFAULT_TIMER_SECONDS: { [T in Phase]: number } = {
   focus: 1500,
   break: 300,
   longBreak: 900
 }
+if (process.env.NODE_ENV === 'development') {
+  DEFAULT_TIMER_SECONDS = {
+    focus: 5,
+    break: 3,
+    longBreak: 10
+  }
+}
+
+export { DEFAULT_TIMER_SECONDS }
 
 export const DEFAULT_POMODOROS_UNTIL_LONG_BREAK = 4
 

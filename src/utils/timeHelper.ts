@@ -11,7 +11,6 @@ const getTimeFromSeconds = (
   } else {
     minutes = Math.floor((totalSeconds % (60 * 60)) / 60)
   }
-  console.log(totalSeconds)
   const seconds = Math.floor(totalSeconds % 60)
 
   return {

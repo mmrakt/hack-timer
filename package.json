@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "dayjs": "^1.11.6",
+    "dotenv": "^16.0.3",
     "i18next": "^22.4.6",
     "i18next-browser-languagedetector": "^7.0.1",
     "react": "^18.2.0",
