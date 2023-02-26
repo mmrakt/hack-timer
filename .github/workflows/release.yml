@@ -1,3 +1,4 @@
+# NOTE: https://zenn.dev/eetann/articles/2022-07-25-crx-with-github-actions
 name: Release
 on:
   pull_request:
