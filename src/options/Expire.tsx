@@ -9,8 +9,7 @@ import Play from '../components/svg/Play'
 import PomodoroCircles from '../components/timer/PomodoroCircles'
 import { formatDisplayTime, getTimeFromSeconds } from '../utils/timeHelper'
 import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
-import FocusIcon from '../components/svg/Focus'
-import BreakIcon from '../components/svg/Break'
+import CurrentPhase from '../components/timer/CurrentPhase'
 
 type IProps = {
   phase: Phase
@@ -62,17 +61,6 @@ const ExpireMenu: React.FC<IProps> = (props) => {
     }
   }
 
-  const getCurrentPhaseText = (): string => {
-    switch (phase) {
-      case 'focus':
-        return t('common.pomodoro')
-      case 'break':
-        return t('common.break')
-      case 'longBreak':
-        return t('common.longBreak')
-    }
-  }
-
   const totalPomodoroCountMessge = t('popup.totalPomodoroCount').replace(
     '%f',
     String(todayTotalPomodoroCount)
@@ -80,12 +68,7 @@ const ExpireMenu: React.FC<IProps> = (props) => {
 
   return (
     <div className="h-[50rem] p-40">
-      <div className="flex justify-center items-center text-2xl">
-        <span className="mr-3">
-          {phase === 'focus' ? <FocusIcon /> : <BreakIcon />}
-        </span>
-        <span className="">{getCurrentPhaseText()}</span>
-      </div>
+      <CurrentPhase phase={phase} />
       <div className="mt-5 flex justify-center">
         <span className="text-7xl">{formatedDisplayTime}</span>
       </div>

@@ -12,6 +12,7 @@ import { getStorage } from '../utils/chrome'
 import PomodoroCircles from './timer/PomodoroCircles'
 import { ThemeContext } from './ThemeProvider'
 import { closeTabs } from '../background/Tab'
+import CurrentPhase from './timer/CurrentPhase'
 
 type IProps = {
   phase: Phase
@@ -94,17 +95,6 @@ const TimerMenu: React.FC<IProps> = (props) => {
     )
   }
 
-  const getCurrentPhaseText = (): string => {
-    switch (phase) {
-      case 'focus':
-        return t('common.pomodoro')
-      case 'break':
-        return t('common.break')
-      case 'longBreak':
-        return t('common.longBreak')
-    }
-  }
-
   const getCircleColor = (): string => {
     switch (phase) {
       case 'focus':
@@ -123,7 +113,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
 
   return (
     <div className="m-4">
-      <p className="text-center text-sm">{getCurrentPhaseText()}</p>
+      <CurrentPhase phase={phase} inPopup />
       <div className="mt-5 flex justify-center h-44">
         {duration !== 0 && reminingSeconds !== 0 && (
           <CountdownCircleTimer

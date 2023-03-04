@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { ThemeContext } from '../ThemeProvider'
 import { COLOR } from '../../consts/color'
 
-const FocusIcon: React.FC<{ className?: string }> = ({ className }) => {
+const FocusIcon: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { theme } = useContext(ThemeContext)
   return (
     <>
@@ -12,7 +12,7 @@ const FocusIcon: React.FC<{ className?: string }> = ({ className }) => {
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox="0 0 32 32"
         xmlSpace="preserve"
-        className="w-12 h-12"
+        className={`w-12 h-12 ${className}`}
       >
         <path
           className="linesandangles_een"
