@@ -21,3 +21,4 @@ build/
 *.njsproj
 *.sln
 *.sw?
+.yarn
