@@ -14,18 +14,21 @@ const useFormatHistoryData = (
   const [historyData, setHistoryData] = useState<HistoryDataSet>([])
 
   useEffect(() => {
-    if (displayTermType === 'week') {
-      setHistoryData(formatWeeklyHistoryData(dailyPomodoros))
-    } else if (displayTermType === 'month') {
-      setHistoryData(formatMonthlyHisotryData(dailyPomodoros))
-    } else {
-      setHistoryData(formatYearlyHisotryData(dailyPomodoros))
+    if (dailyPomodoros.length !== 0) {
+      if (displayTermType === 'week') {
+        setHistoryData(formatWeeklyHistoryData(dailyPomodoros))
+      } else if (displayTermType === 'month') {
+        setHistoryData(formatMonthlyHisotryData(dailyPomodoros))
+      } else {
+        setHistoryData(formatYearlyHisotryData(dailyPomodoros))
+      }
     }
-  }, [displayTermType, timesGoBack])
+  }, [dailyPomodoros, displayTermType, timesGoBack])
 
   const formatWeeklyHistoryData = (
     dailyPomodoros: DailyPomodoro[]
   ): HistoryDataSet => {
+    console.log(dailyPomodoros)
     const weeklyHistoryData: HistoryDataSet = []
     const specifiedDay = dayjs().subtract(timesGoBack, 'week')
     // TODO: 月を跨ぐとバグる？

@@ -23,12 +23,6 @@ const History: React.FC = () => {
     })
   }, [displayTermType, timesGoBack])
 
-  const historyData = useFormatHistoryData(
-    dailyPomodoros,
-    displayTermType,
-    timesGoBack
-  )
-
   const handleChangeDisplayTermType = (term: DisplayTermType): void => {
     setDisplayTermType(term)
     setTimesGoBack(0)
@@ -53,6 +47,12 @@ const History: React.FC = () => {
     }
   }
 
+  const historyData = useFormatHistoryData(
+    dailyPomodoros,
+    displayTermType,
+    timesGoBack
+  )
+
   return (
     <div className="h-[28rem]">
       <Header pageType="history" />
@@ -73,9 +73,6 @@ const History: React.FC = () => {
               </button>
             ))}
           </div>
-          {/* <span className="ml-auto">
-            <Dropdown target={<EllipsisHorizontal />} menu={<HistoryMenu />} />
-          </span> */}
         </div>
         <div className="mt-5">
           <TargetTerm
@@ -86,7 +83,7 @@ const History: React.FC = () => {
           />
         </div>
       </div>
-      {dailyPomodoros === null ? (
+      {historyData.length === 0 ? (
         <div className="h-[15rem] flex items-center justify-center">
           <LoadingSpinner />
         </div>
