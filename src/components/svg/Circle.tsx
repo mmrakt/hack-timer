@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react'
 import LoadingSpinner from '../LoadingSpinner'
 import { ThemeContext } from '../ThemeProvider'
+import { COLOR } from '../../consts/color'
 
 type IProps = {
   isArchived?: boolean
 }
-const white = 'rgb(244 244 245'
-const black = 'rgb(24 24 27'
-const gray = 'rgb(50, 50, 54'
+const white = COLOR.text.dark
+const black = COLOR.text.light
 
 const Circle: React.FC<IProps> = ({ isArchived = false }) => {
   const [fillColor, setFillColor] = useState<string>('')
@@ -23,9 +23,9 @@ const Circle: React.FC<IProps> = ({ isArchived = false }) => {
         setFillColor(black)
       }
     } else {
-      setStrokeColor(gray)
+      setStrokeColor(black)
       if (isArchived) {
-        setFillColor(gray)
+        setFillColor(black)
       } else {
         setFillColor(white)
       }

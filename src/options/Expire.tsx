@@ -9,6 +9,7 @@ import Play from '../components/svg/Play'
 import PomodoroCircles from '../components/timer/PomodoroCircles'
 import { formatDisplayTime, getTimeFromSeconds } from '../utils/timeHelper'
 import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
+import CurrentPhase from '../components/timer/CurrentPhase'
 
 type IProps = {
   phase: Phase
@@ -60,17 +61,6 @@ const ExpireMenu: React.FC<IProps> = (props) => {
     }
   }
 
-  const getCurrentPhaseText = (): string => {
-    switch (phase) {
-      case 'focus':
-        return t('common.pomodoro')
-      case 'break':
-        return t('common.break')
-      case 'longBreak':
-        return t('common.longBreak')
-    }
-  }
-
   const totalPomodoroCountMessge = t('popup.totalPomodoroCount').replace(
     '%f',
     String(todayTotalPomodoroCount)
@@ -78,7 +68,7 @@ const ExpireMenu: React.FC<IProps> = (props) => {
 
   return (
     <div className="h-[50rem] p-40">
-      <p className="text-center text-lg">{getCurrentPhaseText()}</p>
+      <CurrentPhase phase={phase} />
       <div className="mt-5 flex justify-center">
         <span className="text-7xl">{formatedDisplayTime}</span>
       </div>
@@ -93,15 +83,8 @@ const ExpireMenu: React.FC<IProps> = (props) => {
           totalPomodoroCountInSession={totalPomodoroCountsInSession}
         />
       </div>
-      <div className="text-center text-base mt-3"></div>
-      <div className="flex items-center justify-center mt-10 text-lg">
+      <div className="flex items-center justify-center mt-5 text-lg">
         <span>{totalPomodoroCountMessge}</span>
-        {/* <button
-          className="ml-auto text-lg px-1 rounded-md hover:text-gray-300"
-          onClick={expire}
-        >
-          <Forward />
-        </button> */}
       </div>
     </div>
   )
