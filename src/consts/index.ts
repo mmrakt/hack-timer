@@ -1,18 +1,21 @@
-import { DailyPomodoro, Phase, StorageValue } from '../types'
-import { PageType } from '../types/index'
+import { DailyPomodoro, PageType, Phase, StorageValue } from '../types'
 import { testData } from '../utils/testDate'
 
+const env = process.env.NODE_ENV
+
+let dailyPomodoros: DailyPomodoro[] = []
 let DEFAULT_TIMER_SECONDS: { [T in Phase]: number } = {
   focus: 1500,
   break: 300,
   longBreak: 900
 }
-if (process.env.NODE_ENV === 'development') {
+if (env === 'development') {
   DEFAULT_TIMER_SECONDS = {
     focus: 5,
     break: 3,
     longBreak: 10
   }
+  dailyPomodoros = testData
 }
 
 export { DEFAULT_TIMER_SECONDS }
@@ -24,8 +27,7 @@ export const DEFAULT_STORAGE_VALUE: StorageValue = {
   phase: 'focus',
   isRunning: false,
   totalPomodoroCountsInSession: 0,
-  dailyPomodoros: testData, // 開発用
-  // dailyPomodoros: [],
+  dailyPomodoros,
   showNewTabNotificationWhenPomodoro: true,
   showNewTabNotificationWhenBreak: true,
   showDesktopNotificationWhenPomodoro: true,
