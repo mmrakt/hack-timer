@@ -6,6 +6,7 @@ import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
 import { toggleTimerStatus, expire, pauseTimer, resumeTimer } from './Timer'
 import { DEFAULT_STORAGE_VALUE } from '../consts/index'
 
+// installed event
 runtime.onInstalled.addListener(async () => {
   getStorage(['reminingSeconds']).then((data) => {
     if (!data?.reminingSeconds) {
