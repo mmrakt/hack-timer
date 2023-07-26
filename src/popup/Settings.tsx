@@ -78,28 +78,28 @@ const Settings: React.FC = () => {
           <div className="mt-3 text-sm">
             <SettingRow label={t('settings.timer.length.pomodoro')}>
               <TimerLengthSelect
-                id="pomodoroSeconds"
+                type="pomodoroSeconds"
                 options={POMODORO_LENGTH_ARRAY}
                 currentValue={pomodoroSeconds}
               />
             </SettingRow>
             <SettingRow label={t('settings.timer.length.break')}>
               <TimerLengthSelect
-                id="breakSeconds"
+                type="breakSeconds"
                 options={BREAK_LENGTH_ARRAY}
                 currentValue={breakSeconds}
               />
             </SettingRow>
             <SettingRow label={t('settings.timer.length.longBreak')}>
               <TimerLengthSelect
-                id="longBreakSeconds"
+                type="longBreakSeconds"
                 options={LONG_BREAK_LENGTH_ARRAY}
                 currentValue={longBreakSeconds}
               />
             </SettingRow>
             <SettingRow label={t('settings.timer.count.untilLongBreak')}>
               <TimerLengthSelect
-                id="pomodorosUntilLongBreak"
+                type="pomodorosUntilLongBreak"
                 options={POMODORO_COUNT_UNTIL_LONG_BREAK}
                 currentValue={pomodorosUntilLongBreak}
               />

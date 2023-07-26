@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
-import { setStorage } from '../../utils/chrome'
+import { getStorage, setStorage } from '../../utils/chrome'
+import { CurrentPhaseContext } from '../CurrentPhaseContextProvider'
 
 type IProps = {
-  id:
+  type:
     | 'pomodoroSeconds'
     | 'breakSeconds'
     | 'longBreakSeconds'
@@ -13,38 +14,59 @@ type IProps = {
   options: number[] | string[]
 }
 const TimerLengthSelect: React.FC<IProps> = ({
-  id,
+  type,
   className = '',
   currentValue,
   options
 }) => {
   const { t } = useTranslation()
   if (!currentValue || !options) return <p>loading</p>
+  // const { currentPhase } = useContext(CurrentPhaseContext)
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+  const handleOnChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ): Promise<void> => {
     if (!e) return
 
-    switch (id) {
-      case 'pomodoroSeconds':
-        setStorage({ pomodoroSeconds: Number(e.target.value) * 60 })
-        break
-      case 'breakSeconds':
-        setStorage({ breakSeconds: Number(e.target.value) * 60 })
-        break
-      case 'longBreakSeconds':
-        setStorage({ longBreakSeconds: Number(e.target.value) * 60 })
-        break
-      case 'pomodorosUntilLongBreak':
-        setStorage({ pomodorosUntilLongBreak: Number(e.target.value) })
+    if (type === 'pomodorosUntilLongBreak') {
+      setStorage({ pomodorosUntilLongBreak: Number(e.target.value) })
+    } else {
+      const isTimerStarted = await (
+        await getStorage(['isTimerStarted'])
+      ).isTimerStarted
+      const formattedValue = Number(e.target.value) * 60
+      switch (type) {
+        case 'pomodoroSeconds':
+          if (isTimerStarted) {
+            setStorage({ updatingPomodoroSeconds: formattedValue })
+          } else {
+            setStorage({ pomodoroSeconds: formattedValue })
+          }
+          break
+        case 'breakSeconds':
+          if (isTimerStarted) {
+            setStorage({ updatingBreakSeconds: formattedValue })
+          } else {
+            setStorage({ breakSeconds: formattedValue })
+          }
+          break
+        case 'longBreakSeconds':
+          if (isTimerStarted) {
+            setStorage({ updatingLongBreakSeconds: formattedValue })
+          } else {
+            setStorage({ longBreakSeconds: formattedValue })
+          }
+          break
+      }
     }
   }
   return (
     <div className="w-24">
-      <label htmlFor={id} />
+      <label htmlFor={type} />
       <select
-        id={id}
+        id={type}
         defaultValue={
-          id !== 'pomodorosUntilLongBreak' ? currentValue / 60 : currentValue
+          type !== 'pomodorosUntilLongBreak' ? currentValue / 60 : currentValue
         }
         onChange={(e) => {
           handleOnChange(e)
@@ -58,9 +80,9 @@ const TimerLengthSelect: React.FC<IProps> = ({
         ))}
       </select>
       <span className="ml-2">
-        {id === 'pomodoroSeconds' ||
-        id === 'breakSeconds' ||
-        id === 'longBreakSeconds'
+        {type === 'pomodoroSeconds' ||
+        type === 'breakSeconds' ||
+        type === 'longBreakSeconds'
           ? t('settings.timer.length.unit')
           : ''}
       </span>

@@ -49,7 +49,9 @@ const setTickInterval = (isRunning: boolean): void => {
   }
 }
 
-// running時は毎秒実行され、カウントを減らすか終了させるか判定
+/***
+ * カウントを減らすか終了させるか判定
+ */
 const handleCountDown = (): void => {
   getStorage(['reminingSeconds']).then(async (data: StorageValue) => {
     if (data.reminingSeconds > 0) {
@@ -93,6 +95,9 @@ const reduceCount = async (reminingSeconds: number): Promise<void> => {
   }
 }
 
+/***
+ * ポモドーロ完了時の処理
+ */
 const expire = async (
   phase: Phase,
   totalPomodoroCountsInSession: number,
@@ -102,33 +107,39 @@ const expire = async (
 ): Promise<void> => {
   let reminingSeconds = 0
   let nextPhase: Phase = 'focus'
-  if (phase === 'focus') {
-    totalPomodoroCountsInSession++
-    if (totalPomodoroCountsInSession >= pomodorosUntilLongBreak) {
-      reminingSeconds = await (
-        await getStorage(['longBreakSeconds'])
-      ).longBreakSeconds
-      totalPomodoroCountsInSession = 0
-      nextPhase = 'longBreak'
-    } else {
-      reminingSeconds = await (await getStorage(['breakSeconds'])).breakSeconds
-      nextPhase = 'break'
-    }
-    dailyPomodoros = increaseDailyPomodoro(dailyPomodoros)
-  } else {
-    reminingSeconds = await (
-      await getStorage(['pomodoroSeconds'])
-    ).pomodoroSeconds
-  }
-  const todayTotalPomodoroCount = extractTodayPomodoroCount(dailyPomodoros)
 
   try {
+    await updateTimerLength(phase)
+
+    if (phase === 'focus') {
+      totalPomodoroCountsInSession++
+      if (totalPomodoroCountsInSession >= pomodorosUntilLongBreak) {
+        reminingSeconds = await (
+          await getStorage(['longBreakSeconds'])
+        ).longBreakSeconds
+        totalPomodoroCountsInSession = 0
+        nextPhase = 'longBreak'
+      } else {
+        reminingSeconds = await (
+          await getStorage(['breakSeconds'])
+        ).breakSeconds
+        nextPhase = 'break'
+      }
+      dailyPomodoros = increaseDailyPomodoro(dailyPomodoros)
+    } else {
+      reminingSeconds = await (
+        await getStorage(['pomodoroSeconds'])
+      ).pomodoroSeconds
+    }
+    const todayTotalPomodoroCount = extractTodayPomodoroCount(dailyPomodoros)
+
     setStorage({
       reminingSeconds,
       phase: nextPhase,
       totalPomodoroCountsInSession,
       isRunning: false,
-      dailyPomodoros
+      dailyPomodoros,
+      isTimerStarted: false
     })
     await updateSecondsOfBadge(reminingSeconds)
     await updateColorOfBadge(nextPhase)
@@ -191,6 +202,46 @@ const expire = async (
   }
 }
 
+/***
+ * 更新中のタイマー時間を反映
+ */
+const updateTimerLength = async (phase: Phase): Promise<void> => {
+  if (phase === 'focus') {
+    const updatingPomodoroSeconds = await (
+      await getStorage(['updatingPomodoroSeconds'])
+    ).updatingPomodoroSeconds
+    if (updatingPomodoroSeconds !== 0) {
+      setStorage({
+        pomodoroSeconds: updatingPomodoroSeconds,
+        updatingPomodoroSeconds: 0
+      })
+    }
+  } else if (phase === 'break') {
+    const updatingBreakSeconds = await (
+      await getStorage(['updatingBreakSeconds'])
+    ).updatingBreakSeconds
+    if (updatingBreakSeconds !== 0) {
+      setStorage({
+        breakSeconds: updatingBreakSeconds,
+        updatingBreakSeconds: 0
+      })
+    }
+  } else if (phase === 'longBreak') {
+    const updatingLongBreakSeconds = await (
+      await getStorage(['updatingLongBreakSeconds'])
+    ).updatingLongBreakSeconds
+    if (updatingLongBreakSeconds !== 0) {
+      setStorage({
+        longBreakSeconds: updatingLongBreakSeconds,
+        updatingLongBreakSeconds: 0
+      })
+    }
+  }
+}
+
+/***
+ * 当日分のポモドーロ完了数を +1
+ */
 const increaseDailyPomodoro = (
   dailyPomodoros: DailyPomodoro[]
 ): DailyPomodoro[] => {
@@ -222,6 +273,11 @@ const increaseDailyPomodoro = (
 
 const resumeTimer = async (): Promise<void> => {
   setStorage({ isRunning: true })
+  getStorage(['isTimerStarted']).then(({ isTimerStarted }) => {
+    if (!isTimerStarted) {
+      setStorage({ isTimerStarted: true })
+    }
+  })
   setTickInterval(true)
 }
 

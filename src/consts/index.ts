@@ -39,7 +39,11 @@ export const DEFAULT_STORAGE_VALUE: StorageValue = {
   pomodoroSeconds: DEFAULT_TIMER_SECONDS.focus,
   breakSeconds: DEFAULT_TIMER_SECONDS.break,
   longBreakSeconds: DEFAULT_TIMER_SECONDS.longBreak,
-  pomodorosUntilLongBreak: DEFAULT_POMODOROS_UNTIL_LONG_BREAK
+  pomodorosUntilLongBreak: DEFAULT_POMODOROS_UNTIL_LONG_BREAK,
+  isTimerStarted: false,
+  updatingPomodoroSeconds: 0,
+  updatingBreakSeconds: 0,
+  updatingLongBreakSeconds: 0
 }
 
 export const HISTORY_CSV_COLUMN_COUNT = 4
