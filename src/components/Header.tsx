@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import { DEFAULT_POPUP_PAGE_TYPE } from '../consts'
-import { DisplayPageContext } from '../popup/Popup'
 import ArrowLeft from './svg/ArrowLeft'
 import { PageType } from '../types'
+import { DisplayPageContext } from './DisplayPageContextProvider'
 
 type IProps = {
   pageType: PageType

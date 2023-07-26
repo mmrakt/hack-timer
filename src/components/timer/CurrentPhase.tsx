@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import BreakIcon from '../svg/Break'
 import FocusIcon from '../svg/Focus'
 import { twMerge } from 'tailwind-merge'
-import { CurrentPhaseContext } from '../../popup/Popup'
+import { CurrentPhaseContext } from '../CurrentPhaseContextProvider'
 
 type IProps = {
   inPopup: boolean

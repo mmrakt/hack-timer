@@ -10,7 +10,7 @@ import { getStorage } from '../utils/chrome'
 import PomodoroCircles from './timer/PomodoroCircles'
 import { ThemeContext } from './ThemeProvider'
 import { closeTabs } from '../background/Tab'
-import { CurrentPhaseContext } from '../popup/Popup'
+import { CurrentPhaseContext } from './CurrentPhaseContextProvider'
 
 type IProps = {
   reminingSeconds: number

@@ -1,52 +1,38 @@
-import { Dispatch, SetStateAction, createContext, useState } from 'react'
-import { PageType, Phase } from '../types'
+import { useContext } from 'react'
 import HistoryContainer from './History'
 import SettingsContainer from './Settings'
-import { DEFAULT_PHASE, DEFAULT_POPUP_PAGE_TYPE } from '../consts/index'
 import ThemeProvider from '../components/ThemeProvider'
 import TimerContainer from '../components/timer/TimerContainer'
+import DisplayPageContextProvider, {
+  DisplayPageContext
+} from '../components/DisplayPageContextProvider'
+import CurrentPhaseContextProvider from '../components/CurrentPhaseContextProvider'
 
-type DisplayPageContextType = {
-  displayPageType?: PageType
-  setDisplayPageType: Dispatch<SetStateAction<PageType>>
-}
-export const DisplayPageContext = createContext<DisplayPageContextType>({
-  displayPageType: 'timer',
-  setDisplayPageType: () => {}
-})
-type CurrentPhaseContextType = {
-  currentPhase: Phase
-  setCurrentPhase: Dispatch<SetStateAction<Phase>>
-}
-export const CurrentPhaseContext = createContext<CurrentPhaseContextType>({
-  currentPhase: 'focus',
-  setCurrentPhase: () => {}
-})
+const PopupInner = () => {
+  const { displayPageType } = useContext(DisplayPageContext)
 
-const Popup: React.FC = () => {
-  const [displayPageType, setDisplayPageType] = useState<PageType>(
-    DEFAULT_POPUP_PAGE_TYPE
+  return (
+    <div className="p-4 base-bg-color border-2 dark:border-dark-100 text-color min-w-[22rem] max-w-[26rem]">
+      {displayPageType === 'timer' ? (
+        <TimerContainer />
+      ) : displayPageType === 'history' ? (
+        <HistoryContainer />
+      ) : displayPageType === 'settings' ? (
+        <SettingsContainer />
+      ) : (
+        <p>loading</p>
+      )}
+    </div>
   )
-  const [currentPhase, setCurrentPhase] = useState<Phase>(DEFAULT_PHASE)
+}
+const Popup: React.FC = () => {
   return (
     <ThemeProvider>
-      <DisplayPageContext.Provider
-        value={{ displayPageType, setDisplayPageType }}
-      >
-        <CurrentPhaseContext.Provider value={{ currentPhase, setCurrentPhase }}>
-          <div className="p-4 base-bg-color border-2 dark:border-dark-100 text-color min-w-[22rem] max-w-[26rem]">
-            {displayPageType === 'timer' ? (
-              <TimerContainer />
-            ) : displayPageType === 'history' ? (
-              <HistoryContainer />
-            ) : displayPageType === 'settings' ? (
-              <SettingsContainer />
-            ) : (
-              <p>loading</p>
-            )}
-          </div>
-        </CurrentPhaseContext.Provider>
-      </DisplayPageContext.Provider>
+      <DisplayPageContextProvider>
+        <CurrentPhaseContextProvider>
+          <PopupInner />
+        </CurrentPhaseContextProvider>
+      </DisplayPageContextProvider>
     </ThemeProvider>
   )
 }
