@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Message, Phase } from '../types'
+import { Message, Phase, StorageValue } from '../types'
 import { FromPopupMessageType } from '../utils/message'
 import Forward from './svg/Forward'
 import { ColorFormat, CountdownCircleTimer } from 'react-countdown-circle-timer'
@@ -11,33 +11,46 @@ import PomodoroCircles from './timer/PomodoroCircles'
 import { ThemeContext } from './ThemeProvider'
 import { closeTabs } from '../background/Tab'
 import { CurrentPhaseContext } from './CurrentPhaseContextProvider'
+import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
+import LoadingSpinner from './LoadingSpinner'
+import Header from './timer/Header'
 
-type IProps = {
-  reminingSeconds: number
-  isRunning: boolean
-  todayTotalPomodoroCount: number
-  totalPomodoroCountInSession: number
-  pomodorosUntilLongBreak: number
-}
-
-const TimerMenu: React.FC<IProps> = (props) => {
+const TimerContainer: React.FC = (props) => {
   const { t } = useTranslation()
   const [duration, setDuration] = useState<number>(0)
-  const [reminingSeconds, setReminingSeconds] = useState<number>(
-    props.reminingSeconds
-  )
+  const [updatedDuration, setUpdatedDuration] = useState(0)
+  const [reminingSeconds, setReminingSeconds] = useState<number>(0)
   const [todayTotalPomodoroCount, setTodayTotalPomodoroCount] =
-    useState<number>(props.todayTotalPomodoroCount)
+    useState<number>(0)
   const [totalPomodoroCountInSession, setTotalPomodoroCountInSession] =
-    useState<number>(props.totalPomodoroCountInSession)
+    useState<number>(0)
   const [pomodorosUntilLongBreak, setpomodorosUntilLongBreak] =
-    useState<number>(props.pomodorosUntilLongBreak)
-  const [isRunning, setIsRunning] = useState<boolean>(props.isRunning)
+    useState<number>(0)
+  const [isRunning, setIsRunning] = useState<boolean>(false)
   const { theme } = useContext(ThemeContext)
   const { currentPhase, setCurrentPhase } = useContext(CurrentPhaseContext)
 
   useEffect(() => {
+    getStorage([
+      'reminingSeconds',
+      'isRunning',
+      'dailyPomodoros',
+      'totalPomodoroCountsInSession',
+      'pomodorosUntilLongBreak'
+    ]).then((value: StorageValue) => {
+      setReminingSeconds(value.reminingSeconds)
+      setIsRunning(value.isRunning)
+      setTodayTotalPomodoroCount(
+        extractTodayPomodoroCount(value.dailyPomodoros)
+      )
+      setTotalPomodoroCountInSession(value.totalPomodoroCountsInSession)
+      setpomodorosUntilLongBreak(value.pomodorosUntilLongBreak)
+    })
+  }, [])
+
+  useEffect(() => {
     ;(async () => {
+      // const fetchedDuration = await getDuration(currentPhase);
       setDuration(await getDuration(currentPhase))
       chrome.runtime.onMessage.addListener(async (message: Message) => {
         if (message.type === 'reduce-count') {
@@ -111,32 +124,39 @@ const TimerMenu: React.FC<IProps> = (props) => {
 
   return (
     <div id="timerMenu">
-      <div className="mt-5 flex justify-center ">
-        {duration !== 0 && reminingSeconds !== 0 && (
-          <CountdownCircleTimer
-            isPlaying={isRunning}
-            duration={duration}
-            initialRemainingTime={reminingSeconds}
-            isSmoothColorTransition
-            colors={getCircleColor() as ColorFormat}
-            trailColor={
-              theme === 'dark'
-                ? (COLOR.circleTrail.dark as ColorFormat)
-                : (COLOR.circleTrail.light as ColorFormat)
-            }
-          >
-            {({ remainingTime }) => (
-              <Countdown
-                reminingSeconds={remainingTime}
-                isRunning={isRunning}
-                onToggleStatus={() => {
-                  isRunning ? pause() : resume()
-                }}
-              />
-            )}
-          </CountdownCircleTimer>
-        )}
-      </div>
+      <Header />
+      {!reminingSeconds ? (
+        <div className="w-full h-[22rem] flex justify-center items-center">
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <div className="mt-5 flex justify-center ">
+          {duration !== 0 && reminingSeconds !== 0 && (
+            <CountdownCircleTimer
+              isPlaying={isRunning}
+              duration={duration}
+              initialRemainingTime={reminingSeconds}
+              isSmoothColorTransition
+              colors={getCircleColor() as ColorFormat}
+              trailColor={
+                theme === 'dark'
+                  ? (COLOR.circleTrail.dark as ColorFormat)
+                  : (COLOR.circleTrail.light as ColorFormat)
+              }
+            >
+              {({ remainingTime }) => (
+                <Countdown
+                  reminingSeconds={remainingTime}
+                  isRunning={isRunning}
+                  onToggleStatus={() => {
+                    isRunning ? pause() : resume()
+                  }}
+                />
+              )}
+            </CountdownCircleTimer>
+          )}
+        </div>
+      )}
 
       <div className="flex justify-between items-center mt-5 text-sm">
         <span>{totalPomodoroCountMessge}</span>
@@ -157,4 +177,4 @@ const TimerMenu: React.FC<IProps> = (props) => {
   )
 }
 
-export default TimerMenu
+export default TimerContainer

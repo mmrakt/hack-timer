@@ -2,11 +2,11 @@ import { useContext } from 'react'
 import HistoryContainer from './History'
 import SettingsContainer from './Settings'
 import ThemeProvider from '../components/ThemeProvider'
-import TimerContainer from '../components/timer/TimerContainer'
 import DisplayPageContextProvider, {
   DisplayPageContext
 } from '../components/DisplayPageContextProvider'
 import CurrentPhaseContextProvider from '../components/CurrentPhaseContextProvider'
+import TimerContainer from '../components/TimerContainer'
 
 const PopupInner = () => {
   const { displayPageType } = useContext(DisplayPageContext)
