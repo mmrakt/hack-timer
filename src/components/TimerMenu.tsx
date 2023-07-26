@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { Message, Phase } from '../types'
 import { FromPopupMessageType } from '../utils/message'
 import Forward from './svg/Forward'
-import Pause from './svg/Pause'
-import Play from './svg/Play'
 import { ColorFormat, CountdownCircleTimer } from 'react-countdown-circle-timer'
 import Countdown from './timer/Countdown'
 import { COLOR } from '../consts/color'
@@ -12,7 +10,6 @@ import { getStorage } from '../utils/chrome'
 import PomodoroCircles from './timer/PomodoroCircles'
 import { ThemeContext } from './ThemeProvider'
 import { closeTabs } from '../background/Tab'
-import CurrentPhase from './timer/CurrentPhase'
 
 type IProps = {
   phase: Phase
@@ -112,9 +109,8 @@ const TimerMenu: React.FC<IProps> = (props) => {
   )
 
   return (
-    <div className="m-4">
-      <CurrentPhase phase={phase} inPopup />
-      <div className="mt-5 flex justify-center h-44">
+    <div id="timerMenu">
+      <div className="mt-5 flex justify-center ">
         {duration !== 0 && reminingSeconds !== 0 && (
           <CountdownCircleTimer
             isPlaying={isRunning}
@@ -129,33 +125,28 @@ const TimerMenu: React.FC<IProps> = (props) => {
             }
           >
             {({ remainingTime }) => (
-              <Countdown reminingSeconds={remainingTime} />
+              <Countdown
+                reminingSeconds={remainingTime}
+                isRunning={isRunning}
+                onToggleStatus={() => {
+                  isRunning ? pause() : resume()
+                }}
+              />
             )}
           </CountdownCircleTimer>
         )}
       </div>
-      <div className="flex justify-center mt-3">
-        {isRunning ? (
-          <button onClick={pause}>
-            <Pause />
-          </button>
-        ) : (
-          <button onClick={resume}>
-            <Play />
-          </button>
-        )}
-      </div>
-      <div className="flex justify-center gap-2 mt-3">
-        <PomodoroCircles
-          pomodorosUntilLongBreak={pomodorosUntilLongBreak}
-          totalPomodoroCountInSession={totalPomodoroCountInSession}
-        />
-      </div>
-      <div className="text-center text-base mt-3"></div>
-      <div className="flex gap-3 items-center mt-5 text-sm">
+
+      <div className="flex justify-between items-center mt-5 text-sm">
         <span>{totalPomodoroCountMessge}</span>
+        <div className="flex justify-center gap-1">
+          <PomodoroCircles
+            pomodorosUntilLongBreak={pomodorosUntilLongBreak}
+            totalPomodoroCountInSession={totalPomodoroCountInSession}
+          />
+        </div>
         <button
-          className="ml-auto text-lg px-1 rounded-md hover:text-gray-300"
+          className="ml-4 text-lg px-1 rounded-md hover:text-gray-300"
           onClick={expire}
         >
           <Forward />

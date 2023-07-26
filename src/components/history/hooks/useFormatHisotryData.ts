@@ -28,7 +28,6 @@ const useFormatHistoryData = (
   const formatWeeklyHistoryData = (
     dailyPomodoros: DailyPomodoro[]
   ): HistoryDataSet => {
-    console.log(dailyPomodoros)
     const weeklyHistoryData: HistoryDataSet = []
     const specifiedDay = dayjs().subtract(timesGoBack, 'week')
     // TODO: 月を跨ぐとバグる？

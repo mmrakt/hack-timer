@@ -3,11 +3,17 @@
 @tailwind utilities;
 
 body {
-  @apply dark:bg-gray-800;
+  @apply dark:bg-dark-100;
 }
 
-.base-color {
-  @apply dark:bg-gray-800;
+.base-bg-color {
+  @apply dark:bg-dark-100;
+}
+.base-bg-layer-color {
+  @apply dark:bg-dark-200;
+}
+.base-border-color {
+  @apply dark:border-dark-300;
 }
 
 .text-color {

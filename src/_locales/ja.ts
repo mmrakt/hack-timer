@@ -1,7 +1,7 @@
 const translation = {
   description: '生産性を向上させるシンプルなポモドーロタイマー。',
   common: {
-    pomodoro: 'ポモドーロ',
+    pomodoro: '集中',
     break: '休憩',
     longBreak: '長い休憩'
   },

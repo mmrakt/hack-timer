@@ -8,6 +8,7 @@ import TargetTerm from '../components/history/TargetTerm'
 import { useTranslation } from 'react-i18next'
 import Header from '../components/Header'
 import useFormatHistoryData from '../components/history/hooks/useFormatHisotryData'
+import Backward from '../components/Backward'
 
 const History: React.FC = () => {
   const { t } = useTranslation()
@@ -54,11 +55,11 @@ const History: React.FC = () => {
   )
 
   return (
-    <div className="h-[28rem]">
-      <Header pageType="history" />
-      <div className="mt-3 w-5/6 mx-auto">
+    <div className="relative">
+      <Backward />
+      <div className="w-5/6 mx-auto">
         <div className="flex justify-center h-8">
-          <div className="w-4/5 flex bg-gray-200 dark:bg-gray-800 dark:border-gray-600 border-[1px] rounded-lg p-[2px]">
+          <div className="w-4/5 flex base-bg-layer-color base-border-color border rounded-lg p-[2px]">
             {termTypes.map((term) => (
               <button
                 key={term}

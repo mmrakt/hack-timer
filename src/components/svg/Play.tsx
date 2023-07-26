@@ -5,12 +5,13 @@ type IProps = {
 const Play: React.FC<IProps> = ({ className = '' }) => {
   return (
     <svg
+      id="play"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className={`w-12 h-12 ${className} icon-color`}
+      className={`w-8 h-8 ${className} icon-color`}
     >
       <path
         strokeLinecap="round"

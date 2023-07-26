@@ -12,6 +12,10 @@ import {
 } from '../consts/index'
 import Header from '../components/Header'
 import SettingRow from '../components/settings/SettingRow'
+import { twMerge } from 'tailwind-merge'
+import Backward from '../components/Backward'
+
+const headingStyle = 'font-bold text-weight text-center'
 
 const Settings: React.FC = () => {
   const { t } = useTranslation()
@@ -66,11 +70,11 @@ const Settings: React.FC = () => {
   }, [])
 
   return (
-    <div className="h-[27rem]">
-      <Header pageType="settings" />
-      <div className="text-lg p-2 sentence-color">
-        <div className="mb-3">
-          <p className="text-lg text-center">{t('settings.timer.title')}</p>
+    <div className="relative">
+      <Backward />
+      <div id="settings" className={twMerge('text-lg sentence-color')}>
+        <div id="timerSetting" className="border-b-2 border-dark-300 pb-8">
+          <p className={twMerge(headingStyle)}>{t('settings.timer.title')}</p>
           <div className="mt-3 text-sm">
             <SettingRow label={t('settings.timer.length.pomodoro')}>
               <TimerLengthSelect
@@ -102,8 +106,8 @@ const Settings: React.FC = () => {
             </SettingRow>
           </div>
         </div>
-        <div className="boder-b-2 mb-3">
-          <p className="text-lg text-center">
+        <div id="notificationSetting" className="mt-4">
+          <p className={twMerge(headingStyle)}>
             {t('settings.notification.title')}
           </p>
           <div className="mt-3 text-sm">

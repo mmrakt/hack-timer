@@ -49,7 +49,7 @@ const TimerLengthSelect: React.FC<IProps> = ({
         onChange={(e) => {
           handleOnChange(e)
         }}
-        className={`w-16 h-full px-2 py-1 border border-gray-300 rounded-md dark:bg-gray-800 dark:border-gray-600 sm:text-md  focus:ring-gray-600 focus:border-gray-500 ${className}`}
+        className={`w-16 px-2 py-[2px] border border-gray-300 rounded-md base-bg-layer-color dark:border-gray-600 sm:text-md  focus:ring-gray-600 focus:border-gray-500 ${className}`}
       >
         {options.map((option) => (
           <option key={option} value={option}>
@@ -57,7 +57,7 @@ const TimerLengthSelect: React.FC<IProps> = ({
           </option>
         ))}
       </select>
-      <span className="class">
+      <span className="ml-2">
         {id === 'pomodoroSeconds' ||
         id === 'breakSeconds' ||
         id === 'longBreakSeconds'

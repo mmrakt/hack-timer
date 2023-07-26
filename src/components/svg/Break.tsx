@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { ThemeContext } from '../ThemeProvider'
 import { COLOR } from '../../consts/color'
+import { twMerge } from 'tailwind-merge'
 
 const BreakIcon: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { theme } = useContext(ThemeContext)
@@ -10,7 +11,7 @@ const BreakIcon: React.FC<{ className?: string }> = ({ className = '' }) => {
       fill={theme === 'dark' ? COLOR.text.dark : COLOR.text.light}
       viewBox="0 0 1024 1024"
       xmlns="http://www.w3.org/2000/svg"
-      className={`h-12 w-12 ${className}`}
+      className={twMerge('w-12 h-12', className)}
     >
       <path
         // fill="#000000"

@@ -1,12 +1,13 @@
 const Pause: React.FC = () => {
   return (
     <svg
+      id="pause"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-12 h-12 icon-color"
+      className="w-8 h-8 icon-color"
     >
       <path
         strokeLinecap="round"

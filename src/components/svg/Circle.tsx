@@ -44,7 +44,7 @@ const Circle: React.FC<IProps> = ({ isArchived = false }) => {
         <circle
           fill={fillColor}
           stroke={strokeColor}
-          strokeWidth="20"
+          strokeWidth="15"
           cx="50"
           cy="50"
           r="40"

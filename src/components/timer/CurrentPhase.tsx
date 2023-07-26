@@ -3,11 +3,14 @@ import React from 'react'
 import { Phase } from '../../types/index'
 import BreakIcon from '../svg/Break'
 import FocusIcon from '../svg/Focus'
+import { twMerge } from 'tailwind-merge'
 
 type IProps = {
   phase: Phase
-  inPopup?: boolean
+  inPopup: boolean
 }
+const iconStyle = 'w-8 h-8'
+
 const CurrentPhase: React.FC<IProps> = ({ phase, inPopup = false }) => {
   const getCurrentPhaseText = (): string => {
     switch (phase) {
@@ -19,16 +22,16 @@ const CurrentPhase: React.FC<IProps> = ({ phase, inPopup = false }) => {
         return t('common.longBreak')
     }
   }
+
+  console.log(phase)
   return (
-    <div className="flex justify-center items-center">
-      <span className="mr-3">
-        {phase === 'focus' ? (
-          <FocusIcon className={inPopup ? 'w-8 h-8' : ''} />
-        ) : (
-          <BreakIcon className={inPopup ? 'w-8 h-8' : ''} />
-        )}
-      </span>
-      <span className={inPopup ? 'text-lg' : 'text-2xl'}>
+    <div className="flex items-center">
+      {phase === 'focus' ? (
+        <FocusIcon className={inPopup ? iconStyle : ''} />
+      ) : (
+        <BreakIcon className={inPopup ? iconStyle : ''} />
+      )}
+      <span className={twMerge('ml-1', inPopup ? 'text-base' : 'text-2xl')}>
         {getCurrentPhaseText()}
       </span>
     </div>

@@ -123,7 +123,7 @@ const ExpireContainer: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <div className="base-color text-color">
+      <div className="base-bg-color text-color">
         <ExpireMenu
           phase={phase}
           reminingSeconds={reminingSeconds}
