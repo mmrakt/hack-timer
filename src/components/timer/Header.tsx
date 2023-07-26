@@ -2,13 +2,9 @@ import Chart from '../svg/Chart'
 import Cogwheel from '../svg/Cogwheel'
 import { useContext } from 'react'
 import { DisplayPageContext } from '../../popup/Popup'
-import { Phase } from '../../types'
 import CurrentPhase from './CurrentPhase'
 
-type IProps = {
-  currentPhase: Phase
-}
-const HeaderMenu: React.FC<IProps> = ({ currentPhase }) => {
+const HeaderMenu = () => {
   const { setDisplayPageType } = useContext(DisplayPageContext)
   return (
     <div className="flex justify-between">
@@ -28,7 +24,7 @@ const HeaderMenu: React.FC<IProps> = ({ currentPhase }) => {
           <Cogwheel />
         </button>
       </div>
-      <CurrentPhase phase={currentPhase} inPopup />
+      <CurrentPhase inPopup />
     </div>
   )
 }

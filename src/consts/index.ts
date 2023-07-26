@@ -20,11 +20,15 @@ if (env === 'development') {
 
 export { DEFAULT_TIMER_SECONDS }
 
+export const DEFAULT_POPUP_PAGE_TYPE: PageType = 'timer'
+
+export const DEFAULT_PHASE: Phase = 'focus'
+
 export const DEFAULT_POMODOROS_UNTIL_LONG_BREAK = 4
 
 export const DEFAULT_STORAGE_VALUE: StorageValue = {
   reminingSeconds: DEFAULT_TIMER_SECONDS.focus,
-  phase: 'focus',
+  phase: DEFAULT_PHASE,
   isRunning: false,
   totalPomodoroCountsInSession: 0,
   dailyPomodoros,
@@ -66,8 +70,6 @@ export const LONG_BREAK_LENGTH_ARRAY = [
 export const POMODORO_COUNT_UNTIL_LONG_BREAK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 export const EXPIRE_PAGE = 'expire.html'
-
-export const DEFAULT_POPUP_PAGE_TYPE: PageType = 'timer'
 
 export const NEW_LINE_CODE = {
   LF: '\n',

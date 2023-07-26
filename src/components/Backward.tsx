@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import { DEFAULT_POPUP_PAGE_TYPE } from '../consts'
 import { DisplayPageContext } from '../popup/Popup'
-import { PageType } from '../types'
 
 const Backward = () => {
   const { setDisplayPageType } = useContext(DisplayPageContext)

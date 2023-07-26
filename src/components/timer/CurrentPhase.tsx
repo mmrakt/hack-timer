@@ -1,19 +1,19 @@
 import { t } from 'i18next'
-import React from 'react'
-import { Phase } from '../../types/index'
+import React, { useContext } from 'react'
 import BreakIcon from '../svg/Break'
 import FocusIcon from '../svg/Focus'
 import { twMerge } from 'tailwind-merge'
+import { CurrentPhaseContext } from '../../popup/Popup'
 
 type IProps = {
-  phase: Phase
   inPopup: boolean
 }
 const iconStyle = 'w-8 h-8'
 
-const CurrentPhase: React.FC<IProps> = ({ phase, inPopup = false }) => {
+const CurrentPhase: React.FC<IProps> = ({ inPopup = false }) => {
+  const { currentPhase } = useContext(CurrentPhaseContext)
   const getCurrentPhaseText = (): string => {
-    switch (phase) {
+    switch (currentPhase) {
       case 'focus':
         return t('common.pomodoro')
       case 'break':
@@ -23,10 +23,9 @@ const CurrentPhase: React.FC<IProps> = ({ phase, inPopup = false }) => {
     }
   }
 
-  console.log(phase)
   return (
     <div className="flex items-center">
-      {phase === 'focus' ? (
+      {currentPhase === 'focus' ? (
         <FocusIcon className={inPopup ? iconStyle : ''} />
       ) : (
         <BreakIcon className={inPopup ? iconStyle : ''} />

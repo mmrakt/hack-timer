@@ -10,9 +10,9 @@ import { getStorage } from '../utils/chrome'
 import PomodoroCircles from './timer/PomodoroCircles'
 import { ThemeContext } from './ThemeProvider'
 import { closeTabs } from '../background/Tab'
+import { CurrentPhaseContext } from '../popup/Popup'
 
 type IProps = {
-  phase: Phase
   reminingSeconds: number
   isRunning: boolean
   todayTotalPomodoroCount: number
@@ -22,7 +22,6 @@ type IProps = {
 
 const TimerMenu: React.FC<IProps> = (props) => {
   const { t } = useTranslation()
-  const [phase, setPhase] = useState<Phase>(props.phase)
   const [duration, setDuration] = useState<number>(0)
   const [reminingSeconds, setReminingSeconds] = useState<number>(
     props.reminingSeconds
@@ -35,15 +34,16 @@ const TimerMenu: React.FC<IProps> = (props) => {
     useState<number>(props.pomodorosUntilLongBreak)
   const [isRunning, setIsRunning] = useState<boolean>(props.isRunning)
   const { theme } = useContext(ThemeContext)
+  const { currentPhase, setCurrentPhase } = useContext(CurrentPhaseContext)
 
   useEffect(() => {
     ;(async () => {
-      setDuration(await getDuration(phase))
+      setDuration(await getDuration(currentPhase))
       chrome.runtime.onMessage.addListener(async (message: Message) => {
         if (message.type === 'reduce-count') {
           setReminingSeconds(message.data.secs)
         } else if (message.type === 'expire') {
-          setPhase(message.data.phase)
+          setCurrentPhase(message.data.phase)
           setDuration(await getDuration(message.data.phase))
           setReminingSeconds(message.data.secs)
           setIsRunning(false)
@@ -59,6 +59,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
     })()
   }, [])
 
+  // NOTE: 引数にphaseを渡さなくても取れるが、前回のphaseを参照してしまうため渡している
   const getDuration = async (phase: Phase): Promise<number> => {
     switch (phase) {
       case 'focus':
@@ -93,7 +94,7 @@ const TimerMenu: React.FC<IProps> = (props) => {
   }
 
   const getCircleColor = (): string => {
-    switch (phase) {
+    switch (currentPhase) {
       case 'focus':
         return COLOR.primary
       case 'break':
