@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { getStorage, setStorage } from '../../utils/chrome'
+import SelectBox from '../Selectbox'
 
 type IProps = {
   type:
@@ -70,22 +71,21 @@ const TimerLengthSelect: React.FC<IProps> = ({
   return (
     <div className="w-24">
       <label htmlFor={type} />
-      <select
+      <SelectBox
         id={type}
         defaultValue={
           type !== 'pomodorosUntilLongBreak' ? currentValue / 60 : currentValue
         }
-        onChange={(e) => {
+        handleChange={(e) => {
           handleOnChange(e)
         }}
-        className={`w-16 px-2 py-[2px] border border-gray-300 rounded-md base-bg-layer-color dark:border-gray-600 sm:text-md  focus:ring-gray-600 focus:border-gray-500 ${className}`}
       >
         {options.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
         ))}
-      </select>
+      </SelectBox>
       <span className="ml-2">
         {type === 'pomodoroSeconds' ||
         type === 'breakSeconds' ||

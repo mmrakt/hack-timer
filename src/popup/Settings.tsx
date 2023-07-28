@@ -72,8 +72,11 @@ const Settings: React.FC = () => {
   return (
     <div className="relative">
       <Backward />
-      <div id="settings" className={twMerge('text-lg sentence-color')}>
-        <div id="timerSetting" className="border-b-2 border-dark-300 pb-8">
+      <div id="settings" className={twMerge('sentence-color text-base')}>
+        <div
+          id="timerSetting"
+          className="border-b-2 border-light-300 pb-8 dark:border-dark-200"
+        >
           <p className={twMerge(headingStyle)}>{t('settings.timer.title')}</p>
           <div className="mt-3 text-sm">
             <SettingRow label={t('settings.timer.length.pomodoro')}>
