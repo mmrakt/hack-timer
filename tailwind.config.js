@@ -15,7 +15,9 @@ module.exports = {
           300: '#a8b3cf33'
         },
         light: {
-          200: '#a8b3cf'
+          100: '#fff',
+          200: '#EAEDF1',
+          300: '#DADDE1'
         }
       }
     }

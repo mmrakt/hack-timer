@@ -10,10 +10,13 @@ body {
   @apply dark:bg-dark-100;
 }
 .base-bg-layer-color {
-  @apply dark:bg-dark-200;
+  @apply bg-light-200 dark:bg-dark-200;
 }
 .base-border-color {
-  @apply dark:border-dark-300;
+  @apply border-light-300 dark:border-dark-300;
+}
+.base-border-hover-color {
+  @apply base-border-color hover:bg-light-300 hover:dark:border-dark-300;
 }
 
 .text-color {

@@ -10,7 +10,7 @@ import Header from '../components/Header'
 import useFormatHistoryData from '../components/history/hooks/useFormatHisotryData'
 import Backward from '../components/Backward'
 
-const History: React.FC = () => {
+const HistoryContainer: React.FC = () => {
   const { t } = useTranslation()
   const [dailyPomodoros, setDailyPomodoros] = useState<DailyPomodoro[]>([])
   const [displayTermType, setDisplayTermType] =
@@ -91,15 +91,11 @@ const History: React.FC = () => {
       ) : (
         <HistoryChart historyData={historyData} />
       )}
-      <div className="mb-8 flex justify-center">
+      <div className="flex justify-center">
         <HistoryMenu />
       </div>
     </div>
   )
-}
-
-const HistoryContainer: React.FC = () => {
-  return <History />
 }
 
 export default HistoryContainer

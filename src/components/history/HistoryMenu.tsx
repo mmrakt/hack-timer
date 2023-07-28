@@ -7,6 +7,7 @@ import {
 import { DailyPomodoro } from '../../types'
 import { useTranslation } from 'react-i18next'
 import { NEW_LINE_CODE } from '../../consts/index'
+import Button from '../Button'
 
 const createStorageValue = (content: string): DailyPomodoro[] => {
   const newLineCodes =
@@ -126,16 +127,16 @@ const HistoryMenu: React.FC = () => {
       document.body.removeChild(input)
     }
   }
-  const style =
-    'px-3 py-1 mb-3 text-left text-xs hover:bg-gray-200 hover:dark:bg-gray-600 border-2 border-gray-200 rounded-2xl w-full grid place-items-center'
   return (
-    <div className="w-40">
-      <button className={style} onClick={handleExport}>
-        {t('history.export.buttonText')}
-      </button>
-      <button className={style} onClick={handleOnChange}>
-        {t('history.import.buttonText')}
-      </button>
+    <div>
+      <Button
+        text={t('history.export.buttonText')}
+        handleClick={handleExport}
+      />
+      <Button
+        text={t('history.import.buttonText')}
+        handleClick={handleOnChange}
+      />
     </div>
   )
 }
