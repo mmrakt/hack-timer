@@ -60,7 +60,7 @@ export const BOM_ARRAY = [0xef, 0xbb, 0xbf]
 
 export const EXPIRE_HTML_PATH = 'chrome-extension://*/expire.html'
 
-// TODO: リリース時は1は削除
+// NOTE: リリース時は1は削除
 export const POMODORO_LENGTH_ARRAY = [
   5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60
 ]

@@ -1,7 +1,6 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { getStorage, setStorage } from '../../utils/chrome'
-import { CurrentPhaseContext } from '../CurrentPhaseContextProvider'
 
 type IProps = {
   type:
@@ -21,7 +20,6 @@ const TimerLengthSelect: React.FC<IProps> = ({
 }) => {
   const { t } = useTranslation()
   if (!currentValue || !options) return <p>loading</p>
-  // const { currentPhase } = useContext(CurrentPhaseContext)
 
   const handleOnChange = async (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -40,21 +38,30 @@ const TimerLengthSelect: React.FC<IProps> = ({
           if (isTimerStarted) {
             setStorage({ updatingPomodoroSeconds: formattedValue })
           } else {
-            setStorage({ pomodoroSeconds: formattedValue })
+            setStorage({
+              pomodoroSeconds: formattedValue,
+              reminingSeconds: formattedValue
+            })
           }
           break
         case 'breakSeconds':
           if (isTimerStarted) {
             setStorage({ updatingBreakSeconds: formattedValue })
           } else {
-            setStorage({ breakSeconds: formattedValue })
+            setStorage({
+              breakSeconds: formattedValue,
+              reminingSeconds: formattedValue
+            })
           }
           break
         case 'longBreakSeconds':
           if (isTimerStarted) {
             setStorage({ updatingLongBreakSeconds: formattedValue })
           } else {
-            setStorage({ longBreakSeconds: formattedValue })
+            setStorage({
+              longBreakSeconds: formattedValue,
+              reminingSeconds: formattedValue
+            })
           }
           break
       }

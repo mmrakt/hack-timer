@@ -122,6 +122,9 @@ const TimerContainer: React.FC = (props) => {
     String(todayTotalPomodoroCount)
   )
 
+  console.log(duration)
+  console.log(reminingSeconds)
+
   return (
     <div id="timerMenu">
       <Header />
