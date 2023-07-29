@@ -12,7 +12,7 @@ const PopupInner = () => {
   const { displayPageType } = useContext(DisplayPageContext)
 
   return (
-    <div className="p-4 base-bg-color border-2 dark:border-dark-100 text-color min-w-[22rem] max-w-[26rem]">
+    <div className="base-bg-color text-color min-w-[22rem] max-w-[26rem] border-2 p-4 dark:border-dark-100">
       {displayPageType === 'timer' ? (
         <TimerContainer />
       ) : displayPageType === 'history' ? (

@@ -10,13 +10,5 @@ export const COLOR = {
     100: '#fff',
     200: '#EAEDF1',
     300: '#DADDE1'
-  },
-  bg: {
-    light: 'white',
-    dark: '#1f2937'
-  },
-  text: {
-    light: '#1f2937',
-    dark: '#f3f4f6'
   }
 }
