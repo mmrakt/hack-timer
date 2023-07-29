@@ -7,15 +7,14 @@ type IProps = {
 }
 const ArrowBackward = ({ handleClick, className }: IProps) => {
   return (
-    <div className="relative">
-      <button
+    <button onClick={handleClick} className="relative">
+      <div
         className={twMerge(
-          'icon-border-color absolute left-1 top-1 block h-4 w-4 rotate-45 border-b-2 border-l-2',
+          'icon-border-color absolute left-0 top-0 block h-2 w-2  rotate-45 border-b-2 border-l-2',
           className
         )}
-        onClick={handleClick}
-      ></button>
-    </div>
+      ></div>
+    </button>
   )
 }
 

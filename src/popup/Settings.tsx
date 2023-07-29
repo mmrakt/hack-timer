@@ -75,6 +75,7 @@ const Settings: React.FC = () => {
     <div>
       <ArrowBackward
         handleClick={() => setDisplayPageType(DEFAULT_POPUP_PAGE_TYPE)}
+        className="ml-3 h-3 w-3"
       />
       <div id="settings" className={twMerge('sentence-color text-base')}>
         <div

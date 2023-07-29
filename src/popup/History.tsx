@@ -60,6 +60,7 @@ const HistoryContainer: React.FC = () => {
     <div>
       <ArrowBackward
         handleClick={() => setDisplayPageType(DEFAULT_POPUP_PAGE_TYPE)}
+        className="ml-3 h-3 w-3"
       />
       <div className="mx-auto w-5/6">
         <div className="flex h-8 justify-center">

@@ -86,12 +86,12 @@ const TargetTerm: React.FC<IProps> = ({
 
   return (
     <div className="flex items-center justify-center gap-6 text-sm">
-      <ArrowBackward handleClick={handleGoBack} className="static h-3 w-3" />
+      <ArrowBackward handleClick={handleGoBack} className="static h-2 w-2" />
       {targetSinceDate + ' ~ ' + targetUntilDate}
       {timesGoBack !== 0 ? (
         <ArrowForward
           handleClick={handleMoveForward}
-          className="static h-3 w-3"
+          className="static h-2 w-2"
         />
       ) : (
         <span className="ml-5" />
