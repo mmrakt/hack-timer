@@ -8,7 +8,7 @@ const BreakIcon: React.FC<{ className?: string }> = ({ className = '' }) => {
 
   return (
     <svg
-      fill={theme === 'dark' ? COLOR.light[300] : COLOR.dark[300]}
+      fill={theme === 'dark' ? COLOR.gray[300] : COLOR.gray[700]}
       viewBox="0 0 1024 1024"
       xmlns="http://www.w3.org/2000/svg"
       stroke="currentColor"

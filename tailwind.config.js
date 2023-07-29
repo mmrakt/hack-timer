@@ -14,7 +14,8 @@ module.exports = {
         dark: {
           100: COLOR.dark[100],
           200: COLOR.dark[200],
-          300: COLOR.dark[300]
+          300: COLOR.dark[300],
+          400: COLOR.dark[400]
         },
         light: {
           100: COLOR.light[100],

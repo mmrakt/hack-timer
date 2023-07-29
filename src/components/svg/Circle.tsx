@@ -6,8 +6,8 @@ import { COLOR } from '../../consts/color'
 type IProps = {
   isArchived?: boolean
 }
-const white = COLOR.dark[100]
-const black = COLOR.light[100]
+const white = COLOR.gray[50]
+const black = COLOR.gray[600]
 
 const Circle: React.FC<IProps> = ({ isArchived = false }) => {
   const [fillColor, setFillColor] = useState<string>('')

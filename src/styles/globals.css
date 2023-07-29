@@ -7,29 +7,23 @@ body {
 }
 
 .base-bg-color {
-  @apply bg-light-100 dark:bg-dark-100;
+  @apply bg-gray-50 dark:bg-gray-950;
 }
 
 .border-color {
-  @apply border-light-300 dark:border-dark-300;
+  @apply border-gray-300 dark:border-gray-600;
 }
-
 .text-color {
-  @apply text-dark-100 dark:text-light-100;
+  @apply text-gray-900 dark:text-gray-100;
 }
 .icon-color {
-  @apply text-dark-200 dark:text-light-200;
+  @apply text-gray-500 dark:text-gray-300;
 }
 .icon-color-hovered {
-  @apply hover:text-dark-300 hover:dark:text-light-300;
+  @apply hover:text-gray-400 hover:dark:text-gray-400;
 }
-
 .icon-border-color {
   @apply border-gray-800 hover:border-gray-500 dark:border-gray-100 hover:dark:border-gray-300;
-}
-
-.sentence-color {
-  @apply text-gray-800 dark:text-gray-300;
 }
 
 @media (prefers-color-scheme: dark) {

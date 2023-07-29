@@ -57,19 +57,19 @@ const HistoryContainer: React.FC = () => {
   )
 
   return (
-    <div>
+    <div id="history">
       <ArrowBackward
         handleClick={() => setDisplayPageType(DEFAULT_POPUP_PAGE_TYPE)}
         className="ml-3 h-3 w-3"
       />
       <div className="mx-auto w-5/6">
         <div className="flex h-8 justify-center">
-          <div className="border-color flex w-4/5 rounded-lg border bg-light-200 p-[2px] dark:bg-dark-200">
+          <div className="flex w-4/5 rounded-lg border bg-gray-200 p-[2px] dark:border-gray-600 dark:bg-dark-200">
             {termTypes.map((term) => (
               <button
                 key={term}
                 className={`${
-                  displayTermType === term ? 'bg-white dark:bg-gray-700' : ''
+                  displayTermType === term ? 'bg-gray-50 dark:bg-gray-700' : ''
                 } px-2s flex-auto rounded-md`}
                 onClick={() => {
                   handleChangeDisplayTermType(term)

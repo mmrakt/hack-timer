@@ -8,7 +8,7 @@ const FocusIcon: React.FC<{ className?: string }> = ({ className = '' }) => {
   return (
     <>
       <svg
-        fill={theme === 'dark' ? COLOR.light[300] : COLOR.dark[300]}
+        fill={theme === 'dark' ? COLOR.gray[300] : COLOR.gray[700]}
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox="0 0 32 32"

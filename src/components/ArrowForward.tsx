@@ -10,7 +10,7 @@ const ArrowForward = ({ handleClick, className }: IProps) => {
     <button className="relative" onClick={handleClick}>
       <div
         className={twMerge(
-          'icon-border-color absolute left-1 top-1 block h-2 w-2 rotate-45 border-r-2 border-t-2',
+          'icon-border-color absolute left-1 top-1 block h-2 w-2 rotate-45 border-r-[3px] border-t-[3px]',
           className
         )}
       ></div>

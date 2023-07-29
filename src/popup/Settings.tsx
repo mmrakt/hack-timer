@@ -77,7 +77,7 @@ const Settings: React.FC = () => {
         handleClick={() => setDisplayPageType(DEFAULT_POPUP_PAGE_TYPE)}
         className="ml-3 h-3 w-3"
       />
-      <div id="settings" className={twMerge('sentence-color text-base')}>
+      <div id="settings" className={twMerge('text-base')}>
         <div
           id="timerSetting"
           className="border-b-2 border-light-300 pb-8 dark:border-dark-200"

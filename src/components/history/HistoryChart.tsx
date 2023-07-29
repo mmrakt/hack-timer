@@ -15,24 +15,24 @@ import { ThemeContext } from '../ThemeProvider'
 
 const tooltipLabelStyle = {
   light: {
-    color: COLOR.dark[100]
+    color: COLOR.gray[950]
   },
   dark: {
-    color: COLOR.light[100]
+    color: COLOR.gray[50]
   }
 }
 
 const tooltipContentStyle = {
   light: {
-    background: COLOR.light[100],
+    background: COLOR.gray[50],
     opacity: 0.9,
     fontWeight: 'bold'
   },
   dark: {
-    background: COLOR.dark[100],
+    background: COLOR.gray[950],
     opacity: 0.9,
     fontWeight: 'bold',
-    border: `solid 1px ${COLOR.dark[300]}`
+    border: `solid 1px ${COLOR.gray[500]}`
   }
 }
 

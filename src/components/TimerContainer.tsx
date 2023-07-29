@@ -142,8 +142,8 @@ const TimerContainer: React.FC = (props) => {
               colors={getCircleColor() as ColorFormat}
               trailColor={
                 theme === 'dark'
-                  ? (COLOR.dark[300] as ColorFormat)
-                  : (COLOR.light[300] as ColorFormat)
+                  ? (COLOR.gray[600] as ColorFormat)
+                  : (COLOR.gray[300] as ColorFormat)
               }
             >
               {({ remainingTime }) => (
