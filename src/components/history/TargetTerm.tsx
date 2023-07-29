@@ -2,8 +2,8 @@ import dayjs from 'dayjs'
 import ja from 'dayjs/locale/ja'
 import { useState, useEffect } from 'react'
 import { DisplayTermType } from '../../types'
-import ChevronLeft from '../svg/ChevronLeft'
-import ChevronRight from '../svg/ChevronRight'
+import ArrowBackward from '../ArrowBackward'
+import ArrowForward from '../ArrowForward'
 
 dayjs.locale(ja)
 
@@ -85,15 +85,14 @@ const TargetTerm: React.FC<IProps> = ({
   }
 
   return (
-    <div className="flex justify-between items-center text-sm">
-      <button onClick={handleGoBack}>
-        <ChevronLeft />
-      </button>
+    <div className="flex items-center justify-center gap-6 text-sm">
+      <ArrowBackward handleClick={handleGoBack} className="static h-3 w-3" />
       {targetSinceDate + ' ~ ' + targetUntilDate}
       {timesGoBack !== 0 ? (
-        <button onClick={handleMoveForward}>
-          <ChevronRight />
-        </button>
+        <ArrowForward
+          handleClick={handleMoveForward}
+          className="static h-3 w-3"
+        />
       ) : (
         <span className="ml-5" />
       )}

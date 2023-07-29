@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import TimerLengthSelect from '../components/settings/TimerLengthSelect'
 import SettingToggle from '../components/settings/SettingToggle'
 import { useTranslation } from 'react-i18next'
@@ -8,12 +8,13 @@ import {
   POMODORO_LENGTH_ARRAY,
   BREAK_LENGTH_ARRAY,
   LONG_BREAK_LENGTH_ARRAY,
-  POMODORO_COUNT_UNTIL_LONG_BREAK
+  POMODORO_COUNT_UNTIL_LONG_BREAK,
+  DEFAULT_POPUP_PAGE_TYPE
 } from '../consts/index'
-import Header from '../components/Header'
 import SettingRow from '../components/settings/SettingRow'
 import { twMerge } from 'tailwind-merge'
-import Backward from '../components/Backward'
+import { DisplayPageContext } from '../components/DisplayPageContextProvider'
+import ArrowBackward from '../components/ArrowBackward'
 
 const headingStyle = 'font-bold text-weight text-center'
 
@@ -40,6 +41,7 @@ const Settings: React.FC = () => {
   ] = useState<boolean | null>(null)
   const [pomodorosUntilLongBreak, setpomodorosUntilLongBreak] =
     useState<number>(0)
+  const { setDisplayPageType } = useContext(DisplayPageContext)
 
   useEffect(() => {
     getStorage([
@@ -70,8 +72,10 @@ const Settings: React.FC = () => {
   }, [])
 
   return (
-    <div className="relative">
-      <Backward />
+    <div>
+      <ArrowBackward
+        handleClick={() => setDisplayPageType(DEFAULT_POPUP_PAGE_TYPE)}
+      />
       <div id="settings" className={twMerge('sentence-color text-base')}>
         <div
           id="timerSetting"

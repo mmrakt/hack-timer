@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Forward: React.FC = () => {
+const FastForward: React.FC = () => {
   return (
     <>
       <svg
@@ -9,7 +9,7 @@ const Forward: React.FC = () => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-8 h-8 icon-color"
+        className="icon-color icon-color-hovered h-8 w-8"
       >
         <path
           strokeLinecap="round"
@@ -21,4 +21,4 @@ const Forward: React.FC = () => {
   )
 }
 
-export default Forward
+export default FastForward

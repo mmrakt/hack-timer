@@ -8,12 +8,13 @@ const FocusIcon: React.FC<{ className?: string }> = ({ className = '' }) => {
   return (
     <>
       <svg
-        fill={theme === 'dark' ? COLOR.text.dark : COLOR.text.light}
+        fill={theme === 'dark' ? COLOR.light[300] : COLOR.dark[300]}
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox="0 0 32 32"
         xmlSpace="preserve"
-        className={twMerge('w-12 h-12', className)}
+        stroke="currentColor"
+        className={twMerge('h-12 w-12', className)}
       >
         <path
           className="linesandangles_een"

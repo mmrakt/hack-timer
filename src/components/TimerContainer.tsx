@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Message, Phase, StorageValue } from '../types'
 import { FromPopupMessageType } from '../utils/message'
-import Forward from './svg/Forward'
+import FastForward from './svg/FastForward'
 import { ColorFormat, CountdownCircleTimer } from 'react-countdown-circle-timer'
 import Countdown from './timer/Countdown'
 import { COLOR } from '../consts/color'
@@ -18,7 +18,6 @@ import Header from './timer/Header'
 const TimerContainer: React.FC = (props) => {
   const { t } = useTranslation()
   const [duration, setDuration] = useState<number>(0)
-  const [updatedDuration, setUpdatedDuration] = useState(0)
   const [reminingSeconds, setReminingSeconds] = useState<number>(0)
   const [todayTotalPomodoroCount, setTodayTotalPomodoroCount] =
     useState<number>(0)
@@ -129,7 +128,7 @@ const TimerContainer: React.FC = (props) => {
     <div id="timerMenu">
       <Header />
       {!reminingSeconds ? (
-        <div className="w-full h-[22rem] flex justify-center items-center">
+        <div className="flex h-[22rem] w-full items-center justify-center">
           <LoadingSpinner />
         </div>
       ) : (
@@ -143,8 +142,8 @@ const TimerContainer: React.FC = (props) => {
               colors={getCircleColor() as ColorFormat}
               trailColor={
                 theme === 'dark'
-                  ? (COLOR.circleTrail.dark as ColorFormat)
-                  : (COLOR.circleTrail.light as ColorFormat)
+                  ? (COLOR.dark[300] as ColorFormat)
+                  : (COLOR.light[300] as ColorFormat)
               }
             >
               {({ remainingTime }) => (
@@ -161,7 +160,7 @@ const TimerContainer: React.FC = (props) => {
         </div>
       )}
 
-      <div className="flex justify-between items-center mt-5 text-sm">
+      <div className="mt-5 flex items-center justify-between text-sm">
         <span>{totalPomodoroCountMessge}</span>
         <div className="flex justify-center gap-1">
           <PomodoroCircles
@@ -170,10 +169,10 @@ const TimerContainer: React.FC = (props) => {
           />
         </div>
         <button
-          className="ml-4 text-lg px-1 rounded-md hover:text-gray-300"
+          className="ml-4 rounded-md px-1 text-lg hover:text-gray-300"
           onClick={expire}
         >
-          <Forward />
+          <FastForward />
         </button>
       </div>
     </div>

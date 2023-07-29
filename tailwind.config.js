@@ -1,3 +1,5 @@
+import { COLOR } from './src/consts/color'
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   mode: 'jit',
@@ -7,17 +9,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#fbbf24',
-        secondary: '#60a5fa',
+        primary: COLOR.primary,
+        secondary: COLOR.secondary,
         dark: {
-          100: '#0e1217',
-          200: '#1c1f26',
-          300: '#383C46'
+          100: COLOR.dark[100],
+          200: COLOR.dark[200],
+          300: COLOR.dark[300]
         },
         light: {
-          100: '#fff',
-          200: '#EAEDF1',
-          300: '#DADDE1'
+          100: COLOR.light[100],
+          200: COLOR.light[200],
+          300: COLOR.light[300]
         }
       }
     }

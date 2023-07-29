@@ -1,0 +1,22 @@
+import React from 'react'
+import { twMerge } from 'tailwind-merge'
+
+type IProps = {
+  handleClick: () => void
+  className?: string
+}
+const ArrowBackward = ({ handleClick, className }: IProps) => {
+  return (
+    <div className="relative">
+      <button
+        className={twMerge(
+          'icon-border-color absolute left-1 top-1 block h-4 w-4 rotate-45 border-b-2 border-l-2',
+          className
+        )}
+        onClick={handleClick}
+      ></button>
+    </div>
+  )
+}
+
+export default ArrowBackward

@@ -1,6 +1,16 @@
 export const COLOR = {
   primary: '#fbbf24',
   secondary: '#60a5fa',
+  dark: {
+    100: '#0e1217',
+    200: '#1c1f26',
+    300: '#383C46'
+  },
+  light: {
+    100: '#fff',
+    200: '#EAEDF1',
+    300: '#DADDE1'
+  },
   bg: {
     light: 'white',
     dark: '#1f2937'
@@ -8,13 +18,5 @@ export const COLOR = {
   text: {
     light: '#1f2937',
     dark: '#f3f4f6'
-  },
-  bg_overrap: {
-    light: '#f3f4f6',
-    dark: '#111827'
-  },
-  circleTrail: {
-    light: '#d9d9de',
-    dark: '#3f3f46'
   }
 }
