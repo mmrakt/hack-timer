@@ -1,5 +1,3 @@
-import { COLOR } from './src/consts/color'
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   mode: 'jit',
@@ -8,9 +6,10 @@ module.exports = {
   plugins: [],
   theme: {
     extend: {
+      // TODO: src/側の変数を使い回せるようにする
       colors: {
-        primary: COLOR.primary,
-        secondary: COLOR.secondary
+        primary: '#fbbf24',
+        secondary: '#60a5fa'
       }
     }
   }
