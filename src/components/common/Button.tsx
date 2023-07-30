@@ -11,7 +11,7 @@ const Button: React.FC<IProps> = ({ text, handleClick, className }) => {
   return (
     <button
       className={twMerge(
-        'text-md mb-3 grid w-full place-items-center rounded-2xl border-2 border-light-300 px-3 py-1 text-left hover:bg-light-300 dark:border-dark-300 hover:dark:bg-dark-300',
+        'text-md mb-3 grid w-full place-items-center rounded-2xl border-2 border-gray-800 px-3 py-1 text-left hover:border-gray-500 hover:text-gray-500 dark:border-gray-300 hover:dark:border-gray-400 hover:dark:text-gray-300 ',
         className
       )}
       onClick={handleClick}

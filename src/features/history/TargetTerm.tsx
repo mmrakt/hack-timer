@@ -2,8 +2,8 @@ import dayjs from 'dayjs'
 import ja from 'dayjs/locale/ja'
 import { useState, useEffect } from 'react'
 import { DisplayTermType } from '../../types'
-import ArrowBackward from '../ArrowBackward'
-import ArrowForward from '../ArrowForward'
+import ArrowBackward from '../../components/common/ArrowBackward'
+import ArrowForward from '../../components/common/ArrowForward'
 
 dayjs.locale(ja)
 

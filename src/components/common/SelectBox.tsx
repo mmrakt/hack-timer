@@ -24,7 +24,7 @@ const SelectBox: React.FC<IProps> = ({
         handleChange(e)
       }}
       className={twMerge(
-        'sm:text-md w-16 rounded-md border border-gray-300 px-2 py-[2px] focus:border-gray-500 focus:ring-gray-600  dark:border-gray-600 dark:bg-dark-200',
+        'sm:text-md w-16 rounded-md border border-gray-300 px-2 py-[2px] focus:border-gray-500 focus:ring-gray-600  dark:border-gray-600 dark:bg-gray-900',
         className
       )}
     >

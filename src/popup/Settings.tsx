@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import TimerLengthSelect from '../components/settings/TimerLengthSelect'
-import SettingToggle from '../components/settings/SettingToggle'
+import TimerLengthSelect from '../features/settings/TimerLengthSelect'
+import SettingToggle from '../features/settings/SettingToggle'
 import { useTranslation } from 'react-i18next'
 import { getStorage } from '../utils/chrome'
 import { StorageValue } from '../types/index'
@@ -11,10 +11,10 @@ import {
   POMODORO_COUNT_UNTIL_LONG_BREAK,
   DEFAULT_POPUP_PAGE_TYPE
 } from '../consts/index'
-import SettingRow from '../components/settings/SettingRow'
+import SettingRow from '../features/settings/SettingRow'
 import { twMerge } from 'tailwind-merge'
-import { DisplayPageContext } from '../components/DisplayPageContextProvider'
-import ArrowBackward from '../components/ArrowBackward'
+import { DisplayPageContext } from '../providers/DisplayPageContextProvider'
+import ArrowBackward from '../components/common/ArrowBackward'
 
 const headingStyle = 'font-bold text-weight text-center'
 
@@ -80,7 +80,7 @@ const Settings: React.FC = () => {
       <div id="settings" className={twMerge('text-base')}>
         <div
           id="timerSetting"
-          className="border-b-2 border-light-300 pb-8 dark:border-dark-200"
+          className="border-b-2 border-gray-300 pb-8 dark:border-gray-700"
         >
           <p className={twMerge(headingStyle)}>{t('settings.timer.title')}</p>
           <div className="mt-3 text-sm">

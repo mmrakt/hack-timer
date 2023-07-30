@@ -1,24 +1,24 @@
 import { useContext } from 'react'
-import HistoryContainer from './History'
-import SettingsContainer from './Settings'
-import ThemeProvider from '../components/ThemeProvider'
+import History from './History'
+import Settings from './Settings'
 import DisplayPageContextProvider, {
   DisplayPageContext
-} from '../components/DisplayPageContextProvider'
-import CurrentPhaseContextProvider from '../components/CurrentPhaseContextProvider'
-import TimerContainer from '../components/TimerContainer'
+} from '../providers/DisplayPageContextProvider'
+import CurrentPhaseContextProvider from '../providers/CurrentPhaseContextProvider'
+import Timer from './Timer'
+import ThemeProvider from '../providers/ThemeProvider'
 
 const PopupInner = () => {
   const { displayPageType } = useContext(DisplayPageContext)
 
   return (
-    <div className="base-bg-color text-color min-w-[22rem] max-w-[26rem] border-2 p-4 dark:border-dark-100">
+    <div className="base-bg-color text-color min-w-[22rem] max-w-[26rem] border-2 p-4 dark:border-gray-950">
       {displayPageType === 'timer' ? (
-        <TimerContainer />
+        <Timer />
       ) : displayPageType === 'history' ? (
-        <HistoryContainer />
+        <History />
       ) : displayPageType === 'settings' ? (
-        <SettingsContainer />
+        <Settings />
       ) : (
         <p>loading</p>
       )}

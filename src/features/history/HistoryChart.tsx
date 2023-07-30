@@ -9,9 +9,9 @@ import {
   ResponsiveContainer
 } from 'recharts'
 import { HistoryDataSet } from '../../types'
-import LoadingSpinner from '../LoadingSpinner'
+import LoadingSpinner from '../../components/common/LoadingSpinner'
 import { COLOR } from '../../consts/color'
-import { ThemeContext } from '../ThemeProvider'
+import { ThemeContext } from '../../providers/ThemeProvider'
 
 const tooltipLabelStyle = {
   light: {

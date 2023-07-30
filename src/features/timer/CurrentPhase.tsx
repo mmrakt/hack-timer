@@ -1,9 +1,9 @@
 import { t } from 'i18next'
 import React, { useContext } from 'react'
-import BreakIcon from '../svg/Break'
-import FocusIcon from '../svg/Focus'
+import BreakIcon from '../../components/common/Break'
+import FocusIcon from '../../components/common/Focus'
 import { twMerge } from 'tailwind-merge'
-import { CurrentPhaseContext } from '../CurrentPhaseContextProvider'
+import { CurrentPhaseContext } from '../../providers/CurrentPhaseContextProvider'
 
 type IProps = {
   inPopup: boolean

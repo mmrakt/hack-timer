@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { getStorage, setStorage } from '../../utils/chrome'
-import SelectBox from '../Selectbox'
+import SelectBox from '../../components/common/SelectBox'
 
 type IProps = {
   type:

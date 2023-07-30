@@ -3,13 +3,13 @@ import { getStorage } from '../utils/chrome'
 import { Message, Phase, StorageValue } from '../types/index'
 import { useTranslation } from 'react-i18next'
 import { FromPopupMessageType } from '../utils/message'
-import ThemeProvider from '../components/ThemeProvider'
-import LoadingSpinner from '../components/LoadingSpinner'
-import Play from '../components/svg/Play'
-import PomodoroCircles from '../components/timer/PomodoroCircles'
+import LoadingSpinner from '../components/common/LoadingSpinner'
+import Play from '../components/common/Play'
+import PomodoroCircles from '../features/timer/PomodoroCircles'
 import { formatDisplayTime, getTimeFromSeconds } from '../utils/timeHelper'
 import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
-import CurrentPhase from '../components/timer/CurrentPhase'
+import CurrentPhase from '../features/timer/CurrentPhase'
+import ThemeProvider from '../providers/ThemeProvider'
 
 type IProps = {
   phase: Phase
@@ -68,22 +68,22 @@ const ExpireMenu: React.FC<IProps> = (props) => {
 
   return (
     <div className="h-[50rem] p-40">
-      <CurrentPhase phase={phase} />
+      <CurrentPhase inPopup={false} />
       <div className="mt-5 flex justify-center">
         <span className="text-7xl">{formatedDisplayTime}</span>
       </div>
-      <div className="flex justify-center mt-5">
+      <div className="mt-5 flex justify-center">
         <button onClick={onStartBreak}>
           <Play className="h-20 w-20" />
         </button>
       </div>
-      <div className="flex justify-center gap-2 mt-5">
+      <div className="mt-5 flex justify-center gap-2">
         <PomodoroCircles
           pomodorosUntilLongBreak={pomodorosUntilLongBreak}
           totalPomodoroCountInSession={totalPomodoroCountsInSession}
         />
       </div>
-      <div className="flex items-center justify-center mt-5 text-lg">
+      <div className="mt-5 flex items-center justify-center text-lg">
         <span>{totalPomodoroCountMessge}</span>
       </div>
     </div>

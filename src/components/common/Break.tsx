@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { ThemeContext } from '../ThemeProvider'
 import { COLOR } from '../../consts/color'
 import { twMerge } from 'tailwind-merge'
+import { ThemeContext } from '../../providers/ThemeProvider'
 
 const BreakIcon: React.FC<{ className?: string }> = ({ className = '' }) => {
   const { theme } = useContext(ThemeContext)

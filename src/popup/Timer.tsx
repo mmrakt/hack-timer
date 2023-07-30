@@ -2,20 +2,20 @@ import { useState, useEffect, useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Message, Phase, StorageValue } from '../types'
 import { FromPopupMessageType } from '../utils/message'
-import FastForward from './svg/FastForward'
+import FastForward from '../components/common/FastForward'
 import { ColorFormat, CountdownCircleTimer } from 'react-countdown-circle-timer'
-import Countdown from './timer/Countdown'
+import Countdown from '../features/timer/Countdown'
 import { COLOR } from '../consts/color'
 import { getStorage } from '../utils/chrome'
-import PomodoroCircles from './timer/PomodoroCircles'
-import { ThemeContext } from './ThemeProvider'
+import PomodoroCircles from '../features/timer/PomodoroCircles'
 import { closeTabs } from '../background/Tab'
-import { CurrentPhaseContext } from './CurrentPhaseContextProvider'
+import { CurrentPhaseContext } from '../providers/CurrentPhaseContextProvider'
 import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
-import LoadingSpinner from './LoadingSpinner'
-import Header from './timer/Header'
+import LoadingSpinner from '../components/common/LoadingSpinner'
+import Header from '../features/timer/Header'
+import { ThemeContext } from '../providers/ThemeProvider'
 
-const TimerContainer: React.FC = (props) => {
+const Timer: React.FC = (props) => {
   const { t } = useTranslation()
   const [duration, setDuration] = useState<number>(0)
   const [reminingSeconds, setReminingSeconds] = useState<number>(0)
@@ -179,4 +179,4 @@ const TimerContainer: React.FC = (props) => {
   )
 }
 
-export default TimerContainer
+export default Timer

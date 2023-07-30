@@ -7,7 +7,7 @@ import {
 import { DailyPomodoro } from '../../types'
 import { useTranslation } from 'react-i18next'
 import { NEW_LINE_CODE } from '../../consts/index'
-import Button from '../Button'
+import Button from '../../components/common/Button'
 
 const createStorageValue = (content: string): DailyPomodoro[] => {
   const newLineCodes =

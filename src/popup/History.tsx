@@ -1,17 +1,17 @@
 import { useState, useEffect, useContext } from 'react'
 import { DisplayTermType, DailyPomodoro } from '../types/index'
-import LoadingSpinner from '../components/LoadingSpinner'
-import { HistoryMenu } from '../components/history/HistoryMenu'
+import LoadingSpinner from '../components/common/LoadingSpinner'
+import { HistoryMenu } from '../features/history/HistoryMenu'
 import { getStorage } from '../utils/chrome'
-import HistoryChart from '../components/history/HistoryChart'
-import TargetTerm from '../components/history/TargetTerm'
+import HistoryChart from '../features/history/HistoryChart'
+import TargetTerm from '../features/history/TargetTerm'
 import { useTranslation } from 'react-i18next'
-import useFormatHistoryData from '../components/history/hooks/useFormatHisotryData'
+import useFormatHistoryData from '../features/history/hooks/useFormatHisotryData'
 import { DEFAULT_POPUP_PAGE_TYPE } from '../consts'
-import { DisplayPageContext } from '../components/DisplayPageContextProvider'
-import ArrowBackward from '../components/ArrowBackward'
+import { DisplayPageContext } from '../providers/DisplayPageContextProvider'
+import ArrowBackward from '../components/common/ArrowBackward'
 
-const HistoryContainer: React.FC = () => {
+const History: React.FC = () => {
   const { t } = useTranslation()
   const [dailyPomodoros, setDailyPomodoros] = useState<DailyPomodoro[]>([])
   const [displayTermType, setDisplayTermType] =
@@ -64,7 +64,7 @@ const HistoryContainer: React.FC = () => {
       />
       <div className="mx-auto w-5/6">
         <div className="flex h-8 justify-center">
-          <div className="flex w-4/5 rounded-lg border bg-gray-200 p-[2px] dark:border-gray-600 dark:bg-dark-200">
+          <div className="flex w-4/5 rounded-lg border bg-gray-200 p-[2px] dark:border-gray-700 dark:bg-gray-900">
             {termTypes.map((term) => (
               <button
                 key={term}
@@ -103,4 +103,4 @@ const HistoryContainer: React.FC = () => {
   )
 }
 
-export default HistoryContainer
+export default History

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
-import LoadingSpinner from '../LoadingSpinner'
-import { ThemeContext } from '../ThemeProvider'
+import LoadingSpinner from './LoadingSpinner'
 import { COLOR } from '../../consts/color'
+import { ThemeContext } from '../../providers/ThemeProvider'
 
 type IProps = {
   isArchived?: boolean

@@ -1,7 +1,7 @@
 import { getTimeFromSeconds } from '../../utils/timeHelper'
-import Digit from '../Degit'
-import Pause from '../svg/Pause'
-import Play from '../svg/Play'
+import Digit from './Degit'
+import Pause from '../../components/common/Pause'
+import Play from '../../components/common/Play'
 
 type IProps = {
   reminingSeconds: number
@@ -19,21 +19,21 @@ const Countdown: React.FC<IProps> = ({
 
   return (
     <div className="">
-      <div id="countdown" className="mt-3 w-20 text-2xl flex items-center">
+      <div id="countdown" className="mt-3 flex w-20 items-center text-2xl">
         <Digit count={displayMinutes} />
-        <span className="pb-2 mx-1">:</span>
+        <span className="mx-1 pb-2">:</span>
         <Digit count={displaySeconds} />
       </div>
       {isRunning ? (
         <button
-          className="w-full flex justify-center mt-3"
+          className="mt-3 flex w-full justify-center"
           onClick={onToggleStatus}
         >
           <Pause />
         </button>
       ) : (
         <button
-          className="w-full flex justify-center mt-3"
+          className="mt-3 flex w-full justify-center"
           onClick={onToggleStatus}
         >
           <Play />
