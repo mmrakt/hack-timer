@@ -1,7 +1,7 @@
 const translation = {
   description: 'A simple pomodoro timer to improve productivity.',
   common: {
-    pomodoro: 'Pomodoro',
+    pomodoro: 'Focus',
     break: 'Break',
     longBreak: 'Long Break'
   },
@@ -13,24 +13,24 @@ const translation = {
     timer: {
       title: 'Timer',
       length: {
-        pomodoro: 'Pomodoro Length',
+        pomodoro: 'Focus Length',
         break: 'Break Length',
         longBreak: 'Long Break Length',
         unit: 'min'
       },
       count: {
         untilLongBreak: 'Until Long Break',
-        unit: 'Pomodoro'
+        unit: ''
       }
     },
     notification: {
       title: 'Notification',
       showNewTab: {
-        pomodoro: 'Notify new tab when finished pomodoro',
+        pomodoro: 'Notify new tab when finished focus',
         break: 'Notify new tab when finished break'
       },
       desktop: {
-        pomodoro: 'Notify desktop when finished pomodoro',
+        pomodoro: 'Notify desktop when finished focus',
         break: 'Notify desktop when finished break'
       }
     }
@@ -53,17 +53,17 @@ const translation = {
   },
   notifications: {
     pomodoro: {
-      title: 'Finished pomodoro',
-      message: 'Today - %f Pomodoro\nUntil long break - %s Pomodoro'
+      title: 'Finished focus',
+      message: 'Today - %f Focus\nUntil long break - %s Focus'
     },
     break: {
       title: 'Finished break',
-      message: 'Today - %f Pomodoro\nUntil long break - %s Pomodoro'
+      message: 'Today - %f Focus\nUntil long break - %s Focus'
     }
   },
   expire: {
     title: 'Finished %f',
-    message: 'Today - %f Pomodoro\nUntil long break - %s Pomodoro',
+    message: 'Today - %f Focus\nUntil long break - %s Focus',
     buttonText: 'Start %f'
   }
 }

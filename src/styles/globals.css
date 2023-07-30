@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply dark:bg-dark-100;
+  @apply dark:bg-gray-50;
 }
 
 .base-bg-color {
