@@ -37,6 +37,10 @@ export type StorageValue = {
   breakSeconds: number
   longBreakSeconds: number
   pomodorosUntilLongBreak: number
+  isTimerStarted: boolean
+  updatingPomodoroSeconds: number
+  updatingBreakSeconds: number
+  updatingLongBreakSeconds: number
 }
 
 export type StorageKey = keyof StorageValue

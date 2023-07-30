@@ -1,5 +1,4 @@
-import { render } from 'react-dom'
-import HistoryChart from '../../components/history/HistoryChart'
+import HistoryChart from '../../features/history/HistoryChart'
 import { DailyPomodoro, DisplayTermType } from '../../types/index'
 describe('', () => {
   beforeEach(() => {})

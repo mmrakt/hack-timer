@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { DisplayTermType, DailyPomodoro } from '../types/index'
-import LoadingSpinner from '../components/LoadingSpinner'
-import { HistoryMenu } from '../components/history/HistoryMenu'
+import LoadingSpinner from '../components/common/LoadingSpinner'
+import { HistoryMenu } from '../features/history/HistoryMenu'
 import { getStorage } from '../utils/chrome'
-import HistoryChart from '../components/history/HistoryChart'
-import TargetTerm from '../components/history/TargetTerm'
+import HistoryChart from '../features/history/HistoryChart'
+import TargetTerm from '../features/history/TargetTerm'
 import { useTranslation } from 'react-i18next'
-import Header from '../components/Header'
-import useFormatHistoryData from '../components/history/hooks/useFormatHisotryData'
+import useFormatHistoryData from '../features/history/hooks/useFormatHisotryData'
+import { DEFAULT_POPUP_PAGE_TYPE } from '../consts'
+import { DisplayPageContext } from '../providers/DisplayPageContextProvider'
+import ArrowBackward from '../components/common/ArrowBackward'
 
 const History: React.FC = () => {
   const { t } = useTranslation()
@@ -16,6 +18,7 @@ const History: React.FC = () => {
     useState<DisplayTermType>('week')
   const [timesGoBack, setTimesGoBack] = useState<number>(0)
   const termTypes: DisplayTermType[] = ['week', 'month', 'year']
+  const { setDisplayPageType } = useContext(DisplayPageContext)
 
   useEffect(() => {
     getStorage(['dailyPomodoros']).then((data) => {
@@ -54,17 +57,20 @@ const History: React.FC = () => {
   )
 
   return (
-    <div className="h-[28rem]">
-      <Header pageType="history" />
-      <div className="mt-3 w-5/6 mx-auto">
-        <div className="flex justify-center h-8">
-          <div className="w-4/5 flex bg-gray-200 dark:bg-gray-800 dark:border-gray-600 border-[1px] rounded-lg p-[2px]">
+    <div id="history">
+      <ArrowBackward
+        handleClick={() => setDisplayPageType(DEFAULT_POPUP_PAGE_TYPE)}
+        className="ml-3 h-3 w-3"
+      />
+      <div className="mx-auto w-5/6">
+        <div className="flex h-8 justify-center">
+          <div className="flex w-4/5 rounded-lg border bg-gray-200 p-[2px] dark:border-gray-700 dark:bg-gray-900">
             {termTypes.map((term) => (
               <button
                 key={term}
                 className={`${
-                  displayTermType === term ? 'bg-white dark:bg-gray-700' : ''
-                } px-2s rounded-md flex-auto`}
+                  displayTermType === term ? 'bg-gray-50 dark:bg-gray-700' : ''
+                } px-2s flex-auto rounded-md`}
                 onClick={() => {
                   handleChangeDisplayTermType(term)
                 }}
@@ -84,21 +90,17 @@ const History: React.FC = () => {
         </div>
       </div>
       {historyData.length === 0 ? (
-        <div className="h-[15rem] flex items-center justify-center">
+        <div className="flex h-[15rem] items-center justify-center">
           <LoadingSpinner />
         </div>
       ) : (
         <HistoryChart historyData={historyData} />
       )}
-      <div className="mb-8 flex justify-center">
+      <div className="flex justify-center">
         <HistoryMenu />
       </div>
     </div>
   )
 }
 
-const HistoryContainer: React.FC = () => {
-  return <History />
-}
-
-export default HistoryContainer
+export default History

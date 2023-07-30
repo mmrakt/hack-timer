@@ -1,7 +1,7 @@
 const translation = {
   description: '生産性を向上させるシンプルなポモドーロタイマー。',
   common: {
-    pomodoro: 'ポモドーロ',
+    pomodoro: '集中',
     break: '休憩',
     longBreak: '長い休憩'
   },
@@ -13,24 +13,24 @@ const translation = {
     timer: {
       title: 'タイマー',
       length: {
-        pomodoro: 'ポモドーロの長さ',
-        break: '休憩の長さ',
-        longBreak: '長い休憩の長さ',
+        pomodoro: '集中時間の長さ',
+        break: '休憩時間の長さ',
+        longBreak: '長い休憩時間の長さ',
         unit: '分'
       },
       count: {
-        untilLongBreak: '長い休憩までのポモドーロ回数',
+        untilLongBreak: '長い休憩までの集中回数',
         unit: '回'
       }
     },
     notification: {
       title: '通知',
       showNewTab: {
-        pomodoro: 'ポモドーロ終了時にタブ表示で通知する',
+        pomodoro: '集中終了時にタブ表示で通知する',
         break: '休憩終了時にタブ表示で通知する'
       },
       desktop: {
-        pomodoro: 'ポモドーロ終了時にデスクトップ通知する',
+        pomodoro: '集中終了時にデスクトップ通知する',
         break: '休憩終了時にデスクトップ通知する'
       }
     }
@@ -52,17 +52,17 @@ const translation = {
   },
   notifications: {
     pomodoro: {
-      title: 'ポモドーロが終了しました',
-      message: 'ポモドーロ数 - %f 回\n長い休憩まで - %s 回'
+      title: '集中が終了しました',
+      message: '集中回数 - %f 回\n長い休憩まで - %s 回'
     },
     break: {
       title: '休憩が終了しました',
-      message: 'ポモドーロ - %f 回\n長い休憩まで - %s 回'
+      message: '集中回数 - %f 回\n長い休憩まで - %s 回'
     }
   },
   expire: {
     title: '%fが終了しました',
-    message: 'ポモドーロ数 - %f 回\n長い休憩まで - %s 回',
+    message: '集中回数 - %f 回\n長い休憩まで - %s 回',
     buttonText: '%fを開始'
   }
 }

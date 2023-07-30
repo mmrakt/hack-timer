@@ -1,32 +1,38 @@
-import { createContext, useState } from 'react'
-import { PageType } from '../types'
-import HistoryContainer from './History'
-import SettingsContainer from './Settings'
-import { DEFAULT_POPUP_PAGE_TYPE } from '../consts/index'
-import ThemeProvider from '../components/ThemeProvider'
-import TimerContainer from '../components/timer/TimerContainer'
+import { useContext } from 'react'
+import History from './History'
+import Settings from './Settings'
+import DisplayPageContextProvider, {
+  DisplayPageContext
+} from '../providers/DisplayPageContextProvider'
+import CurrentPhaseContextProvider from '../providers/CurrentPhaseContextProvider'
+import Timer from './Timer'
+import ThemeProvider from '../providers/ThemeProvider'
 
-export const DisplayPageContext = createContext<any>(null)
+const PopupInner = () => {
+  const { displayPageType } = useContext(DisplayPageContext)
 
-const Popup: React.FC = () => {
-  const [displayPageType, setDisplayPageType] = useState<PageType>(
-    DEFAULT_POPUP_PAGE_TYPE
+  return (
+    <div className="base-bg-color text-color min-w-[22rem] max-w-[26rem] border-2 p-4 dark:border-gray-950">
+      {displayPageType === 'timer' ? (
+        <Timer />
+      ) : displayPageType === 'history' ? (
+        <History />
+      ) : displayPageType === 'settings' ? (
+        <Settings />
+      ) : (
+        <p>loading</p>
+      )}
+    </div>
   )
+}
+const Popup: React.FC = () => {
   return (
     <ThemeProvider>
-      <DisplayPageContext.Provider value={{ setDisplayPageType }}>
-        <div className="p-3 base-color border-2 dark:border-gray-700 text-color w-[25rem]">
-          {displayPageType === 'timer' ? (
-            <TimerContainer />
-          ) : displayPageType === 'history' ? (
-            <HistoryContainer />
-          ) : displayPageType === 'settings' ? (
-            <SettingsContainer />
-          ) : (
-            <p>loading</p>
-          )}
-        </div>
-      </DisplayPageContext.Provider>
+      <DisplayPageContextProvider>
+        <CurrentPhaseContextProvider>
+          <PopupInner />
+        </CurrentPhaseContextProvider>
+      </DisplayPageContextProvider>
     </ThemeProvider>
   )
 }

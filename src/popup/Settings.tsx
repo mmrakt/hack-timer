@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import TimerLengthSelect from '../components/settings/TimerLengthSelect'
-import SettingToggle from '../components/settings/SettingToggle'
+import React, { useContext, useEffect, useState } from 'react'
+import TimerLengthSelect from '../features/settings/TimerLengthSelect'
+import SettingToggle from '../features/settings/SettingToggle'
 import { useTranslation } from 'react-i18next'
 import { getStorage } from '../utils/chrome'
 import { StorageValue } from '../types/index'
@@ -8,10 +8,15 @@ import {
   POMODORO_LENGTH_ARRAY,
   BREAK_LENGTH_ARRAY,
   LONG_BREAK_LENGTH_ARRAY,
-  POMODORO_COUNT_UNTIL_LONG_BREAK
+  POMODORO_COUNT_UNTIL_LONG_BREAK,
+  DEFAULT_POPUP_PAGE_TYPE
 } from '../consts/index'
-import Header from '../components/Header'
-import SettingRow from '../components/settings/SettingRow'
+import SettingRow from '../features/settings/SettingRow'
+import { twMerge } from 'tailwind-merge'
+import { DisplayPageContext } from '../providers/DisplayPageContextProvider'
+import ArrowBackward from '../components/common/ArrowBackward'
+
+const headingStyle = 'font-bold text-weight text-center'
 
 const Settings: React.FC = () => {
   const { t } = useTranslation()
@@ -36,6 +41,7 @@ const Settings: React.FC = () => {
   ] = useState<boolean | null>(null)
   const [pomodorosUntilLongBreak, setpomodorosUntilLongBreak] =
     useState<number>(0)
+  const { setDisplayPageType } = useContext(DisplayPageContext)
 
   useEffect(() => {
     getStorage([
@@ -66,44 +72,50 @@ const Settings: React.FC = () => {
   }, [])
 
   return (
-    <div className="h-[27rem]">
-      <Header pageType="settings" />
-      <div className="text-lg p-2 sentence-color">
-        <div className="mb-3">
-          <p className="text-lg text-center">{t('settings.timer.title')}</p>
+    <div>
+      <ArrowBackward
+        handleClick={() => setDisplayPageType(DEFAULT_POPUP_PAGE_TYPE)}
+        className="ml-3 h-3 w-3"
+      />
+      <div id="settings" className={twMerge('text-base')}>
+        <div
+          id="timerSetting"
+          className="border-b-2 border-gray-300 pb-8 dark:border-gray-700"
+        >
+          <p className={twMerge(headingStyle)}>{t('settings.timer.title')}</p>
           <div className="mt-3 text-sm">
             <SettingRow label={t('settings.timer.length.pomodoro')}>
               <TimerLengthSelect
-                id="pomodoroSeconds"
+                type="pomodoroSeconds"
                 options={POMODORO_LENGTH_ARRAY}
                 currentValue={pomodoroSeconds}
               />
             </SettingRow>
             <SettingRow label={t('settings.timer.length.break')}>
               <TimerLengthSelect
-                id="breakSeconds"
+                type="breakSeconds"
                 options={BREAK_LENGTH_ARRAY}
                 currentValue={breakSeconds}
               />
             </SettingRow>
             <SettingRow label={t('settings.timer.length.longBreak')}>
               <TimerLengthSelect
-                id="longBreakSeconds"
+                type="longBreakSeconds"
                 options={LONG_BREAK_LENGTH_ARRAY}
                 currentValue={longBreakSeconds}
               />
             </SettingRow>
             <SettingRow label={t('settings.timer.count.untilLongBreak')}>
               <TimerLengthSelect
-                id="pomodorosUntilLongBreak"
+                type="pomodorosUntilLongBreak"
                 options={POMODORO_COUNT_UNTIL_LONG_BREAK}
                 currentValue={pomodorosUntilLongBreak}
               />
             </SettingRow>
           </div>
         </div>
-        <div className="boder-b-2 mb-3">
-          <p className="text-lg text-center">
+        <div id="notificationSetting" className="mt-4">
+          <p className={twMerge(headingStyle)}>
             {t('settings.notification.title')}
           </p>
           <div className="mt-3 text-sm">
