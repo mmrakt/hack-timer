@@ -67,23 +67,26 @@ const ExpireMenu: React.FC<IProps> = (props) => {
   )
 
   return (
-    <div className="h-[50rem] p-40">
-      <CurrentPhase inPopup={false} />
+    <div className="h-screen p-40">
+      <div className="flex justify-center">
+        <CurrentPhase inPopup={false} />
+      </div>
       <div className="mt-5 flex justify-center">
         <span className="text-7xl">{formatedDisplayTime}</span>
       </div>
       <div className="mt-5 flex justify-center">
         <button onClick={onStartBreak}>
-          <Play className="h-20 w-20" />
+          <Play className="h-16 w-16" />
         </button>
       </div>
       <div className="mt-5 flex justify-center gap-2">
         <PomodoroCircles
           pomodorosUntilLongBreak={pomodorosUntilLongBreak}
           totalPomodoroCountInSession={totalPomodoroCountsInSession}
+          className="h-4 w-4"
         />
       </div>
-      <div className="mt-5 flex items-center justify-center text-lg">
+      <div className="mt-5 flex items-center justify-center text-xl">
         <span>{totalPomodoroCountMessge}</span>
       </div>
     </div>

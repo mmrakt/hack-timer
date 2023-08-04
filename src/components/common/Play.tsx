@@ -1,3 +1,5 @@
+import { twMerge } from 'tailwind-merge'
+
 type IProps = {
   className?: string
 }
@@ -11,7 +13,7 @@ const Play: React.FC<IProps> = ({ className = '' }) => {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className={`w-8 h-8 ${className} icon-color`}
+      className={twMerge('w-8 h-8 icon-color icon-color-hovered', className)}
     >
       <path
         strokeLinecap="round"
