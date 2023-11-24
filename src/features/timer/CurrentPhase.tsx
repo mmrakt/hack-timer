@@ -1,10 +1,10 @@
 import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
-import BreakIcon from '../../components/common/Break'
-import FocusIcon from '../../components/common/Focus'
+import BreakIcon from '@/components/common/Break'
+import FocusIcon from '@/components/common/Focus'
 import { twMerge } from 'tailwind-merge'
-import { getStorage } from '../../utils/chrome'
-import { Phase } from '../../types'
+import { getStorage } from '@/utils/chrome'
+import { Phase } from '@/types'
 
 type IProps = {
   inPopup: boolean

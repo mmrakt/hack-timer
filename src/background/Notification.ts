@@ -1,6 +1,6 @@
 import i18next from 'i18next'
-import { Phase } from '../types'
-import { notifications } from '../utils/chrome'
+import { Phase } from '@/types'
+import { notifications } from '@/utils/chrome'
 
 const createNotificationContent = async (
   phase: Phase,

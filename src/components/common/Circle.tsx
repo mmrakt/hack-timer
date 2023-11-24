@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import LoadingSpinner from './LoadingSpinner'
-import { COLOR } from '../../consts/color'
-import { ThemeContext } from '../../providers/ThemeProvider'
+import { COLOR } from '@/consts/color'
+import { ThemeContext } from '@/providers/ThemeProvider'
 import { twMerge } from 'tailwind-merge'
 
 type IProps = {

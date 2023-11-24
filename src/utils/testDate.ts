@@ -1,4 +1,4 @@
-import { DailyPomodoro } from '../types/index'
+import { DailyPomodoro } from '@/types/index'
 export const testData: DailyPomodoro[] = [
   {
     year: 2022,

@@ -5,8 +5,8 @@ import {
   createContext,
   useState
 } from 'react'
-import { PageType } from '../types'
-import { DEFAULT_POPUP_PAGE_TYPE } from '../consts/index'
+import { PageType } from '@/types'
+import { DEFAULT_POPUP_PAGE_TYPE } from '@/consts/index'
 
 type DisplayPageContextType = {
   displayPageType?: PageType

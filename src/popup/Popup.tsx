@@ -3,9 +3,9 @@ import History from './History'
 import Settings from './Settings'
 import DisplayPageContextProvider, {
   DisplayPageContext
-} from '../providers/DisplayPageContextProvider'
+} from '@/providers/DisplayPageContextProvider'
 import Timer from './Timer'
-import ThemeProvider from '../providers/ThemeProvider'
+import ThemeProvider from '@/providers/ThemeProvider'
 
 const PopupInner = () => {
   const { displayPageType } = useContext(DisplayPageContext)

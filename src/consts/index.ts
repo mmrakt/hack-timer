@@ -1,5 +1,5 @@
-import { DailyPomodoro, PageType, Phase, StorageValue } from '../types'
-import { testData } from '../utils/testDate'
+import { DailyPomodoro, PageType, Phase, StorageValue } from '@/types'
+import { testData } from '@/utils/testDate'
 
 const env = process.env.NODE_ENV
 

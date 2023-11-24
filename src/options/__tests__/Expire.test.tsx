@@ -1,8 +1,8 @@
 import { fireEvent, render } from '@testing-library/react'
-import { ExpireMenu, ExpireContainer } from '../Expire'
+import { ExpireMenu, ExpireContainer } from '@/options/Expire'
 import { chrome } from 'jest-chrome'
 import '@testing-library/jest-dom'
-import { FromPopupMessageType } from '../../utils/message'
+import { FromPopupMessageType } from '@/utils/message'
 
 describe('ExpireContainer', () => {
   it('render', () => {

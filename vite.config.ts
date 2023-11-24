@@ -1,6 +1,7 @@
 import { crx, defineManifest } from '@crxjs/vite-plugin'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 const manifest = defineManifest({
   manifest_version: 3,
@@ -44,5 +45,5 @@ export default defineConfig({
       }
     }
   },
-  plugins: [react(), crx({ manifest })]
+  plugins: [react(), crx({ manifest }), tsconfigPaths()]
 })

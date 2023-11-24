@@ -1,4 +1,4 @@
-import { formatDisplayTime, getTimeFromSeconds } from '../timeHelper'
+import { formatDisplayTime, getTimeFromSeconds } from '@/utils/timeHelper'
 
 describe('timeHelper', () => {
   it('getTimerFromSeconds', () => {

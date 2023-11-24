@@ -1,7 +1,7 @@
-import { COLOR } from '../consts/color'
-import { Phase } from '../types'
-import { action } from '../utils/chrome'
-import { getTimeFromSeconds, formatDisplayTime } from '../utils/timeHelper'
+import { COLOR } from '@/consts/color'
+import { Phase } from '@/types'
+import { action } from '@/utils/chrome'
+import { getTimeFromSeconds, formatDisplayTime } from '@/utils/timeHelper'
 
 const updateSecondsOfBadge = async (
   remainingSeconds: number

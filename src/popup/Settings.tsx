@@ -1,20 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react'
-import TimerLengthSelect from '../features/settings/TimerLengthSelect'
-import SettingToggle from '../features/settings/SettingToggle'
+import TimerLengthSelect from '@/features/settings/TimerLengthSelect'
+import SettingToggle from '@/features/settings/SettingToggle'
 import { useTranslation } from 'react-i18next'
-import { getStorage } from '../utils/chrome'
-import { StorageValue } from '../types/index'
+import { getStorage } from '@/utils/chrome'
+import { StorageValue } from '@/types/index'
 import {
   POMODORO_LENGTH_ARRAY,
   BREAK_LENGTH_ARRAY,
   LONG_BREAK_LENGTH_ARRAY,
   POMODORO_COUNT_UNTIL_LONG_BREAK,
   DEFAULT_POPUP_PAGE_TYPE
-} from '../consts/index'
-import SettingRow from '../features/settings/SettingRow'
+} from '@/consts/index'
+import SettingRow from '@/features/settings/SettingRow'
 import { twMerge } from 'tailwind-merge'
-import { DisplayPageContext } from '../providers/DisplayPageContextProvider'
-import ArrowBackward from '../components/common/ArrowBackward'
+import { DisplayPageContext } from '@/providers/DisplayPageContextProvider'
+import ArrowBackward from '@/components/common/ArrowBackward'
 
 const headingStyle = 'font-bold text-weight text-center'
 

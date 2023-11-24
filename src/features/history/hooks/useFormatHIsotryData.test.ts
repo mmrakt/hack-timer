@@ -1,11 +1,7 @@
 import { renderHook } from '@testing-library/react'
-import {
-  DailyPomodoro,
-  DisplayTermType,
-  HistoryDataSet
-} from '../../../types/index'
+import { DailyPomodoro, DisplayTermType, HistoryDataSet } from '@/types/index'
 import useFormatHistoryData from './useFormatHisotryData'
-import { NUMBER_OF_DAY_BY_WEEK } from '../../../consts/index'
+import { NUMBER_OF_DAY_BY_WEEK } from '@/consts/index'
 
 const d = new Date()
 const thisYear = d.getFullYear()

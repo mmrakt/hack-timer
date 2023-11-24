@@ -1,12 +1,12 @@
 import dayjs from 'dayjs'
-import { StorageValue, Phase, DailyPomodoro, Message } from '../types'
-import { getStorage, runtime, setStorage } from '../utils/chrome'
+import { StorageValue, Phase, DailyPomodoro, Message } from '@/types'
+import { getStorage, runtime, setStorage } from '@/utils/chrome'
 import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
 import { closeTabs, openNewTab } from './Tab'
 import { createNotificationContent, sendNotification } from './Notification'
-import keepAlive from '../utils/keepAliveServiceWorker'
-import { FromServiceWorkerMessageType } from '../utils/message'
-import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
+import keepAlive from '@/utils/keepAliveServiceWorker'
+import { FromServiceWorkerMessageType } from '@/utils/message'
+import { extractTodayPomodoroCount } from '@/utils/pomodoroHelper'
 
 let intervalId = 0
 

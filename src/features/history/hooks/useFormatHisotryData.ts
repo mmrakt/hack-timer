@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
-import { DailyPomodoro, DisplayTermType, HistoryDataSet } from '../../../types'
-import {
-  NUMBER_OF_DAY_BY_WEEK,
-  NUMBER_OF_MONTH_BY_YEAR
-} from '../../../consts/index'
+import { DailyPomodoro, DisplayTermType, HistoryDataSet } from '@/types'
+import { NUMBER_OF_DAY_BY_WEEK, NUMBER_OF_MONTH_BY_YEAR } from '@/consts/index'
 
 const useFormatHistoryData = (
   dailyPomodoros: DailyPomodoro[],

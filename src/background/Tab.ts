@@ -1,6 +1,6 @@
-import { EXPIRE_HTML_PATH } from '../consts'
-import { tabs, windows } from '../utils/chrome'
-import { EXPIRE_PAGE } from '../consts/index'
+import { EXPIRE_HTML_PATH } from '@/consts'
+import { tabs, windows } from '@/utils/chrome'
+import { EXPIRE_PAGE } from '@/consts/index'
 
 const openNewTab = (): void => {
   tabs.create(

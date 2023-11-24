@@ -1,7 +1,7 @@
 import {
   FromPopupMessageType,
   FromServiceWorkerMessageType
-} from '../utils/message'
+} from '@/utils/message'
 export type Response = {
   id: string
 }

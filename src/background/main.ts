@@ -1,10 +1,10 @@
-import { StorageValue, Message } from '../types/index'
-import { runtime, getStorage, setStorage, commands } from '../utils/chrome'
-import '../utils/i18n'
+import { StorageValue, Message } from '@/types/index'
+import { runtime, getStorage, setStorage, commands } from '@/utils/chrome'
+import '@/utils/i18n'
 import { closeTabs } from './Tab'
 import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
 import { toggleTimerStatus, expire, pauseTimer, resumeTimer } from './Timer'
-import { DEFAULT_STORAGE_VALUE } from '../consts/index'
+import { DEFAULT_STORAGE_VALUE } from '@/consts/index'
 
 // installed event
 runtime.onInstalled.addListener(async () => {

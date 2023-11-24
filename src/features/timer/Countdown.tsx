@@ -1,7 +1,7 @@
-import { getTimeFromSeconds } from '../../utils/timeHelper'
+import { getTimeFromSeconds } from '@/utils/timeHelper'
 import Digit from './Degit'
-import Pause from '../../components/common/Pause'
-import Play from '../../components/common/Play'
+import Pause from '@/components/common/Pause'
+import Play from '@/components/common/Play'
 
 type IProps = {
   remainingSeconds: number
