@@ -16,7 +16,7 @@ describe('Expire', () => {
     const { getByText } = render(
       <ExpireMenu
         phase="break"
-        reminingSeconds={300}
+        remainingSeconds={300}
         todayTotalPomodoroCount={1}
         totalPomodoroCountsInSession={1}
         pomodorosUntilLongBreak={3}
@@ -29,7 +29,7 @@ describe('Expire', () => {
     const { getByText } = render(
       <ExpireMenu
         phase="focus"
-        reminingSeconds={1500}
+        remainingSeconds={1500}
         todayTotalPomodoroCount={1}
         totalPomodoroCountsInSession={1}
         pomodorosUntilLongBreak={3}
@@ -43,7 +43,7 @@ describe('Expire', () => {
     const { container } = render(
       <ExpireMenu
         phase="focus"
-        reminingSeconds={1500}
+        remainingSeconds={1500}
         todayTotalPomodoroCount={1}
         totalPomodoroCountsInSession={1}
         pomodorosUntilLongBreak={3}
@@ -59,7 +59,7 @@ describe('Expire', () => {
     const { getByRole } = render(
       <ExpireMenu
         phase="focus"
-        reminingSeconds={1500}
+        remainingSeconds={1500}
         todayTotalPomodoroCount={1}
         totalPomodoroCountsInSession={1}
         pomodorosUntilLongBreak={3}

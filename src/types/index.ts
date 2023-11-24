@@ -1,12 +1,12 @@
 import {
   FromPopupMessageType,
-  FromServiceWorkerMessgeType
+  FromServiceWorkerMessageType
 } from '../utils/message'
 export type Response = {
   id: string
 }
 
-export type ReminingSeconds = {
+export type RemainingSeconds = {
   focus: 1500
   break: 300
   longBreak: 1800
@@ -24,7 +24,7 @@ export type DailyPomodoro = {
 }
 
 export type StorageValue = {
-  reminingSeconds: number
+  remainingSeconds: number
   phase: Phase
   totalPomodoroCountsInSession: number
   dailyPomodoros: DailyPomodoro[]
@@ -53,6 +53,6 @@ export type HistoryDataSet = Array<{
 }>
 
 export type Message = {
-  type: FromPopupMessageType | FromServiceWorkerMessgeType
+  type: FromPopupMessageType | FromServiceWorkerMessageType
   data?: any
 }

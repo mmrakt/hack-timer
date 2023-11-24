@@ -18,12 +18,12 @@ import { ThemeContext } from '../providers/ThemeProvider'
 const Timer: React.FC = (props) => {
   const { t } = useTranslation()
   const [duration, setDuration] = useState<number>(0)
-  const [reminingSeconds, setReminingSeconds] = useState<number>(0)
+  const [remainingSeconds, setRemainingSeconds] = useState<number>(0)
   const [todayTotalPomodoroCount, setTodayTotalPomodoroCount] =
     useState<number>(0)
   const [totalPomodoroCountInSession, setTotalPomodoroCountInSession] =
     useState<number>(0)
-  const [pomodorosUntilLongBreak, setpomodorosUntilLongBreak] =
+  const [pomodorosUntilLongBreak, setPomodorosUntilLongBreak] =
     useState<number>(0)
   const [isRunning, setIsRunning] = useState<boolean>(false)
   const { theme } = useContext(ThemeContext)
@@ -31,19 +31,19 @@ const Timer: React.FC = (props) => {
 
   useEffect(() => {
     getStorage([
-      'reminingSeconds',
+      'remainingSeconds',
       'isRunning',
       'dailyPomodoros',
       'totalPomodoroCountsInSession',
       'pomodorosUntilLongBreak'
     ]).then((value: StorageValue) => {
-      setReminingSeconds(value.reminingSeconds)
+      setRemainingSeconds(value.remainingSeconds)
       setIsRunning(value.isRunning)
       setTodayTotalPomodoroCount(
         extractTodayPomodoroCount(value.dailyPomodoros)
       )
       setTotalPomodoroCountInSession(value.totalPomodoroCountsInSession)
-      setpomodorosUntilLongBreak(value.pomodorosUntilLongBreak)
+      setPomodorosUntilLongBreak(value.pomodorosUntilLongBreak)
     })
   }, [])
 
@@ -53,17 +53,17 @@ const Timer: React.FC = (props) => {
       setDuration(await getDuration(currentPhase))
       chrome.runtime.onMessage.addListener(async (message: Message) => {
         if (message.type === 'reduce-count') {
-          setReminingSeconds(message.data.secs)
+          setRemainingSeconds(message.data.secs)
         } else if (message.type === 'expire') {
           setCurrentPhase(message.data.phase)
           setDuration(await getDuration(message.data.phase))
-          setReminingSeconds(message.data.secs)
+          setRemainingSeconds(message.data.secs)
           setIsRunning(false)
           setTodayTotalPomodoroCount(message.data.todayTotalPomodoroCount)
           setTotalPomodoroCountInSession(
             message.data.totalPomodoroCountsInSession
           )
-          setpomodorosUntilLongBreak(message.data.pomodorosUntilLongBreak)
+          setPomodorosUntilLongBreak(message.data.pomodorosUntilLongBreak)
         } else if (message.type === 'toggle-timer-status') {
           setIsRunning(message.data.toggledTimerStatus)
         }
@@ -84,7 +84,7 @@ const Timer: React.FC = (props) => {
   }
 
   const expire = (): void => {
-    setReminingSeconds(0)
+    setRemainingSeconds(0)
     closeTabs()
     chrome.runtime.sendMessage<Message>({ type: FromPopupMessageType.EXPIRE })
   }
@@ -116,28 +116,28 @@ const Timer: React.FC = (props) => {
     }
   }
 
-  const totalPomodoroCountMessge = t('popup.totalPomodoroCount').replace(
+  const totalPomodoroCountMessage = t('popup.totalPomodoroCount').replace(
     '%f',
     String(todayTotalPomodoroCount)
   )
 
   console.log(duration)
-  console.log(reminingSeconds)
+  console.log(remainingSeconds)
 
   return (
     <div id="timerMenu">
       <Header />
-      {!reminingSeconds ? (
+      {!remainingSeconds ? (
         <div className="flex h-[22rem] w-full items-center justify-center">
           <LoadingSpinner />
         </div>
       ) : (
         <div className="mt-5 flex justify-center ">
-          {duration !== 0 && reminingSeconds !== 0 && (
+          {duration !== 0 && remainingSeconds !== 0 && (
             <CountdownCircleTimer
               isPlaying={isRunning}
               duration={duration}
-              initialRemainingTime={reminingSeconds}
+              initialRemainingTime={remainingSeconds}
               isSmoothColorTransition
               colors={getCircleColor() as ColorFormat}
               trailColor={
@@ -148,7 +148,7 @@ const Timer: React.FC = (props) => {
             >
               {({ remainingTime }) => (
                 <Countdown
-                  reminingSeconds={remainingTime}
+                  remainingSeconds={remainingTime}
                   isRunning={isRunning}
                   onToggleStatus={() => {
                     isRunning ? pause() : resume()
@@ -161,7 +161,7 @@ const Timer: React.FC = (props) => {
       )}
 
       <div className="mt-5 flex items-center justify-between text-sm">
-        <span>{totalPomodoroCountMessge}</span>
+        <span>{totalPomodoroCountMessage}</span>
         <div className="flex justify-center gap-1">
           <PomodoroCircles
             pomodorosUntilLongBreak={pomodorosUntilLongBreak}

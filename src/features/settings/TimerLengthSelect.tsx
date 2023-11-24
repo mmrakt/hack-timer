@@ -41,7 +41,7 @@ const TimerLengthSelect: React.FC<IProps> = ({
           } else {
             setStorage({
               pomodoroSeconds: formattedValue,
-              reminingSeconds: formattedValue
+              remainingSeconds: formattedValue
             })
           }
           break
@@ -51,7 +51,7 @@ const TimerLengthSelect: React.FC<IProps> = ({
           } else {
             setStorage({
               breakSeconds: formattedValue,
-              reminingSeconds: formattedValue
+              remainingSeconds: formattedValue
             })
           }
           break
@@ -61,7 +61,7 @@ const TimerLengthSelect: React.FC<IProps> = ({
           } else {
             setStorage({
               longBreakSeconds: formattedValue,
-              reminingSeconds: formattedValue
+              remainingSeconds: formattedValue
             })
           }
           break

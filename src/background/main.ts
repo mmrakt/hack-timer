@@ -8,13 +8,13 @@ import { DEFAULT_STORAGE_VALUE } from '../consts/index'
 
 // installed event
 runtime.onInstalled.addListener(async () => {
-  getStorage(['reminingSeconds']).then((data) => {
-    if (!data?.reminingSeconds) {
+  getStorage(['remainingSeconds']).then((data) => {
+    if (!data?.remainingSeconds) {
       setStorage(DEFAULT_STORAGE_VALUE)
     }
   })
 
-  await updateSecondsOfBadge(DEFAULT_STORAGE_VALUE.reminingSeconds)
+  await updateSecondsOfBadge(DEFAULT_STORAGE_VALUE.remainingSeconds)
   await updateColorOfBadge(DEFAULT_STORAGE_VALUE.phase)
 })
 

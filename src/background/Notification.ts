@@ -5,7 +5,7 @@ import { notifications } from '../utils/chrome'
 const createNotificationContent = async (
   phase: Phase,
   todayPomodoro: number,
-  reminingPomodorUntilLongBreak: number
+  remainingPomodorUntilLongBreak: number
 ): Promise<string[]> => {
   let title = ''
   let message = ''
@@ -14,13 +14,13 @@ const createNotificationContent = async (
     message = i18next
       .t('notifications.pomodoro.message')
       .replace('%f', String(todayPomodoro))
-      .replace('%s', String(reminingPomodorUntilLongBreak))
+      .replace('%s', String(remainingPomodorUntilLongBreak))
   } else {
     title = i18next.t('notifications.break.title')
     message = i18next
       .t('notifications.break.message')
       .replace('%f', String(todayPomodoro))
-      .replace('%s', String(reminingPomodorUntilLongBreak))
+      .replace('%s', String(remainingPomodorUntilLongBreak))
   }
   return [title, message]
 }

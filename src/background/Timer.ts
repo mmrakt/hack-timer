@@ -5,7 +5,7 @@ import { updateSecondsOfBadge, updateColorOfBadge } from './Action'
 import { closeTabs, openNewTab } from './Tab'
 import { createNotificationContent, sendNotification } from './Notification'
 import keepAlive from '../utils/keepAliveServiceWorker'
-import { FromServiceWorkerMessgeType } from '../utils/message'
+import { FromServiceWorkerMessageType } from '../utils/message'
 import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
 
 let intervalId = 0
@@ -14,7 +14,7 @@ const toggleTimerStatus = async (needSendMessage = false): Promise<void> => {
   await keepAlive()
 
   getStorage([
-    'reminingSeconds',
+    'remainingSeconds',
     'phase',
     'isRunning',
     'totalPomodoroCountsInSession'
@@ -28,7 +28,7 @@ const toggleTimerStatus = async (needSendMessage = false): Promise<void> => {
       }
       if (needSendMessage) {
         await runtime.sendMessage<Message>({
-          type: FromServiceWorkerMessgeType.TOGGLE_TIMER_STATUS,
+          type: FromServiceWorkerMessageType.TOGGLE_TIMER_STATUS,
           data: {
             toggledTimerStatus: !data.isRunning
           }
@@ -53,12 +53,12 @@ const setTickInterval = (isRunning: boolean): void => {
  * カウントを減らすか終了させるか判定
  */
 const handleCountDown = (): void => {
-  getStorage(['reminingSeconds']).then(async (data: StorageValue) => {
-    if (data.reminingSeconds > 0) {
-      await reduceCount(data.reminingSeconds)
+  getStorage(['remainingSeconds']).then(async (data: StorageValue) => {
+    if (data.remainingSeconds > 0) {
+      await reduceCount(data.remainingSeconds)
     }
 
-    if (data.reminingSeconds === 1) {
+    if (data.remainingSeconds === 1) {
       const {
         phase,
         totalPomodoroCountsInSession,
@@ -80,14 +80,14 @@ const handleCountDown = (): void => {
   })
 }
 
-const reduceCount = async (reminingSeconds: number): Promise<void> => {
+const reduceCount = async (remainingSeconds: number): Promise<void> => {
   try {
-    setStorage({ reminingSeconds: reminingSeconds - 1 })
-    await updateSecondsOfBadge(reminingSeconds - 1)
+    setStorage({ remainingSeconds: remainingSeconds - 1 })
+    await updateSecondsOfBadge(remainingSeconds - 1)
     await runtime.sendMessage<Message>({
-      type: FromServiceWorkerMessgeType.REDUCE_COUNT,
+      type: FromServiceWorkerMessageType.REDUCE_COUNT,
       data: {
-        secs: reminingSeconds - 1
+        secs: remainingSeconds - 1
       }
     })
   } catch (e) {
@@ -105,7 +105,7 @@ const expire = async (
   pomodorosUntilLongBreak: number,
   isAutoExpire = true
 ): Promise<void> => {
-  let reminingSeconds = 0
+  let remainingSeconds = 0
   let nextPhase: Phase = 'focus'
 
   try {
@@ -114,34 +114,34 @@ const expire = async (
     if (phase === 'focus') {
       totalPomodoroCountsInSession++
       if (totalPomodoroCountsInSession >= pomodorosUntilLongBreak) {
-        reminingSeconds = await (
+        remainingSeconds = await (
           await getStorage(['longBreakSeconds'])
         ).longBreakSeconds
         totalPomodoroCountsInSession = 0
         nextPhase = 'longBreak'
       } else {
-        reminingSeconds = await (
+        remainingSeconds = await (
           await getStorage(['breakSeconds'])
         ).breakSeconds
         nextPhase = 'break'
       }
       dailyPomodoros = increaseDailyPomodoro(dailyPomodoros)
     } else {
-      reminingSeconds = await (
+      remainingSeconds = await (
         await getStorage(['pomodoroSeconds'])
       ).pomodoroSeconds
     }
     const todayTotalPomodoroCount = extractTodayPomodoroCount(dailyPomodoros)
 
     setStorage({
-      reminingSeconds,
+      remainingSeconds,
       phase: nextPhase,
       totalPomodoroCountsInSession,
       isRunning: false,
       dailyPomodoros,
       isTimerStarted: false
     })
-    await updateSecondsOfBadge(reminingSeconds)
+    await updateSecondsOfBadge(remainingSeconds)
     await updateColorOfBadge(nextPhase)
 
     if (isAutoExpire) {
@@ -188,9 +188,9 @@ const expire = async (
     setTickInterval(false)
     // popup非表示時はここで止まってしまうため最後に実行する
     await runtime.sendMessage<Message>({
-      type: FromServiceWorkerMessgeType.EXPIRE,
+      type: FromServiceWorkerMessageType.EXPIRE,
       data: {
-        secs: reminingSeconds,
+        secs: remainingSeconds,
         phase: nextPhase,
         todayTotalPomodoroCount,
         totalPomodoroCountsInSession,

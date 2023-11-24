@@ -3,7 +3,7 @@ import { chrome } from 'jest-chrome'
 // import { DEFAULT_TIMER_SECONDS } from '../../consts/index'
 import { expire } from '../Timer'
 import { Message } from '../../types/index'
-import { FromServiceWorkerMessgeType } from '../../utils/message'
+import { FromServiceWorkerMessageType } from '../../utils/message'
 import { COLOR } from '../../consts/color'
 
 describe.skip('Timer', () => {
@@ -42,7 +42,7 @@ describe.skip('Timer', () => {
 
   it('finish first focus', async () => {
     const expectedSetValue = {
-      reminingSeconds: 0, // TODO: getStorageのPromiseが解決されないままテストが終わる原因調査
+      remainingSeconds: 0, // TODO: getStorageのPromiseが解決されないままテストが終わる原因調査
       phase: 'break',
       totalPomodoroCountsInSession: 1,
       isRunning: false,
@@ -58,7 +58,7 @@ describe.skip('Timer', () => {
     const pomodorosUntilLongBreak = 4
     const todayTotalPomodoroCount = 0
     const expectedOptions: Message = {
-      type: FromServiceWorkerMessgeType.EXPIRE,
+      type: FromServiceWorkerMessageType.EXPIRE,
       data: {
         secs: 0, // FIXME
         phase: expectedSetValue.phase,
@@ -87,7 +87,7 @@ describe.skip('Timer', () => {
 
   it('finish first break', async () => {
     const expectedSetValue = {
-      reminingSeconds: 0, // FIXME
+      remainingSeconds: 0, // FIXME
       phase: 'focus',
       totalPomodoroCountsInSession: 1,
       isRunning: false,
@@ -103,7 +103,7 @@ describe.skip('Timer', () => {
     const pomodorosUntilLongBreak = 4
     const todayTotalPomodoroCount = 1
     const expectedOptions: Message = {
-      type: FromServiceWorkerMessgeType.EXPIRE,
+      type: FromServiceWorkerMessageType.EXPIRE,
       data: {
         secs: 0, // FIXME
         phase: expectedSetValue.phase,
@@ -144,7 +144,7 @@ describe.skip('Timer', () => {
 
   it('start long break', async () => {
     const expectedSetValue = {
-      reminingSeconds: 0, // FIXME
+      remainingSeconds: 0, // FIXME
       phase: 'longBreak',
       totalPomodoroCountsInSession: 0,
       isRunning: false,
@@ -160,7 +160,7 @@ describe.skip('Timer', () => {
     const pomodorosUntilLongBreak = 4
     const todayTotalPomodoroCount = 3
     const expectedOptions = {
-      type: FromServiceWorkerMessgeType.EXPIRE,
+      type: FromServiceWorkerMessageType.EXPIRE,
       data: {
         secs: 0, // FIEXME
         phase: expectedSetValue.phase,
@@ -201,7 +201,7 @@ describe.skip('Timer', () => {
   it('長い休憩までのポモドーロ数を実施済みポモドーロ数以下に設定した場合。実施数3 長い休憩までのポモドーロ数4 変更後2', async () => {
     const changedPomodorosUntilLongBreak = 2
     const expectedSetValue = {
-      reminingSeconds: 0, // FIXME
+      remainingSeconds: 0, // FIXME
       phase: 'longBreak',
       totalPomodoroCountsInSession: 0,
       isRunning: false,
@@ -215,7 +215,7 @@ describe.skip('Timer', () => {
       ]
     }
     const expectedOptions = {
-      type: FromServiceWorkerMessgeType.EXPIRE,
+      type: FromServiceWorkerMessageType.EXPIRE,
       data: {
         secs: 0, // FIXME
         phase: expectedSetValue.phase,

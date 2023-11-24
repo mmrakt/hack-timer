@@ -13,7 +13,7 @@ import ThemeProvider from '../providers/ThemeProvider'
 
 type IProps = {
   phase: Phase
-  reminingSeconds: number
+  remainingSeconds: number
   todayTotalPomodoroCount: number
   totalPomodoroCountsInSession: number
   pomodorosUntilLongBreak: number
@@ -35,7 +35,7 @@ const ExpireMenu: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     document.body.addEventListener('keydown', onKeyDown)
-    const { minutes, seconds } = getTimeFromSeconds(props.reminingSeconds)
+    const { minutes, seconds } = getTimeFromSeconds(props.remainingSeconds)
     setFormatedDisplayTime(formatDisplayTime(seconds, minutes))
 
     return () => {
@@ -61,7 +61,7 @@ const ExpireMenu: React.FC<IProps> = (props) => {
     }
   }
 
-  const totalPomodoroCountMessge = t('popup.totalPomodoroCount').replace(
+  const totalPomodoroCountMessage = t('popup.totalPomodoroCount').replace(
     '%f',
     String(todayTotalPomodoroCount)
   )
@@ -87,14 +87,14 @@ const ExpireMenu: React.FC<IProps> = (props) => {
         />
       </div>
       <div className="mt-5 flex items-center justify-center text-xl">
-        <span>{totalPomodoroCountMessge}</span>
+        <span>{totalPomodoroCountMessage}</span>
       </div>
     </div>
   )
 }
 const ExpireContainer: React.FC = () => {
   const [phase, setPhase] = useState<Phase>('focus')
-  const [reminingSeconds, setReminingSeconds] = useState<number>(0)
+  const [remainingSeconds, setRemainingSeconds] = useState<number>(0)
   const [todayTotalPomodoroCount, setTodayTotalPomodoroCount] =
     useState<number>(0)
   const [totalPomodoroCountsInSession, setTotalPomodoroCountsInSession] =
@@ -105,13 +105,13 @@ const ExpireContainer: React.FC = () => {
   useEffect(() => {
     getStorage([
       'phase',
-      'reminingSeconds',
+      'remainingSeconds',
       'dailyPomodoros',
       'totalPomodoroCountsInSession',
       'pomodorosUntilLongBreak'
     ]).then((value: StorageValue) => {
       setPhase(value.phase)
-      setReminingSeconds(value.reminingSeconds)
+      setRemainingSeconds(value.remainingSeconds)
       setTodayTotalPomodoroCount(
         extractTodayPomodoroCount(value.dailyPomodoros)
       )
@@ -120,7 +120,7 @@ const ExpireContainer: React.FC = () => {
     })
   }, [])
 
-  if (reminingSeconds === 0 || pomodorosUntilLongBreak === 0) {
+  if (remainingSeconds === 0 || pomodorosUntilLongBreak === 0) {
     return <LoadingSpinner />
   }
 
@@ -129,7 +129,7 @@ const ExpireContainer: React.FC = () => {
       <div className="base-bg-color text-color">
         <ExpireMenu
           phase={phase}
-          reminingSeconds={reminingSeconds}
+          remainingSeconds={remainingSeconds}
           todayTotalPomodoroCount={todayTotalPomodoroCount}
           totalPomodoroCountsInSession={totalPomodoroCountsInSession}
           pomodorosUntilLongBreak={pomodorosUntilLongBreak}

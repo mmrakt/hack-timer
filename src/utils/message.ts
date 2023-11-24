@@ -5,7 +5,7 @@ export enum FromPopupMessageType {
   EXPIRE = 'expire'
 }
 
-export enum FromServiceWorkerMessgeType {
+export enum FromServiceWorkerMessageType {
   REDUCE_COUNT = 'reduce-count',
   TOGGLE_TIMER_STATUS = 'toggle-timer-status',
   EXPIRE = 'expire'
