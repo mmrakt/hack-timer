@@ -18,12 +18,12 @@
     "pomodoro-timer"
   ],
   "scripts": {
-    "d": "vite",
-    "b": "tsc && vite build",
+    "dev": "vite",
+    "build": "tsc && vite build",
     "preview": "vite preview",
-    "l": "eslint --fix './src/'",
-    "t": "jest",
-    "t:w": "jest --watch",
+    "lint": "eslint --fix './src/'",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "prepare": "husky install"
   },
   "dependencies": {
