@@ -8,10 +8,10 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts'
-import { HistoryDataSet } from '../../types'
-import LoadingSpinner from '../../components/common/LoadingSpinner'
-import { COLOR } from '../../consts/color'
-import { ThemeContext } from '../../providers/ThemeProvider'
+import { HistoryDataSet } from '@/types'
+import LoadingSpinner from '@/components/common/LoadingSpinner'
+import { COLOR } from '@/consts/color'
+import { ThemeContext } from '@/providers/ThemeProvider'
 
 const tooltipLabelStyle = {
   light: {

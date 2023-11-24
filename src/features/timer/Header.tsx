@@ -1,8 +1,8 @@
-import Chart from '../../components/common/Chart'
-import Cogwheel from '../../components/common/Cogwheel'
+import Chart from '@/components/common/Chart'
+import Cogwheel from '@/components/common/Cogwheel'
 import { useContext } from 'react'
 import CurrentPhase from './CurrentPhase'
-import { DisplayPageContext } from '../../providers/DisplayPageContextProvider'
+import { DisplayPageContext } from '@/providers/DisplayPageContextProvider'
 
 const HeaderMenu = () => {
   const { setDisplayPageType } = useContext(DisplayPageContext)

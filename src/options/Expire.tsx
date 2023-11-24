@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { getStorage } from '../utils/chrome'
-import { Message, Phase, StorageValue } from '../types/index'
+import { getStorage } from '@/utils/chrome'
+import { Message, Phase, StorageValue } from '@/types/index'
 import { useTranslation } from 'react-i18next'
-import { FromPopupMessageType } from '../utils/message'
-import LoadingSpinner from '../components/common/LoadingSpinner'
-import Play from '../components/common/Play'
-import PomodoroCircles from '../features/timer/PomodoroCircles'
-import { formatDisplayTime, getTimeFromSeconds } from '../utils/timeHelper'
-import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
-import CurrentPhase from '../features/timer/CurrentPhase'
-import ThemeProvider from '../providers/ThemeProvider'
+import { FromPopupMessageType } from '@/utils/message'
+import LoadingSpinner from '@/components/common/LoadingSpinner'
+import Play from '@/components/common/Play'
+import PomodoroCircles from '@/features/timer/PomodoroCircles'
+import { formatDisplayTime, getTimeFromSeconds } from '@/utils/timeHelper'
+import { extractTodayPomodoroCount } from '@/utils/pomodoroHelper'
+import CurrentPhase from '@/features/timer/CurrentPhase'
+import ThemeProvider from '@/providers/ThemeProvider'
 
 type IProps = {
   phase: Phase
-  reminingSeconds: number
+  remainingSeconds: number
   todayTotalPomodoroCount: number
   totalPomodoroCountsInSession: number
   pomodorosUntilLongBreak: number
@@ -35,7 +35,7 @@ const ExpireMenu: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     document.body.addEventListener('keydown', onKeyDown)
-    const { minutes, seconds } = getTimeFromSeconds(props.reminingSeconds)
+    const { minutes, seconds } = getTimeFromSeconds(props.remainingSeconds)
     setFormatedDisplayTime(formatDisplayTime(seconds, minutes))
 
     return () => {
@@ -61,7 +61,7 @@ const ExpireMenu: React.FC<IProps> = (props) => {
     }
   }
 
-  const totalPomodoroCountMessge = t('popup.totalPomodoroCount').replace(
+  const totalPomodoroCountMessage = t('popup.totalPomodoroCount').replace(
     '%f',
     String(todayTotalPomodoroCount)
   )
@@ -87,14 +87,14 @@ const ExpireMenu: React.FC<IProps> = (props) => {
         />
       </div>
       <div className="mt-5 flex items-center justify-center text-xl">
-        <span>{totalPomodoroCountMessge}</span>
+        <span>{totalPomodoroCountMessage}</span>
       </div>
     </div>
   )
 }
 const ExpireContainer: React.FC = () => {
   const [phase, setPhase] = useState<Phase>('focus')
-  const [reminingSeconds, setReminingSeconds] = useState<number>(0)
+  const [remainingSeconds, setRemainingSeconds] = useState<number>(0)
   const [todayTotalPomodoroCount, setTodayTotalPomodoroCount] =
     useState<number>(0)
   const [totalPomodoroCountsInSession, setTotalPomodoroCountsInSession] =
@@ -105,13 +105,13 @@ const ExpireContainer: React.FC = () => {
   useEffect(() => {
     getStorage([
       'phase',
-      'reminingSeconds',
+      'remainingSeconds',
       'dailyPomodoros',
       'totalPomodoroCountsInSession',
       'pomodorosUntilLongBreak'
     ]).then((value: StorageValue) => {
       setPhase(value.phase)
-      setReminingSeconds(value.reminingSeconds)
+      setRemainingSeconds(value.remainingSeconds)
       setTodayTotalPomodoroCount(
         extractTodayPomodoroCount(value.dailyPomodoros)
       )
@@ -120,7 +120,7 @@ const ExpireContainer: React.FC = () => {
     })
   }, [])
 
-  if (reminingSeconds === 0 || pomodorosUntilLongBreak === 0) {
+  if (remainingSeconds === 0 || pomodorosUntilLongBreak === 0) {
     return <LoadingSpinner />
   }
 
@@ -129,7 +129,7 @@ const ExpireContainer: React.FC = () => {
       <div className="base-bg-color text-color">
         <ExpireMenu
           phase={phase}
-          reminingSeconds={reminingSeconds}
+          remainingSeconds={remainingSeconds}
           todayTotalPomodoroCount={todayTotalPomodoroCount}
           totalPomodoroCountsInSession={totalPomodoroCountsInSession}
           pomodorosUntilLongBreak={pomodorosUntilLongBreak}

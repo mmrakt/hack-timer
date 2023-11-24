@@ -1,5 +1,5 @@
 import TimerLengthSelect from './TimerLengthSelect'
-import { POMODORO_LENGTH_ARRAY } from '../../consts/index'
+import { POMODORO_LENGTH_ARRAY } from '@/consts/index'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { chrome } from 'jest-chrome'
 import userEvent from '@testing-library/user-event'

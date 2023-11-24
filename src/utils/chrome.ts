@@ -1,4 +1,4 @@
-import { StorageKey, StorageValue } from '../types'
+import { StorageKey, StorageValue } from '@/types'
 
 const { runtime, commands, action, tabs, storage, notifications, windows } =
   chrome

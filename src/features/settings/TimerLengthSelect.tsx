@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { getStorage, setStorage } from '../../utils/chrome'
-import SelectBox from '../../components/common/SelectBox'
+import { getStorage, setStorage } from '@/utils/chrome'
+import SelectBox from '@/components/common/SelectBox'
 
 type IProps = {
   type:
@@ -41,7 +41,7 @@ const TimerLengthSelect: React.FC<IProps> = ({
           } else {
             setStorage({
               pomodoroSeconds: formattedValue,
-              reminingSeconds: formattedValue
+              remainingSeconds: formattedValue
             })
           }
           break
@@ -51,7 +51,7 @@ const TimerLengthSelect: React.FC<IProps> = ({
           } else {
             setStorage({
               breakSeconds: formattedValue,
-              reminingSeconds: formattedValue
+              remainingSeconds: formattedValue
             })
           }
           break
@@ -61,7 +61,7 @@ const TimerLengthSelect: React.FC<IProps> = ({
           } else {
             setStorage({
               longBreakSeconds: formattedValue,
-              reminingSeconds: formattedValue
+              remainingSeconds: formattedValue
             })
           }
           break

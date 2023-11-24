@@ -1,5 +1,5 @@
 import { createContext, ReactElement } from 'react'
-import { useMatchMedia } from '../hooks/useMatchMedia'
+import { useMatchMedia } from '@/hooks/useMatchMedia'
 
 type Theme = 'light' | 'dark'
 type IThemeContext = {

@@ -1,5 +1,5 @@
 import React from 'react'
-import Circle from '../../components/common/Circle'
+import Circle from '@/components/common/Circle'
 
 type IProps = {
   pomodorosUntilLongBreak: number

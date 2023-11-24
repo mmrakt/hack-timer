@@ -1,5 +1,5 @@
-import HistoryChart from '../../features/history/HistoryChart'
-import { DailyPomodoro, DisplayTermType } from '../../types/index'
+import HistoryChart from '@/features/history/HistoryChart'
+import { DailyPomodoro, DisplayTermType } from '@/types/index'
 describe('', () => {
   beforeEach(() => {})
   afterEach(() => {})

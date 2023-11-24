@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import dayOfYear from 'dayjs/plugin/dayOfYear'
-import { DailyPomodoro } from '../types'
+import { DailyPomodoro } from '@/types'
 
 dayjs.extend(dayOfYear)
 

@@ -1,5 +1,5 @@
-import * as jaTranslation from '../_locales/ja'
-import * as enTranslation from '../_locales/en'
+import * as jaTranslation from '@/_locales/ja'
+import * as enTranslation from '@/_locales/en'
 import { initReactI18next } from 'react-i18next'
 import i18next from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'

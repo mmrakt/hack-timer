@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { setStorage } from '../../utils/chrome'
+import { setStorage } from '@/utils/chrome'
 
 type IProps = {
   id:

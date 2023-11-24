@@ -1,13 +1,13 @@
-import { getStorage, setStorage } from '../../utils/chrome'
+import { getStorage, setStorage } from '@/utils/chrome'
 import {
   BOM_ARRAY,
   HISTORY_CSV_FILE_NAME,
   HISTORY_CSV_HEADER_ARRAY
-} from '../../consts'
-import { DailyPomodoro } from '../../types'
+} from '@/consts'
+import { DailyPomodoro } from '@/types'
 import { useTranslation } from 'react-i18next'
-import { NEW_LINE_CODE } from '../../consts/index'
-import Button from '../../components/common/Button'
+import { NEW_LINE_CODE } from '@/consts/index'
+import Button from '@/components/common/Button'
 
 const createStorageValue = (content: string): DailyPomodoro[] => {
   const newLineCodes =

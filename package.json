@@ -18,12 +18,12 @@
     "pomodoro-timer"
   ],
   "scripts": {
-    "d": "vite",
-    "b": "tsc && vite build",
+    "dev": "vite",
+    "build": "tsc && vite build",
     "preview": "vite preview",
-    "l": "eslint --fix './src/'",
-    "t": "jest",
-    "t:w": "jest --watch",
+    "lint": "eslint --fix './src/'",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -71,6 +71,7 @@
     "ts-node": "^10.9.1",
     "typescript": "*",
     "vite": "^4.4.7",
+    "vite-tsconfig-paths": "^4.2.1",
     "zip-folder": "^1.0.0"
   },
   "husky": {

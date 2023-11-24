@@ -1,5 +1,5 @@
-import { DailyPomodoro, PageType, Phase, StorageValue } from '../types'
-import { testData } from '../utils/testDate'
+import { DailyPomodoro, PageType, Phase, StorageValue } from '@/types'
+import { testData } from '@/utils/testDate'
 
 const env = process.env.NODE_ENV
 
@@ -27,7 +27,7 @@ export const DEFAULT_PHASE: Phase = 'focus'
 export const DEFAULT_POMODOROS_UNTIL_LONG_BREAK = 4
 
 export const DEFAULT_STORAGE_VALUE: StorageValue = {
-  reminingSeconds: DEFAULT_TIMER_SECONDS.focus,
+  remainingSeconds: DEFAULT_TIMER_SECONDS.focus,
   phase: DEFAULT_PHASE,
   isRunning: false,
   totalPomodoroCountsInSession: 0,

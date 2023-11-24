@@ -1,21 +1,21 @@
-import { getTimeFromSeconds } from '../../utils/timeHelper'
+import { getTimeFromSeconds } from '@/utils/timeHelper'
 import Digit from './Degit'
-import Pause from '../../components/common/Pause'
-import Play from '../../components/common/Play'
+import Pause from '@/components/common/Pause'
+import Play from '@/components/common/Play'
 
 type IProps = {
-  reminingSeconds: number
+  remainingSeconds: number
   isRunning: boolean
   onToggleStatus: () => void
 }
 
 const Countdown: React.FC<IProps> = ({
-  reminingSeconds,
+  remainingSeconds,
   isRunning,
   onToggleStatus
 }) => {
   const { seconds: displaySeconds, minutes: displayMinutes } =
-    getTimeFromSeconds(reminingSeconds)
+    getTimeFromSeconds(remainingSeconds)
 
   return (
     <div className="">

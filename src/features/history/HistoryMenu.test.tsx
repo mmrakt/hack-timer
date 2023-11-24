@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react'
-import { HISTORY_CSV_FILE_NAME } from '../../consts/index'
-import { DailyPomodoro } from '../../types'
+import { HISTORY_CSV_FILE_NAME } from '@/consts/index'
+import { DailyPomodoro } from '@/types'
 import {
   HistoryMenu,
   createBlobData,
