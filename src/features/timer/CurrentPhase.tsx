@@ -1,9 +1,10 @@
 import { t } from 'i18next'
-import React, { useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import BreakIcon from '../../components/common/Break'
 import FocusIcon from '../../components/common/Focus'
 import { twMerge } from 'tailwind-merge'
-import { CurrentPhaseContext } from '../../providers/CurrentPhaseContextProvider'
+import { getStorage } from '../../utils/chrome'
+import { Phase } from '../../types'
 
 type IProps = {
   inPopup: boolean
@@ -11,7 +12,13 @@ type IProps = {
 const iconStyle = 'w-8 h-8'
 
 const CurrentPhase: React.FC<IProps> = ({ inPopup = false }) => {
-  const { currentPhase } = useContext(CurrentPhaseContext)
+  const [currentPhase, setCurrentPhase] = useState<Phase | null>(null)
+
+  useEffect(() => {
+    getStorage(['phase']).then(({ phase }) => {
+      setCurrentPhase(phase)
+    })
+  })
   const getCurrentPhaseText = (): string => {
     switch (currentPhase) {
       case 'focus':
@@ -20,6 +27,8 @@ const CurrentPhase: React.FC<IProps> = ({ inPopup = false }) => {
         return t('common.break')
       case 'longBreak':
         return t('common.longBreak')
+      default:
+        return ''
     }
   }
 

@@ -4,7 +4,6 @@ import Settings from './Settings'
 import DisplayPageContextProvider, {
   DisplayPageContext
 } from '../providers/DisplayPageContextProvider'
-import CurrentPhaseContextProvider from '../providers/CurrentPhaseContextProvider'
 import Timer from './Timer'
 import ThemeProvider from '../providers/ThemeProvider'
 
@@ -29,9 +28,7 @@ const Popup: React.FC = () => {
   return (
     <ThemeProvider>
       <DisplayPageContextProvider>
-        <CurrentPhaseContextProvider>
-          <PopupInner />
-        </CurrentPhaseContextProvider>
+        <PopupInner />
       </DisplayPageContextProvider>
     </ThemeProvider>
   )

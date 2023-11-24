@@ -9,7 +9,6 @@ import { COLOR } from '../consts/color'
 import { getStorage } from '../utils/chrome'
 import PomodoroCircles from '../features/timer/PomodoroCircles'
 import { closeTabs } from '../background/Tab'
-import { CurrentPhaseContext } from '../providers/CurrentPhaseContextProvider'
 import { extractTodayPomodoroCount } from '../utils/pomodoroHelper'
 import LoadingSpinner from '../components/common/LoadingSpinner'
 import Header from '../features/timer/Header'
@@ -27,17 +26,19 @@ const Timer: React.FC = (props) => {
     useState<number>(0)
   const [isRunning, setIsRunning] = useState<boolean>(false)
   const { theme } = useContext(ThemeContext)
-  const { currentPhase, setCurrentPhase } = useContext(CurrentPhaseContext)
+  const [currentPhase, setCurrentPhase] = useState<Phase | null>(null)
 
   useEffect(() => {
     getStorage([
       'remainingSeconds',
+      'phase',
       'isRunning',
       'dailyPomodoros',
       'totalPomodoroCountsInSession',
       'pomodorosUntilLongBreak'
     ]).then((value: StorageValue) => {
       setRemainingSeconds(value.remainingSeconds)
+      setCurrentPhase(value.phase)
       setIsRunning(value.isRunning)
       setTodayTotalPomodoroCount(
         extractTodayPomodoroCount(value.dailyPomodoros)
@@ -49,8 +50,7 @@ const Timer: React.FC = (props) => {
 
   useEffect(() => {
     ;(async () => {
-      // const fetchedDuration = await getDuration(currentPhase);
-      setDuration(await getDuration(currentPhase))
+      currentPhase && setDuration(await getDuration(currentPhase))
       chrome.runtime.onMessage.addListener(async (message: Message) => {
         if (message.type === 'reduce-count') {
           setRemainingSeconds(message.data.secs)
@@ -69,7 +69,7 @@ const Timer: React.FC = (props) => {
         }
       })
     })()
-  }, [])
+  }, [currentPhase])
 
   // NOTE: 引数にphaseを渡さなくても取れるが、前回のphaseを参照してしまうため渡している
   const getDuration = async (phase: Phase): Promise<number> => {
@@ -113,6 +113,8 @@ const Timer: React.FC = (props) => {
         return COLOR.secondary
       case 'longBreak':
         return COLOR.secondary
+      default:
+        return ''
     }
   }
 
@@ -120,9 +122,6 @@ const Timer: React.FC = (props) => {
     '%f',
     String(todayTotalPomodoroCount)
   )
-
-  console.log(duration)
-  console.log(remainingSeconds)
 
   return (
     <div id="timerMenu">
